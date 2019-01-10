@@ -1,32 +1,143 @@
-.App {
-  text-align: center;
-}
+/*///////////// App Component //////////// */
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.cities-list-with-posts {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  flex-direction: row; 
+}
+
+
+/*/////////// Header Component /////////// */
+
+header {
+  background-color: darkseagreen;
+}
+
+.wayfarer-heading {
+  margin: 20px;
+}
+
+.navbar-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.nav-list {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin: 0;
+}
+
+.sign {
+  margin: 20px;
+}
+
+/* /////////// Cities List Component  ////////////*/
+
+.cities-list {
+  background-color: darkseagreen;
+  width: 600px;
+  border: 1px black solid;
+  margin: 20px;
+}
+
+.city-header {
+  margin-left: 50px;
+}
+
+/* ////////////// Cities Component ////////////// */
+
+.london-img {
+  height: 100px;
+  margin: 10px 10px 10px 20px;
+}
+
+.city-div {
+  display: flex;
+  flex-direction: row;
+  border: 1px black solid;
+  border-radius: 20px;
+  width: 500px;
+  margin-left: 50px;
+  background-color: white;
+}
+
+/* ///////// City With Posts Component ///////// */
+
+.london-large-img {
+  height: 250px;
+  margin: 10px;
+}
+
+.london-uk {
+  margin: 20px;
+}
+
+.city {
+  font-size: 50px;
+}
+
+.country {
+  font-size: 35px;
+}
+
+.city-country-img {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.city-with-posts-div {
+  margin: 20px;
+  border: 1px solid black;
+}
+
+.posts-and-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.posts {
+  margin: 20px 0 0 20px;
+  font-size: 50px;
+}
+
+.plus-button {
+  margin: 0px 15px 0px 0px;
+  height: 75px;
+  width: 75px;
+  padding-bottom: 10px;
+  border-radius: 100px;
+  font-size: 50px;
+  border: 1px solid black;
+}
+
+.plus-button:hover {
+  background-color: darkseagreen;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+/* ////////////// Posts Component //////////// */
+
+.london-post-img {
+  height: 150px;
+  margin: 10px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.title {
+  margin: 10px 0 0 10px;
+}
+
+.post-and-img {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid black;
+  margin: 5px;
+}
+
+.post-body {
+  margin-left: 10px;
 }

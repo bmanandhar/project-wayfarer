@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
 import './App.css';
+import Header from './Header.js';
+import CitiesList from './CitiesList';
+import LogIn from './LogIn/LogIn';
+import CityWithPosts from './CityWithPosts';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <Header />
+        <CitiesList />
+      <div>
+        <LogIn />
+        <div className="cities-list-with-posts">
+          <CitiesList />
+          <CityWithPosts />
+        </div>
       </div>
     );
   }
