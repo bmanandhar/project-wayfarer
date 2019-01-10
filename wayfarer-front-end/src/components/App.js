@@ -8,10 +8,10 @@ import CityWithPosts from './CityWithPosts';
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <Header />
-        <CitiesList />
       <div>
+        <div className="App">
+          <Header />
+        </div>
         <LogIn />
         <div className="cities-list-with-posts">
           <CitiesList />
