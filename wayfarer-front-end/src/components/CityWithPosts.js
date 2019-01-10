@@ -19,6 +19,10 @@ class CityWithPosts extends Component {
                 </div>
                 <div className="posts-div">
                     <Posts />
+                    <Posts />
+                    <Posts />
+                    <Posts />
+                    <Posts />
                 </div>
             </div>
         )
