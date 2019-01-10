@@ -64,15 +64,29 @@ header {
   background-color: white;
 }
 
-/* ///////// Cities With Posts Component ///////// */
+/* ///////// City With Posts Component ///////// */
 
 .london-large-img {
   height: 250px;
   margin: 10px;
 }
 
+.london-uk {
+  margin: 20px;
+}
+
+.city {
+  font-size: 50px;
+}
+
+.country {
+  font-size: 35px;
+}
+
 .city-country-img {
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .city-with-posts-div {
@@ -80,5 +94,50 @@ header {
   border: 1px solid black;
 }
 
-/* ////////////// Post Component //////////// */
+.posts-and-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 
+.posts {
+  margin: 20px 0 0 20px;
+  font-size: 50px;
+}
+
+.plus-button {
+  margin: 0px 15px 0px 0px;
+  height: 75px;
+  width: 75px;
+  padding-bottom: 10px;
+  border-radius: 100px;
+  font-size: 50px;
+  border: 1px solid black;
+}
+
+.plus-button:hover {
+  background-color: darkseagreen;
+  color: white;
+}
+
+/* ////////////// Posts Component //////////// */
+
+.london-post-img {
+  height: 150px;
+  margin: 10px;
+}
+
+.title {
+  margin: 10px 0 0 10px;
+}
+
+.post-and-img {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid black;
+  margin: 5px;
+}
+
+.post-body {
+  margin-left: 10px;
+}
