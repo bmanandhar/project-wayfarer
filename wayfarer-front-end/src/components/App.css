@@ -1,4 +1,12 @@
-/* Header Component */
+/*///////////// App Component //////////// */
+
+.cities-list-with-posts {
+  display: flex;
+  flex-direction: row; 
+}
+
+
+/*/////////// Header Component /////////// */
 
 header {
   background-color: darkseagreen;
@@ -26,7 +34,7 @@ header {
   margin: 20px;
 }
 
-/* Cities List Component  */
+/* /////////// Cities List Component  ////////////*/
 
 .cities-list {
   background-color: darkseagreen;
@@ -39,7 +47,7 @@ header {
   margin-left: 50px;
 }
 
-/* Cities Component */
+/* ////////////// Cities Component ////////////// */
 
 .london-img {
   height: 100px;
@@ -55,3 +63,22 @@ header {
   margin-left: 50px;
   background-color: white;
 }
+
+/* ///////// Cities With Posts Component ///////// */
+
+.london-large-img {
+  height: 250px;
+  margin: 10px;
+}
+
+.city-country-img {
+  display: flex;
+}
+
+.city-with-posts-div {
+  margin: 20px;
+  border: 1px solid black;
+}
+
+/* ////////////// Post Component //////////// */
+
