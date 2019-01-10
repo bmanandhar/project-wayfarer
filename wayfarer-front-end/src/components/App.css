@@ -1,4 +1,12 @@
-/* Header Component */
+/*///////////// App Component //////////// */
+
+.cities-list-with-posts {
+  display: flex;
+  flex-direction: row; 
+}
+
+
+/*/////////// Header Component /////////// */
 
 header {
   background-color: darkseagreen;
@@ -26,7 +34,7 @@ header {
   margin: 20px;
 }
 
-/* Cities List Component  */
+/* /////////// Cities List Component  ////////////*/
 
 .cities-list {
   background-color: darkseagreen;
@@ -39,7 +47,7 @@ header {
   margin-left: 50px;
 }
 
-/* Cities Component */
+/* ////////////// Cities Component ////////////// */
 
 .london-img {
   height: 100px;
@@ -54,4 +62,82 @@ header {
   width: 500px;
   margin-left: 50px;
   background-color: white;
+}
+
+/* ///////// City With Posts Component ///////// */
+
+.london-large-img {
+  height: 250px;
+  margin: 10px;
+}
+
+.london-uk {
+  margin: 20px;
+}
+
+.city {
+  font-size: 50px;
+}
+
+.country {
+  font-size: 35px;
+}
+
+.city-country-img {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.city-with-posts-div {
+  margin: 20px;
+  border: 1px solid black;
+}
+
+.posts-and-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.posts {
+  margin: 20px 0 0 20px;
+  font-size: 50px;
+}
+
+.plus-button {
+  margin: 0px 15px 0px 0px;
+  height: 75px;
+  width: 75px;
+  padding-bottom: 10px;
+  border-radius: 100px;
+  font-size: 50px;
+  border: 1px solid black;
+}
+
+.plus-button:hover {
+  background-color: darkseagreen;
+  color: white;
+}
+
+/* ////////////// Posts Component //////////// */
+
+.london-post-img {
+  height: 150px;
+  margin: 10px;
+}
+
+.title {
+  margin: 10px 0 0 10px;
+}
+
+.post-and-img {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid black;
+  margin: 5px;
+}
+
+.post-body {
+  margin-left: 10px;
 }
