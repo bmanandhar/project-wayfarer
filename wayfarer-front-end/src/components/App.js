@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Header from './Header.js';
 import CitiesList from './CitiesList';
+import LogIn from './LogIn/LogIn';
 
 class App extends Component {
   render() {
@@ -9,6 +10,8 @@ class App extends Component {
       <div className="App">
         <Header />
         <CitiesList />
+      <div>
+        <LogIn />
       </div>
     );
   }
