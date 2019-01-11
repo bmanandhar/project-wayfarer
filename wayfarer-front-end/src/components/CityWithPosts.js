@@ -18,8 +18,13 @@ class CityWithPosts extends Component {
     }
 
     render() {
+
         return(
+            
             <div className="city-with-posts-div">
+                <div className="static-modal">
+                
+                </div>
                 <div className="city-country-img">
                     <div className='london-uk'>
                         <h1 className="city">London</h1>
@@ -71,3 +76,5 @@ class CityWithPosts extends Component {
 }
 
 export default CityWithPosts;
+
+
