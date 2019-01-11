@@ -16,6 +16,10 @@ const config = require('../config/config')
 //const mongoose = require('../models/User')
 //const User = mongoose.model('User')
 
+
+
+function padZero(num) { return (num>=1 && num<=9) ? `0${num}`: `${num}` }
+
 /** 
  * SIGNUP
  */
@@ -29,14 +33,8 @@ router.post('/signup', (req, res) => {
                 
                 // create timestamp
                 let today = new Date();
-                let todayObj= {
-                    'year': today.getFullYear(), 
-                    'month': today.getMonth()+1, 
-                    'day': today.getDate()
-                }
-                todayObj['month']= (todayObj['month']>=1 && todayObj['month']<=9)? `0${todayObj['month']}`: todayObj['month'];
-                todayObj['day']= (todayObj['day']>=1 && todayObj['day']<=9)? `0${todayObj['day']}`: todayObj['day'];
-                let timestamp = `${todayObj['year']}-${todayObj['month']}-${todayObj['day']}`
+                let timestamp = `${today.getFullYear()}-${padZero(today.getMonth()+1)}-${padZero(today.getDate())}`
+                console.log(timestamp)
                 
                 // new user object
                 newUser = {

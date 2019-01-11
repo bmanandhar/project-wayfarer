@@ -1,7 +1,7 @@
 [
     {
         "email": "test1@ga.com",
-        "password": "password123",
+        "password": "$2b$10$vsyBxHQNIhiR8LN9.U8gY.B3qMKcGS7AHstV6uWgxQkAhsN5uZ7Iy",
         "joindate": "2019-01-08",
         "username": "tester1",
         "city": "San Francisco",
