@@ -171,6 +171,11 @@ header {
   display: none;
 }
 
+.static-model {
+  position: absolute;
+  top: 0;
+}
+
 /* ////////////// Posts Component //////////// */
 
 .london-post-img {
