@@ -11,11 +11,10 @@ class App extends Component {
       <div>
         <div className="App">
           <Header />
-        </div>
-        <LogIn />
-        <div className="cities-list-with-posts">
           <CitiesList />
-          <CityWithPosts />
+        </div>
+        <div>
+          <LogIn />
         </div>
       </div>
     );

@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
+import LogIn from './LogIn';
 
 class Header extends Component {
+    handleClick() {
+        document.getElementsByClassName("sign-in-sign-up").style.display = 'inline-block';
+    }
     render() {
         return(
             <header>
@@ -9,8 +13,8 @@ class Header extends Component {
                     <div className="navbar-div">
                         <h1 className="wayfarer-heading">WAYFARER</h1>
                         <ul className="nav-list">
-                            <li className="sign">Log in</li>
-                            <li className="sign">Sign up</li>
+                            <li className="LogIn" onClick={this.handleClick}>Log in</li>
+                            <li className="LogIn" onClick={this.handleClick}>Sign up</li>
                         </ul>
                     </div>
                 </nav>
@@ -20,3 +24,4 @@ class Header extends Component {
 }
 
 export default Header;
+///
