@@ -1,0 +1,18 @@
+.sign-in-sign-up {
+    width: 430px;
+    height: 440px;
+    background-color: skyblue;
+    display: none;
+}
+
+.sign-in {
+    Width: 400px;
+    height: 200px;
+    background-color: grey;
+}
+
+.sign-up {
+    Width: 400px;
+    height: 200px;
+    background-color: yellow;
+}
