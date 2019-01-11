@@ -6,18 +6,16 @@
 }
 
 
-a {
-  
-}
-
 /*/////////// Header Component /////////// */
 
-header {
-  background-color: darkseagreen;
+.navbar, .modal-header {
+  background-color: darkseagreen !important;
 }
 
 .wayfarer-heading {
-  margin: 20px;
+  margin: 20px !important;
+  font-size: 48px;
+  color: #333 !important;
 }
 
 .navbar-div {
@@ -37,6 +35,12 @@ header {
 .sign {
   margin: 20px;
 }
+
+/* /////////// Carousel Component  ////////////*/
+img {
+  margin: auto
+}
+
 
 /* /////////// Cities List Component  ////////////*/
 
