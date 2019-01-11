@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
 import Posts from './Posts';
-import { Modal, Button } from "react-bootstrap"
+import { Modal, Col, Button, Form, FormGroup, FormControl, ControlLabel } from "react-bootstrap"
+
+
+const left = 3, 
+right = 12-left;
 
 class CityWithPosts extends Component {
 
@@ -19,8 +23,9 @@ class CityWithPosts extends Component {
 
     render() {
 
+        var citiesOptions = ['San Francisco', 'Paris', 'London']
+        
         return(
-            
             <div className="city-with-posts-div">
                 <div className="static-modal">
                 
@@ -36,8 +41,6 @@ class CityWithPosts extends Component {
                     <h2 className='posts'>Posts</h2>
                     <button className="plus-button" onClick={this.open}>+</button>
                 </div>
-                
-                
                 <div className="posts-div">
                     <Posts />
                     <Posts />
@@ -45,32 +48,44 @@ class CityWithPosts extends Component {
                     <Posts />
                     <Posts />
                 </div>
-
-<Modal show={this.state.show} onHide={this.close}>
-    <Modal.Body>
-                <div className='create-new-post'>
-                    <form className='new-post-form'>
-                        <h2 className='new-post-h2'>Create a new post</h2>
-                        <select className='new-post-dropdown'>
-                            <option>London</option>
-                            <option>San Francisco</option>
-                            <option>New York</option>
-                            <option>Paris</option>
-                        </select>
-                        <p className='new-post-title'>Title</p>
-                        <input className='new-post-input'></input>
-                        <textarea className="new-post-text-area" placeholder="New Post Here"></textarea>
-                        <input className="submit-button" type="submit"></input>
-                    </form>
-                </div>
-</Modal.Body>
-<Button onClick={this.close}>Close</Button>
+                <Modal show={this.state.show} onHide={this.close}>
+                    <Modal.Header>
+                        <Modal.Title>Create a new post</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form horizontal>
+                            <FormGroup controlId="city-drop-down">
+                                <Col componentClass={ControlLabel} sm={left}>City</Col>
+                                <Col sm={right}>
+                                    <FormControl componentClass='select' placeholder='City'>
+                                        {citiesOptions}
+                                    </FormControl>
+                                </Col>
+                            </FormGroup>
+                            <FormGroup constrolId="postTitle">
+                                <Col componentClass={ControlLabel} sm={left}>Title</Col>
+                                <Col sm={right}>
+                                    <FormControl type='text'/>
+                                </Col>
+                            </FormGroup>
+                            <FormGroup>
+                                <Col componentClass={ControlLabel}sm={left}>Post</Col>
+                                <Col sm={right}>
+                                    <FormControl componentClass='textarea' />
+                                </Col>
+                            </FormGroup>
+                        </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Col sm={left}>
+                            <Button onClick={this.close}>Close</Button>
+                        </Col>
+                        <Col sm={right}>
+                            <Button>Submit</Button>
+                        </Col>
+                    </Modal.Footer>
                 </Modal>
-
             </div>
-
-
-
         )
     }
 }

@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-
+import CityWithPosts from './CityWithPosts'
 import { Modal, Button, Grid, Row, Col, Carousel } from "react-bootstrap"
 
 
@@ -22,6 +22,7 @@ export default class Landing extends Component {
       <img width={width} height={height} alt="widthxheight" src={imgURL} />
     </Carousel.Item>
   </Carousel>
+  <CityWithPosts />
 </React.Fragment>
         );
     }
