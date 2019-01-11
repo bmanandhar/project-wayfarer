@@ -164,6 +164,11 @@ header {
   border: 2px solid black;
   width: 100px;
   height: 30px;
+  margin-bottom: 5px;
+}
+
+.create-new-post2 {
+  display: none;
 }
 
 /* ////////////// Posts Component //////////// */
