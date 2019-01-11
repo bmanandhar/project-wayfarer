@@ -19,7 +19,7 @@ class CityWithPosts extends Component {
                 </div>
                 <div className='create-new-post'>
                     <form className='new-post-form'>
-                        <h2>Create a new post</h2>
+                        <h2 className='new-post-h2'>Create a new post</h2>
                         <select className='new-post-dropdown'>
                             <option>London</option>
                             <option>San Francisco</option>
@@ -28,7 +28,8 @@ class CityWithPosts extends Component {
                         </select>
                         <p className='new-post-title'>Title</p>
                         <input className='new-post-input'></input>
-                        <textarea className="new-post-text-area"></textarea>
+                        <textarea className="new-post-text-area" placeholder="New Post Here"></textarea>
+                        <input className="submit-button" type="submit"></input>
                     </form>
                 </div>
                 <div className="posts-div">
