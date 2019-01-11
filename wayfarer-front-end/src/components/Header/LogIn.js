@@ -1,20 +1,21 @@
 import React, { Component } from 'react'
+import axios from 'axios'
 
-import { Modal, Col, Button, Form, FormGroup, FormControl, ControlLabel } from "react-bootstrap"
+import { Col, Button, Form, FormGroup, FormControl, ControlLabel, Tooltip } from "react-bootstrap"
 
-const left = 3, 
-right = 12-left;
+const left = 3, right = 12-left;
+const baseURL= 'http://localhost:8001';
 
 class LogIn extends Component {
 
-  /*
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      showModal: false
+      email: '',
+      password: ''
     }
   }
-
+  /*
   openModal = () => {
     this.setState({
         showModal: true
@@ -28,60 +29,60 @@ class LogIn extends Component {
   }
   //*/
 
+  handleInput = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
   login = (e) => {
     e.preventDefault()
-    let modalBody = e.target.parentNode//.previousSiblings
-    console.log(modalBody)
+    if (this.state.email==="" || this.state.password==="") return;
+    console.log(this.state)
+    
+    axios.post(`${baseURL}/users/login`,
+      {email: this.state.email,
+      password: this.state.password})
+    .then(response=>{
+      localStorage.token = response.data.token;
+      this.props.handleLogIn()
+      this.props.close()
+    })
+    .catch(err=>console.log(err));
+    
   }
 
   render () {
     return (
 
-    <Modal show={this.props.showModal} onHide={this.props.closeModal}>
-      
-      <Modal.Header closeButton className="modal-header">
-        <Modal.Title style={{textAlign: "center"}}>
-          Log In
-        </Modal.Title>
-      </Modal.Header>
-      
-      <Modal.Body>
-        
-        <Form horizontal>
-          <FormGroup controlId="loginEmail">
-            <Col componentClass={ControlLabel} sm={left}>
-              Email
-            </Col>
-            <Col sm={right}>
-              <FormControl type="email" placeholder="Email" />
-            </Col>
-          </FormGroup>
+<Form horizontal>
+  <FormGroup controlId="loginEmail">
+    <Col componentClass={ControlLabel} sm={left}>
+      Email
+    </Col>
+    <Col sm={right}>
+      <FormControl name="email" type="email" placeholder="Email" onChange={this.handleInput}/>
+    </Col>
+    {/* <Tooltip></Tooltip> */}
+  </FormGroup>
 
-          <FormGroup controlId="loginPassword">
-            <Col componentClass={ControlLabel} sm={left}>
-              Password
-            </Col>
-            <Col sm={right}>
-              <FormControl type="password" placeholder="Password" />
-            </Col>
-          </FormGroup>
+  <FormGroup controlId="loginPassword">
+    <Col componentClass={ControlLabel} sm={left}>
+      Password
+    </Col>
+    <Col sm={right}>
+      <FormControl name="password" type="password" placeholder="Password" onChange={this.handleInput}/>
+    </Col>
+  </FormGroup>
 
-          <FormGroup>
-            <Col smOffset={left} sm={right}>
-              <Button type="submit" onClick={this.login}>
-                Sign in
-              </Button>
-            </Col>
-          </FormGroup>
-        </Form>
-
-      </Modal.Body>
-
-      <Modal.Footer>
-        <Button onClick={this.props.closeModal}>Close</Button>
-      </Modal.Footer>
-
-    </Modal>
+  <FormGroup>
+    <Col smOffset={left} sm={right}>
+      <Button type="submit" onClick={this.login}>
+        Sign in
+      </Button>
+    </Col>
+  </FormGroup>
+</Form>
       
     )
   }

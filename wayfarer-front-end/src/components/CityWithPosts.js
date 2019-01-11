@@ -1,11 +1,31 @@
+
 import React, { Component } from 'react';
 import './App.css';
 import Posts from './Posts';
+import { Modal, Button } from "react-bootstrap"
 
 class CityWithPosts extends Component {
+
+    state = {
+        show: false
+    }
+
+    open = () => {
+        this.setState({show: true})
+    }
+
+    close = () => {
+        this.setState({show: false})
+    }
+
     render() {
+
         return(
+            
             <div className="city-with-posts-div">
+                <div className="static-modal">
+                
+                </div>
                 <div className="city-country-img">
                     <div className='london-uk'>
                         <h1 className="city">London</h1>
@@ -15,8 +35,20 @@ class CityWithPosts extends Component {
                 </div>
                 <div className="posts-and-button">
                     <h2 className='posts'>Posts</h2>
-                    <button className="plus-button">+</button>
+                    <button className="plus-button" onClick={this.open}>+</button>
                 </div>
+                
+                
+                <div className="posts-div">
+                    <Posts />
+                    <Posts />
+                    <Posts />
+                    <Posts />
+                    <Posts />
+                </div>
+
+<Modal show={this.state.show} onHide={this.close}>
+    <Modal.Body>
                 <div className='create-new-post'>
                     <form className='new-post-form'>
                         <h2 className='new-post-h2'>Create a new post</h2>
@@ -32,14 +64,14 @@ class CityWithPosts extends Component {
                         <input className="submit-button" type="submit"></input>
                     </form>
                 </div>
-                <div className="posts-div">
-                    <Posts />
-                    <Posts />
-                    <Posts />
-                    <Posts />
-                    <Posts />
-                </div>
+</Modal.Body>
+<Button onClick={this.close}>Close</Button>
+                </Modal>
+
             </div>
+
+
+
         )
     }
 }

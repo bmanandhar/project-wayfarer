@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Navbar, Nav, NavItem } from "react-bootstrap";
-
+import { Modal, Button } from "react-bootstrap"
 
 import LogIn from './LogIn'
 import SignUp from './SignUp'
@@ -10,30 +10,54 @@ class Header extends Component {
     constructor(props) {
         super(props)
         this.state = {
-          showModal: {
-            "login": false,
-            "signup": false,
-          }
+          modalTitle: '',
+          option: '',
+          showModal: false
         }
-      }
-    
-      openModal = (option) => {
-        let showModal= this.state.showModal
-        showModal[option]= true
+    }
+ 
+
+    openModal = (option) => {
+        let title = option==="login" ? "Log In" : "Sign Up"
         this.setState({
-            showModal: showModal
+            showModal: true,
+            option,
+            modalTitle: title
         })
-      }
+    }
     
-      closeModal = (option) => {
-        let showModal= this.state.showModal
-        showModal[option]=  false
+    closeModal = () => {
         this.setState({
-            showModal: showModal
+            showModal: false,
+            option: '',
+            modalTitle: ''
         })
-      }
+    }
 
     render() {
+      let abc = <div></div>
+      if(this.props.isLoggedIn){
+        abc = <NavItem eventKey={1} key={1} href="#" onClick={this.props.handleLogOut}>
+             Log Out
+           </NavItem>
+      } else {
+        abc= <>
+        <NavItem eventKey={1} key={1} href="#" onClick={()=>this.openModal("login")}>
+        Log In
+      </NavItem>
+      <NavItem eventKey={2} key={2} href="#" onClick={()=>this.openModal("signup")}>
+        Sign Up
+      </NavItem>
+      </>
+      }
+
+      // let abc = this.state.isLoggedIn?
+      //   <NavItem eventKey={1} key={1} href="#" onClick={this.props.handleLogOut()}>
+      //     Log Out
+      //   </NavItem>
+      // :
+      //   
+      
         return(
     <header>
       <Navbar className="navbar" collapseOnSelect>
@@ -46,20 +70,32 @@ class Header extends Component {
           
         <Navbar.Collapse>
           <Nav pullRight>
-            <NavItem eventKey={1} href="#" onClick={()=>this.openModal("login")}>
-              Login
-            </NavItem>
-            <NavItem eventKey={2} href="#" onClick={()=>this.openModal("signup")}>
-              Sign Up
-            </NavItem>
+            {abc}
           </Nav>
         </Navbar.Collapse>
-
       </Navbar>
       
-      <LogIn showModal={this.state.showModal["login"]} closeModal={()=>this.closeModal("login")}/>
-      <SignUp showModal={this.state.showModal["signup"]} closeModal={()=>this.closeModal("signup")}/>
+      <Modal show={this.state.showModal} onHide={this.closeModal}>
+        
+        <Modal.Header closeButton className="modal-header">
+          <Modal.Title style={{textAlign: "center"}}>
+            {this.state.modalTitle}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {this.state.option==="login"? 
+          <LogIn close={this.closeModal} handleLogIn={this.props.handleLogIn}/> : 
+          this.state.option==="signup"? 
+          <SignUp close={this.closeModal} handleLogIn={this.props.handleLogIn}/> : null}
 
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button onClick={this.closeModal}>Close</Button>
+        </Modal.Footer>
+
+      </Modal>
+      
     </header>
         )
     }
