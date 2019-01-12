@@ -201,3 +201,23 @@ img {
 .post-body {
   margin-left: 10px;
 }
+
+h3 {
+  text-align: center;
+}
+
+main {
+  display: flex;
+}
+
+.left-col {
+  padding: 10px 25px 0 5px;
+}
+
+.middle-col {
+  padding: 10px 25px 0 5px;
+}
+
+.right-col {
+  padding: 10px 10px 0 20px;
+}
