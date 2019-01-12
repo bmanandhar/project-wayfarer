@@ -15,20 +15,7 @@ class LogIn extends Component {
       password: ''
     }
   }
-  /*
-  openModal = () => {
-    this.setState({
-        showModal: true
-    })
-  }
-
-  closeModal = () => {
-    this.setState({
-        showModal: false
-    })
-  }
-  //*/
-
+  
   handleInput = (e) => {
     this.setState({
       [e.target.name]: e.target.value
@@ -38,7 +25,6 @@ class LogIn extends Component {
   login = (e) => {
     e.preventDefault()
     if (this.state.email==="" || this.state.password==="") return;
-    console.log(this.state)
     
     axios.post(`${baseURL}/users/login`,
       {email: this.state.email,

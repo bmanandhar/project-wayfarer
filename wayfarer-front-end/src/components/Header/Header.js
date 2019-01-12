@@ -35,28 +35,6 @@ class Header extends Component {
     }
 
     render() {
-      let abc = <div></div>
-      if(this.props.isLoggedIn){
-        abc = <NavItem eventKey={1} key={1} href="#" onClick={this.props.handleLogOut}>
-             Log Out
-           </NavItem>
-      } else {
-        abc= <>
-        <NavItem eventKey={1} key={1} href="#" onClick={()=>this.openModal("login")}>
-        Log In
-      </NavItem>
-      <NavItem eventKey={2} key={2} href="#" onClick={()=>this.openModal("signup")}>
-        Sign Up
-      </NavItem>
-      </>
-      }
-
-      // let abc = this.state.isLoggedIn?
-      //   <NavItem eventKey={1} key={1} href="#" onClick={this.props.handleLogOut()}>
-      //     Log Out
-      //   </NavItem>
-      // :
-      //   
       
         return(
     <header>
@@ -70,7 +48,26 @@ class Header extends Component {
           
         <Navbar.Collapse>
           <Nav pullRight>
-            {abc}
+            {
+          this.props.isLoggedIn?
+          <>
+            <NavItem className="nav-item" eventKey={1} href="/logout" onClick={this.props.handleLogOut}>
+              Log Out
+            </NavItem>
+            <NavItem className="nav-item" eventKey={2} href="/profile" onClick={(e)=>e.preventDefault()}>
+              Profile
+            </NavItem>
+          </>  
+          :
+          <>
+            <NavItem className="nav-item" eventKey={1} href="#" onClick={()=>this.openModal("login")}>
+              Log In
+            </NavItem>
+            <NavItem className="nav-item" eventKey={2} href="#" onClick={()=>this.openModal("signup")}>
+              Sign Up
+            </NavItem>
+          </>
+            }
           </Nav>
         </Navbar.Collapse>
       </Navbar>

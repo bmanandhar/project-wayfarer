@@ -5,6 +5,10 @@
   flex-direction: row; 
 }
 
+.landing-page {
+  display: flex;
+  flex-direction: row;
+}
 
 /*/////////// Header Component /////////// */
 
@@ -39,6 +43,11 @@
 /* /////////// Carousel Component  ////////////*/
 img {
   margin: auto
+}
+
+.nav-item {
+  font-size: 28px;
+  margin: 20px auto;
 }
 
 

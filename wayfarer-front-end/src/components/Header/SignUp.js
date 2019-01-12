@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import { Col, Button, Form, FormGroup, FormControl, ControlLabel } from "react-bootstrap"
 
+import axios from "axios";
+
 const left = 3, 
 right = 12-left;
+const baseURL= 'http://localhost:8001';
 
 export default class SignUp extends Component {
 
@@ -14,11 +17,25 @@ export default class SignUp extends Component {
       email: '',
       password: '',
       confirmPassword: '',
+      cityOptions: [],
     }
   }
 
+  componentDidMount = () =>{
+    axios.get(`${baseURL}/city/all`)
+    .then(res=>{
+      console.log(res)
+      let cities = []
+      res.data.cities.map(city=>{
+        cities.push(city.name)
+      })
+      this.setState({cityOptions: cities})
+    })
+    .catch(err=>console.log(err));
+  }
+
   handleInput = (e) => {
-    console.log(e.target.value)
+    //console.log(e.target.value)
     this.setState({
       [e.target.name]: e.target.value
     })
@@ -27,14 +44,31 @@ export default class SignUp extends Component {
 
   signup = (e) => {
     e.preventDefault()
-
+    for (let item in this.state) {
+      if (this.state[item]==="") return
+    }
+    if (this.state.password!==this.state.confirmPassword) return
     console.log(this.state)
-    this.props.close()
+    let dataObj = {
+      username: this.state.username,
+      city: this.state.city,
+      email: this.state.email,
+      password: this.state.password,
+    }
+    //console.log(dataObj) ; return
+    axios.post(`${baseURL}/users/signup`,dataObj)
+    .then(response=>{
+      localStorage.token = response.data.token;
+      this.props.handleLogIn()
+      this.props.close()
+    })
+    .catch(err=>console.log(err));
+  
   }
 
   
   render () {
-    let citiesOptions = ["San Francisco","London"].map((city,index)=>(
+    let citiesOptions = this.state.cityOptions.map((city,index)=>(
         <option value={city} key={index+1}>{city}</option>
     ))
     citiesOptions.splice(0,0,<option value="" disabled key="0">Select your option</option>)
