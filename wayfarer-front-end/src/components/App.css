@@ -213,8 +213,11 @@ h3 {
 
 main {
   display: flex;
+  justify-content: space-around;
+  padding: 20px;
 }
 
+/*
 .left-col {
   padding: 10px 25px 0 5px;
 }
@@ -226,3 +229,4 @@ main {
 .right-col {
   padding: 10px 10px 0 20px;
 }
+*/
