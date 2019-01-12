@@ -1,4 +1,4 @@
-const mongoose = require('../db/connection')
+require('../db/connection')
 const db = require('../models')
 const users = require('./users')
 const cities = require('./cities')

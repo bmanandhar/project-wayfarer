@@ -8,5 +8,10 @@
         "name": "San Francisco",
         "description": "",
         "image": ""
+    },
+    {
+        "name": "Paris",
+        "description": "",
+        "image": ""
     }
 ]
