@@ -8,6 +8,8 @@ import About from './About.js';
 
 import CitiesList from './CitiesList';
 import CityWithPosts from './CityWithPosts';
+import Profile from './Profile.js'
+import Posts from './Posts'
 
 class App extends Component {
 
@@ -47,23 +49,33 @@ class App extends Component {
 
     let showUp= this.state.isLoggedIn ? 
     <>
-    <CitiesList />
-    <CityWithPosts />
-    </> : <Landing />
+    <div className='landing-page'>
+      <CitiesList />
+      <CityWithPosts />
+    </div>
+    </> : 
+    <>
+    <Landing />
+    <About />
+    </>
 
     return (
       <div className="App">
-<<<<<<< HEAD
+
         <Header isLoggedIn={this.state.isLoggedIn} handleLogIn={this.loggedIn} handleLogOut={this.loggedOut} />
         {showUp}
-        
-=======
-        <Header />
-        <Landing />
-        <About />
->>>>>>> bijaya
+
+        <div className='profile-div-2'>
+          <Profile />
+          <div>
+            <Posts />
+            <Posts />
+            <Posts />
+          </div>
+        </div>
 
       </div>
+
     );
   }
 }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Col, Button, Form, FormGroup, FormControl, ControlLabel } from "react-bootstrap"
+import Axios from 'axios';
 
 const left = 3, 
 right = 12-left;
@@ -27,9 +28,19 @@ export default class SignUp extends Component {
 
   signup = (e) => {
     e.preventDefault()
-
+    if (this.state.username.length === 0 || this.state.city.length === 0 || this.state.email === 0 || this.state.password === 0 || this.state.confirmPassword === 0 || this.state.password !== this.state.confirmPassword) {
+      return
+    }
     console.log(this.state)
-    this.props.close()
+    // this.props.close()
+    Axios.post('http://localhost:8001/users/signup')
+    .then(res=>{
+      localStorage.token = res.data.token
+      this.props.handleLogIn()
+    })
+    .catch(err => {
+      console.log(err)
+    })
   }
 
   
