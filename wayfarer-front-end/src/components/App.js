@@ -53,15 +53,12 @@ class App extends Component {
 
     return (
       <div className="App">
-<<<<<<< HEAD
         <Header isLoggedIn={this.state.isLoggedIn} handleLogIn={this.loggedIn} handleLogOut={this.loggedOut} />
         {showUp}
         
-=======
         <Header />
         <Landing />
         <About />
->>>>>>> bijaya
 
       </div>
     );
