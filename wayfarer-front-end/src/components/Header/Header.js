@@ -35,13 +35,13 @@ class Header extends Component {
     }
 
     render() {
-      let abc = <div></div>
+      let navItems = <div></div>
       if(this.props.isLoggedIn){
-        abc = <NavItem eventKey={1} key={1} href="#" onClick={this.props.handleLogOut}>
+        navItems = <NavItem eventKey={1} key={1} href="#" onClick={this.props.handleLogOut}>
              Log Out
            </NavItem>
       } else {
-        abc= <>
+        navItems= <>
         <NavItem eventKey={1} key={1} href="#" onClick={()=>this.openModal("login")}>
         Log In
       </NavItem>
@@ -70,7 +70,7 @@ class Header extends Component {
           
         <Navbar.Collapse>
           <Nav pullRight>
-            {abc}
+            {navItems}
           </Nav>
         </Navbar.Collapse>
       </Navbar>
