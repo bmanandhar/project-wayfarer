@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Modal, Col, Button, Form, FormGroup, FormControl, ControlLabel } from "react-bootstrap"
-const left = 3, 
-right = 12-left;
+import Posts from './Posts';
+
 
 class ShowPost extends Component {
 
@@ -32,7 +32,7 @@ class ShowPost extends Component {
                             <Modal.Title>Post by John Doe</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            
+                            <Posts />
                         </Modal.Body>
                     </Modal>
                 </div>

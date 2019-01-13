@@ -2,11 +2,21 @@
     {
         "name": "London",
         "description": "",
-        "image": ""
+        "image": "images/london1.jpeg"
     },
     {
         "name": "San Francisco",
         "description": "",
-        "image": ""
+        "image": "images/san-francisco1.jpeg"
+    },
+    {
+        "name": "Hong Kong",
+        "description": "",
+        "image": "images/hong-kong1.jpeg"
+    },
+    {
+        "name": "New York",
+        "description": "",
+        "image": "images/new-york1.jpeg"
     }
 ]

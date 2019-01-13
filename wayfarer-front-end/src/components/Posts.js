@@ -1,7 +1,25 @@
 import React, { Component } from 'react';
 import './App.css';
+import Axios from 'axios';
 
 class Posts extends Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            title: [],
+        }
+    }
+
+    componentDidMount() {
+        Axios.get('http://localhost:8001/posts/')
+        .then(response => {
+            this.setState({
+                title: response.data
+            })
+        })
+    }
+
     render() {
         return(
             <div className="post-and-img">
