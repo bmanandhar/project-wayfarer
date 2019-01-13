@@ -18,15 +18,16 @@ export default class Profile extends Component {
     componentDidMount = () => {
         axios.get(`${baseURL}/users`,{headers: {"Authorization": `Bearer ${localStorage.token}`}})
         .then(res=>{
+
             this.setState({
                 userData: res.data,
                 usernameVal: res.data.username,
                 cityVal: res.data.city
             })
         })
-        .catch(err=>console.log(err))
-        this.setState({
-            cities: ["London","San Francisco","Paris"]
+        .catch((err)=>{
+            this.props.forcedLogOut()
+            console.log(err)
         })
     }
 
@@ -38,13 +39,30 @@ export default class Profile extends Component {
         this.setState({[option]: true})
     }
 
-    stopEdit = (option) => {
-        this.setState({[option]: false})
+    stopEdit = (e,option,value) => {
+        if (this.state[value]==="") return;
+        this.axiosPatch(e)
+        this.setState({ [option]: false })
+    }
+
+    updateCity = (e,value) => {
+        if (this.state[value]==="") return;
+        this.axiosPatch(e)
+        this.handleInput(e,value)
+    }
+
+    axiosPatch = (e) => {
+        axios.patch(`${baseURL}/users/`,
+          {[e.target.name]: e.target.value},
+          {headers: {"Authorization": `Bearer ${localStorage.token}`}})
+        .then(res=>console.log(res.data))
+        .catch(err=>console.log(err))
     }
 
     render() {
-//alert(this.state.cityVal)
+
         return(
+
 <div>
     <h2>Hello</h2>
     <p>
@@ -57,13 +75,13 @@ export default class Profile extends Component {
             <input type="text" name="username" 
                 defaultValue={this.state.usernameVal} 
                 onChange={(e)=>this.handleInput(e,"usernameVal")} 
-                onBlur={()=>this.stopEdit("editUsername")} 
+                onBlur={(e)=>this.stopEdit(e,"editUsername","usernameVal")} 
             />
         }
     </p>
     <p>
       City:
-      <select onChange={this.handleInput} name="city">
+      <select onChange={(e)=>this.updateCity(e,"cityVal")} name="city">
         {
         this.state.cities.map((city,index)=>(
           city!==this.state.cityVal ? <option key={index+1} value={city}>{city} </option> :
@@ -79,6 +97,7 @@ export default class Profile extends Component {
         Join Date: {this.state.userData.joindate} 
     </p>
 </div>
+
         )
     }
 }

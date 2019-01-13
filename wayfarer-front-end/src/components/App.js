@@ -4,6 +4,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import './App.css';
 import Header from './Header/Header.js';
 import Landing from './Landing';
+import Logout from './Header/Logout.js';
 
 //import CitiesList from './CitiesList';
 //import CityWithPosts from './CityWithPosts';
@@ -20,13 +21,9 @@ class App extends Component {
 
   componentDidMount = () => {
     if (localStorage.token) {
-      this.setState({
-        isLoggedIn: true
-      })
+      this.setState({ isLoggedIn: true })
     } else {
-      this.setState({
-        isLoggedIn: false
-      })
+      //this.setState({ isLoggedIn: false })
     }
   }
 
@@ -44,45 +41,36 @@ class App extends Component {
     localStorage.clear();
   }
 
-  render() {
+  forcedLogOut = () => {
+    this.setState({
+      isLoggedIn: false
+    })
+    localStorage.clear();
+  }
 
-    /*
-    let showUp= this.state.isLoggedIn ? 
-    <div className="landing-page">
-      <Profile />
-    </div> : 
-    <Landing />
-    //*/
+  render() {
 
     return (
       <div className="App">
         <Header isLoggedIn={this.state.isLoggedIn} handleLogIn={this.loggedIn} handleLogOut={this.loggedOut} />
         <Switch>
-          <Route path='/profile'
-            render={()=>{
-            return (
-              this.state.isLoggedIn ?
+          <Route path='/profile'>
+          {
+          this.state.isLoggedIn ?
             <div className="landing-page">
-              <Profile />
-            </div> 
-            :
-            <Redirect to="/" />
-            )
-          }}/>
-          <Route path='/logout'
-            render={()=>{
-            return (
+              <Profile forcedLogOut={this.forcedLogOut}/>
+            </div> : <Redirect to="/" />
+          }
+          </Route>  
+          <Route path='/logout' >
+            <React.Fragment>
+              <Logout forcedLogOut={this.forcedLogOut} />
               <Redirect to="/" />
-            )
-          }}/>
-          <Route path='/'
-            render={() => {
-              return (
-                !this.state.isLoggedIn ?
-              <Landing /> :
-              <Redirect to="/profile" />
-              )
-            }}/>
+            </React.Fragment>
+          </Route>
+          <Route path='/'>
+            { !this.state.isLoggedIn ? <Landing /> : <Redirect to="/profile" /> }
+          </Route>    
         </Switch>
       </div>
     );

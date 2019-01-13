@@ -10,7 +10,12 @@
         "image": ""
     },
     {
-        "name": "Paris",
+        "name": "New York",
+        "description": "",
+        "image": ""
+    },
+    {
+        "name": "Hong Kong",
         "description": "",
         "image": ""
     }

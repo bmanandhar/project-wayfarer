@@ -5,8 +5,9 @@ const parser = require('body-parser')
 const cors = require('cors')
 const passport = require('./config/passport')()
 
-const userController = require('./controllers/userController.js')
 const cityController = require('./controllers/cityController.js')
+const userController = require('./controllers/userController.js')
+const postController = require('./controllers/postController.js')
 
 const app = express()
 
@@ -15,7 +16,8 @@ app.use(parser.json())
 app.use(passport.initialize())
 
 
+app.use('/cities', cityController)
 app.use('/users', userController)
-app.use('/city', cityController)
+app.use('/posts', postController)
 
 app.listen(PORTNUM, () => console.log(`Listening on port ${PORTNUM}`))

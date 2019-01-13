@@ -16,7 +16,6 @@ class Header extends Component {
         }
     }
  
-
     openModal = (option) => {
         let title = option==="login" ? "Log In" : "Sign Up"
         this.setState({
@@ -50,15 +49,14 @@ class Header extends Component {
           <Nav pullRight>
             {
           this.props.isLoggedIn?
-          <>
+          <React.Fragment>
             <NavItem className="nav-item" eventKey={1} href="/logout" onClick={this.props.handleLogOut}>
               Log Out
             </NavItem>
             <NavItem className="nav-item" eventKey={2} href="/profile" onClick={(e)=>e.preventDefault()}>
               Profile
             </NavItem>
-          </>  
-          :
+          </React.Fragment>  :
           <>
             <NavItem className="nav-item" eventKey={1} href="#" onClick={()=>this.openModal("login")}>
               Log In

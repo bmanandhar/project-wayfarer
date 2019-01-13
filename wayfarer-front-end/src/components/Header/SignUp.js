@@ -22,9 +22,9 @@ export default class SignUp extends Component {
   }
 
   componentDidMount = () =>{
-    axios.get(`${baseURL}/city/all`)
+    axios.get(`${baseURL}/cities/all`)
     .then(res=>{
-      console.log(res)
+      //console.log(res)
       let cities = []
       res.data.cities.map(city=>{
         cities.push(city.name)
@@ -48,7 +48,7 @@ export default class SignUp extends Component {
       if (this.state[item]==="") return
     }
     if (this.state.password!==this.state.confirmPassword) return
-    console.log(this.state)
+    //console.log(this.state)
     let dataObj = {
       username: this.state.username,
       city: this.state.city,
@@ -76,44 +76,44 @@ export default class SignUp extends Component {
     return (
 
 <Form horizontal>
-        <FormGroup controlId="signupUsername">
-          <Col componentClass={ControlLabel} sm={left}> Username </Col>
-          <Col sm={right}>
-            <FormControl name="username" type="text" placeholder="Username" onChange={this.handleInput} />
-          </Col>
-        </FormGroup>
-        <FormGroup controlId="signupCity">
-          <Col componentClass={ControlLabel} sm={left}> City </Col>
-          <Col sm={right}>
-            <FormControl name="city" componentClass="select" defaultValue="" onChange={this.handleInput}>
-              {citiesOptions}
-            </FormControl>
-          </Col>
-        </FormGroup>
-        <FormGroup controlId="signupEmail">
-          <Col componentClass={ControlLabel} sm={left}> Email </Col>
-          <Col sm={right}>
-            <FormControl name="email" type="email" placeholder="Email" onChange={this.handleInput} />
-          </Col>
-        </FormGroup>
-        <FormGroup controlId="signupPassword">
-          <Col componentClass={ControlLabel} sm={left}> Password </Col>
-          <Col sm={right}>
-            <FormControl name="password" type="password" placeholder="Password" onChange={this.handleInput} />
-          </Col>
-        </FormGroup>
-        <FormGroup controlId="signupPasswordConfirm">
-          <Col componentClass={ControlLabel} sm={left}> Confirm Password </Col>
-          <Col sm={right}>
-            <FormControl name="confirmPassword" type="password" placeholder="Confirm Password" onChange={this.handleInput} />
-          </Col>
-        </FormGroup>
+  <FormGroup controlId="signupUsername">
+    <Col componentClass={ControlLabel} sm={left}> Username </Col>
+    <Col sm={right}>
+      <FormControl name="username" type="text" placeholder="Username" onChange={this.handleInput} />
+    </Col>
+  </FormGroup>
+  <FormGroup controlId="signupCity">
+    <Col componentClass={ControlLabel} sm={left}> City </Col>
+    <Col sm={right}>
+      <FormControl name="city" componentClass="select" defaultValue="" onChange={this.handleInput}>
+        {citiesOptions}
+      </FormControl>
+    </Col>
+  </FormGroup>
+  <FormGroup controlId="signupEmail">
+    <Col componentClass={ControlLabel} sm={left}> Email </Col>
+    <Col sm={right}>
+      <FormControl name="email" type="email" placeholder="Email" onChange={this.handleInput} />
+    </Col>
+  </FormGroup>
+  <FormGroup controlId="signupPassword">
+    <Col componentClass={ControlLabel} sm={left}> Password </Col>
+    <Col sm={right}>
+      <FormControl name="password" type="password" placeholder="Password" onChange={this.handleInput} />
+    </Col>
+  </FormGroup>
+  <FormGroup controlId="signupPasswordConfirm">
+    <Col componentClass={ControlLabel} sm={left}> Confirm Password </Col>
+    <Col sm={right}>
+      <FormControl name="confirmPassword" type="password" placeholder="Confirm Password" onChange={this.handleInput} />
+    </Col>
+  </FormGroup>
 
-        <FormGroup>
-          <Col smOffset={left} sm={right}>
-            <Button type="submit" onClick={this.signup}> Sign up </Button>
-          </Col>
-        </FormGroup>
+  <FormGroup>
+    <Col smOffset={left} sm={right}>
+      <Button type="submit" onClick={this.signup}> Sign up </Button>
+    </Col>
+  </FormGroup>
 </Form>
 
     )

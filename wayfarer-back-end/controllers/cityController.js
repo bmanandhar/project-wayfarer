@@ -10,17 +10,24 @@ const jwt = require('jsonwebtoken')
 const db = require('../models');
 
 const mongoose = require('../db/connection')
-
 const passport = require('../config/passport')
 const config = require('../config/config')
 
+
+/**
+ * GET ALL
+ */
 router.get("/all",(req,res)=>{
     db.City.find({})
     .then(city=>{
         if (city) {
             let cities = []
             city.map(c=>{
-                cities.push({name: c.name})
+                cities.push({
+                    name: c.name,
+                    image: c.image,
+                    description: c.description
+                })
             })
             res.json({cities})
         } else {
@@ -28,5 +35,21 @@ router.get("/all",(req,res)=>{
         }
     })
 })
+
+/**
+ * GET ONE 
+ */
+router.get("/:id",(req,res)=>{
+    db.City.findById(req.params.id)
+    .then(city=>{
+        if (city) {
+            
+            res.json({city})
+        } else {
+            res.status(NOTFOUND).json({error: "not found"})
+        }
+    })
+})
+
 
 module.exports = router
