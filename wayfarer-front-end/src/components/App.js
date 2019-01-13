@@ -5,11 +5,11 @@ import './App.css';
 import Header from './Header/Header.js';
 import Landing from './Landing';
 import About from './About.js';
-
 import CitiesList from './CitiesList';
 import CityWithPosts from './CityWithPosts';
 import Profile from './Profile.js'
-import Posts from './Posts'
+import Posts from './Posts';
+import ShowPost from './ShowPost';
 
 class App extends Component {
 
@@ -73,7 +73,7 @@ class App extends Component {
             <Posts />
           </div>
         </div>
-
+        <ShowPost />
       </div>
 
     );

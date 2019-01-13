@@ -27,12 +27,11 @@ export default class Landing extends Component {
 
       var citiesImg = this.state.cities.map((city, i) => {
         return(
-          <Carousel.Item>
-            <div key={i}>
-            <img src={`${city.image}`} />
-            </div>
-          </Carousel.Item>
-          
+            <Carousel.Item>
+              <div key={i}>
+              <img className='carousel-img' src={`${city.image}`} />
+              </div>
+            </Carousel.Item>
         )
 
       })
