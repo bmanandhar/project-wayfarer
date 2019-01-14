@@ -32,6 +32,49 @@ function verifyToken(token) {
 
 /* /////////////// ROUTES AND CONTROLLERS /////////////// */
 
+
+/**
+ * GET ALL with POSTs
+ */
+router.get("/posts/all",(req,res)=>{
+    // find all posts (with author info)
+    db.Post.find().populate("author")
+    .then(resPosts=> {
+        // find all cities
+        db.City.find()
+        .then(resCities=>{
+            let cities = []
+            // find city and post mapping by city.name and post.city
+            resCities.map(c=>{
+                // create new city object
+                let city = {
+                    "id": c.id, "name": c.name, 
+                    "description": c.description, 
+                    "image": c.image
+                }
+                // get all posts corresponding to city
+                let filteredPosts = []
+                resPosts.filter(post=>post.city===c.name).map(p=>{
+                    let postObj ={
+                        "id": p.id,
+                        "title": p.title,
+                        "body": p.body,
+                        "date": p.date,
+                        "author": p.author.username
+                    }
+                    filteredPosts.push(postObj)
+                })
+                // append the posts to the city object
+                city.posts = filteredPosts
+                cities.push(city)
+            })
+            return res.json(cities)
+        })
+    })
+})
+
+
+
 /**
  * GET ALL
  */

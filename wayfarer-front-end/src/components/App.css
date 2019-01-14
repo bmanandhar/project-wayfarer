@@ -246,7 +246,6 @@ img {
   margin-left: 10px;
 }
 
-<<<<<<< HEAD
 .topic-container {
   padding: 10px;
 }
@@ -271,11 +270,7 @@ img {
   background-color: rgba(143,188,143,0.1) !important;
 }
 
-
-h3 {
-=======
 h2 {
->>>>>>> bijaya
   text-align: center;
 }
 
@@ -284,7 +279,6 @@ main {
   justify-content: space-around;
   padding: 20px;
 }
-<<<<<<< HEAD
 
 /* ////////////// Profile Component //////////// */
 
@@ -361,14 +355,9 @@ main {
   }
 
 }
-=======
-div {
-  padding: 10px;
-}
 
 @media screen and (max-width: 600px) {
   main {
     flex-direction: column;
   }
 }
->>>>>>> bijaya
