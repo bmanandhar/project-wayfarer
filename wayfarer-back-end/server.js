@@ -6,6 +6,7 @@ const cors = require('cors')
 const passport = require('./config/passport')()
 
 const userController = require('./controllers/userController.js')
+const cityController = require('./controllers/cityController.js')
 
 const app = express()
 
@@ -13,7 +14,8 @@ app.use(cors())
 app.use(parser.json())
 app.use(passport.initialize())
 
-//app.use('/api/dogs', dogController)
+
 app.use('/users', userController)
+app.use('/cities', cityController)
 
 app.listen(PORTNUM, () => console.log(`Listening on port ${PORTNUM}`))

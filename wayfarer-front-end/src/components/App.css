@@ -42,9 +42,12 @@
 }
 
 /* /////////// Carousel Component  ////////////*/
-img {
-  margin: auto
+.carousel-img {
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
 }
+
 
 
 /* /////////// Cities List Component  ////////////*/
@@ -250,3 +253,6 @@ main {
   display: flex;
   flex-direction: row;
 }
+
+/* ////////////// Show Post Component //////////// */
+

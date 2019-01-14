@@ -2,6 +2,8 @@ const mongoose = require('../db/connection')
 const db = require('../models')
 const users = require('./users')
 const cities = require('./cities')
+const posts = require('./posts');
+
 
 //const User = mongoose.model('User')
 //const City= mongoose.model('City')
@@ -28,4 +30,13 @@ db.User.remove({})
     })
     .catch(err => {
         console.log(err)
+    })
+
+db.Post.remove({})
+    .then(_ => {
+        db.City.collection.insert(posts)
+            .then(seededEntries => {
+                console.log(seededEntries)
+                process.exit()
+            })
     })
