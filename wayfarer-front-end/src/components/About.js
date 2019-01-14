@@ -36,7 +36,7 @@ class About extends Component {
                         <p>{ para[1].topic }</p>
                     </div>
                     <div className='right-col'>
-                    <h4>Topic three</h4>
+                        <h4>Topic three</h4>
                         <p>{ para[2].topic }</p>
                     </div>
                 </main>
