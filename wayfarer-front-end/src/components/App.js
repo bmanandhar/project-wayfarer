@@ -48,22 +48,7 @@ class App extends Component {
   render() {
 
     let showUp= this.state.isLoggedIn ? 
-    <React.Fragment>
       <div className='landing-page'>
-        <CitiesList />
-        <CityWithPosts />
-      </div>
-    </React.Fragment>
-    : <React.Fragment>
-      <Landing />
-      <About />
-    </React.Fragment>
-
-    return (
-      <div className="App">
-        <Header isLoggedIn={this.state.isLoggedIn} handleLogIn={this.loggedIn} handleLogOut={this.loggedOut} />
-        {showUp}
-
         <div className='profile-div-2'>
           <Profile />
           <div>
@@ -73,6 +58,18 @@ class App extends Component {
           </div>
         </div>
         <ShowPost />
+        {/* <CitiesList /> <CityWithPosts /> */}
+      </div> : 
+    <React.Fragment>
+      <Landing />
+      <About />
+    </React.Fragment>
+
+    return (
+      <div className="App">
+        <Header isLoggedIn={this.state.isLoggedIn} handleLogIn={this.loggedIn} handleLogOut={this.loggedOut} />
+        {showUp}
+
       </div>
 
     );

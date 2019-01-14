@@ -49,8 +49,8 @@ export default class Profile extends Component {
     <h1 className='profile-name'>John Doe</h1>
 </div>
 <p className='bio'>Joined on:
-{console.log(this.state.userData)}
-{this.state.userData.joindate}</p>
+{this.state.userData.joindate}
+</p>
 <p className='bio'>{this.state.userData.email}</p>
 <p className='bio'>
         City:
