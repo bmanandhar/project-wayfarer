@@ -129,11 +129,10 @@ export default class Profile extends Component {
         return(
 
 <React.Fragment>
-    <div className="Profile">
+    <div className="profile">
         <div className='profile-div'>
             <img className="profile-pic" src={`images/${this.state.userData.image}`} alt="" />
         </div>
-        <div><p>John Doe</p></div>
         <div className='edit-username-div'>
             <div className='username'>
             {
@@ -150,10 +149,10 @@ export default class Profile extends Component {
             }
             </div>
             {!this.state.editUsername?
-            <button className='edit-username-button' onClick={()=>this.changeInputClick("editUsername")}>Edit
-                </button>
+            <button className='edit-button'><img src='https://image.flaticon.com/icons/svg/61/61776.svg' className='edit-username-button' onClick={()=>this.changeInputClick("editUsername")}>
+                </img></button>
             :
-                <button onClick={(e)=>this.stopEdit(e,"editUsername","usernameVal")}>Save</button>
+                <button className='save-button' onClick={(e)=>this.stopEdit(e,"editUsername","usernameVal")}>Save</button>
             }
         </div>
 
@@ -181,7 +180,7 @@ export default class Profile extends Component {
     </div>
 
     <div className="posts-list">
-        <h2>Your Posts: </h2>
+        {/* <h2>Your Posts: </h2> */}
         {postList.length>0 ? postList : <h4>No post</h4>}
     </div>
 
