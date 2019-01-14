@@ -6,8 +6,8 @@ import Header from './Header/Header.js';
 import Landing from './Landing';
 import Logout from './Header/Logout.js';
 
-//import CitiesList from './CitiesList';
-//import CityWithPosts from './CityWithPosts';
+import CitiesList from './CitiesList';
+import CityWithPosts from './CityWithPosts';
 import Profile from './Profile';
 import Axios from 'axios';
 

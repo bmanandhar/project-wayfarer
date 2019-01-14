@@ -5,7 +5,7 @@ const height= 480, width= 720
 
 export default class Landing extends Component {
 
- 
+
     render() {
 
         const para = "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, \
@@ -26,7 +26,7 @@ export default class Landing extends Component {
             <Carousel>
               {carouselContent}
             </Carousel>
-            <div class="topic-container">
+            <div className="topic-container">
                 <h2 style={{textAlign: "center"}}>Wayfarer is ...</h2>
                 <main className="topics">
                     <Well className='topic-col'>
