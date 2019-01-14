@@ -301,7 +301,7 @@ main {
 }
 
 .profile-name {
-  margin: 0px 0px 20px 15px;
+  margin: 0px 0px 20px 20px;
   border-bottom: 1px solid #777;
   font-size: 50px;
   width: 90%;
@@ -315,6 +315,11 @@ main {
 .bio {
   margin-left: 20px;
   font-size: 30px;
+}
+
+.chem {
+  border-bottom: 1px solid #777;
+  width: 80%;
 }
 
 .profile-div-2 {

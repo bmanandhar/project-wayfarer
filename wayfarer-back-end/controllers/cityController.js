@@ -170,3 +170,42 @@ router.get("/:id",(req,res)=>{
 
 
 module.exports = router
+
+// create a new route called cities/:id/posts
+
+
+router.get('/:id/posts', (req, res) => {
+    db.City.findById(req.params.id)
+    .then(c => {
+        if (!c) {
+            return res.status(NOTFOUND).json({
+                'error': NOTFOUND, 'message': 'city not found'
+            })
+        }
+        db.Post.find({"city": c.name}).populate('author')
+        .then(posts=>{
+            let city = {
+                "id": c.id, "name": c.name, 
+                "description": c.description, 
+                "image": c.image
+            }
+            let cityPosts = []
+
+            posts.map(p => {
+                let post = {
+                    'id': p.id,
+                    'title': p.title,
+                    'body': p.body,
+                    'date': p.date,
+                    'author': p.author.username,
+                    'city': p.city
+                }
+                cityPosts.push(post);
+            })
+        
+            city.posts = posts
+            return res.json({city})
+        })
+        
+    })
+})

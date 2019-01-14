@@ -156,10 +156,10 @@ export default class Profile extends Component {
             }
         </div>
 
-        <p className='bio'>Joined: 
+        <p className='bio chem'>Joined: 
             <span style={{margin: "10px"}}> {this.state.userData.joindate} </span>
         </p>
-        <p className='bio'> Email: 
+        <p className='bio chem'> Email: 
             <span style={{margin: "10px"}}> {this.state.userData.email} </span>
         </p>
         <p className='bio'>
@@ -176,7 +176,7 @@ export default class Profile extends Component {
             </select>
             </span>
         </p>
-        <p className='bio'>{false? bioTxt : ""}</p>
+        <p>{false? bioTxt : ""}</p>
     </div>
 
     <div className="posts-list">
