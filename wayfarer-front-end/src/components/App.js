@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Header from './Header/Header.js';
 import Landing from './Landing';
-import About from './About.js';
+import About from './About';
 
 import CitiesList from './CitiesList';
 import CityWithPosts from './CityWithPosts';
