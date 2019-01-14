@@ -124,7 +124,7 @@ router.post('/login',(req,res)=>{
  * GET ONE
  */
 router.get('/',(req,res)=>{
-    console.log("header: ",req.headers.authorization===undefined)
+    console.log("header: ",req.headers.authorization!==undefined)
     if (req.headers.authorization!==undefined) {
 
         let token = req.headers.authorization.split(" ")[1]
@@ -183,7 +183,7 @@ router.get('/',(req,res)=>{
  */
 router.patch("/",(req,res)=> {
     
-    console.log("header: ",req.headers.authorization===undefined)
+    console.log("header: ",req.headers.authorization!==undefined)
     if (req.headers.authorization!==undefined) {
         
         let token = req.headers.authorization.split(" ")[1]
@@ -215,24 +215,5 @@ router.patch("/",(req,res)=> {
     }
 })
 
-
-/** 
- * GET_ALL
- */
-router.get('/all',(req,res)=>{
-    if (!true) {
-        db.User.find({})
-        .then(user=>{
-            if (user) {
-                return res.json({user})
-            } else {
-                return res.status(UNAUTH).json({error: "abc"})
-            }
-        })
-    } else {
-        return res.status(FORBIDDEN).json({error: `forbidden from ${req.originalUrl}`})
-    }
-    
-})
 
 module.exports = router

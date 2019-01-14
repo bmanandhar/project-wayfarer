@@ -5,6 +5,7 @@ import axios from "axios";
 
 const left = 3, 
 right = 12-left;
+
 const baseURL= 'http://localhost:8001';
 
 export default class SignUp extends Component {
@@ -17,21 +18,28 @@ export default class SignUp extends Component {
       email: '',
       password: '',
       confirmPassword: '',
-      cityOptions: [],
+      cities: [],
     }
   }
 
   componentDidMount = () =>{
+    let cities = []
+    this.props.cities.map((city)=>{
+      return cities.push(city.name)
+    })
+    this.setState({cities})
+    /*
     axios.get(`${baseURL}/cities/all`)
     .then(res=>{
       //console.log(res)
       let cities = []
-      res.data.cities.map(city=>{
+      res.data.cities.map((city)=>{
         cities.push(city.name)
       })
       this.setState({cityOptions: cities})
     })
     .catch(err=>console.log(err));
+    //*/
   }
 
   handleInput = (e) => {
@@ -68,8 +76,12 @@ export default class SignUp extends Component {
 
   
   render () {
+    /*
     let citiesOptions = this.state.cityOptions.map((city,index)=>(
         <option value={city} key={index+1}>{city}</option>
+    //*/
+    let citiesOptions = this.props.cities.map((city,index)=>(
+        <option value={city.name} key={index+1}>{city.name}</option>  
     ))
     citiesOptions.splice(0,0,<option value="" disabled key="0">Select your option</option>)
     
@@ -111,7 +123,7 @@ export default class SignUp extends Component {
 
   <FormGroup>
     <Col smOffset={left} sm={right}>
-      <Button type="submit" onClick={this.signup}> Sign up </Button>
+      <Button className="green-btn" type="submit" onClick={this.signup}> Sign up </Button>
     </Col>
   </FormGroup>
 </Form>

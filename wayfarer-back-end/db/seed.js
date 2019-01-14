@@ -6,7 +6,6 @@ const cities = require('./cities')
 const posts = require('./posts')
 
 
-
 /*
 db.City.remove({})
 .then(_ => {
@@ -22,10 +21,10 @@ db.City.remove({})
 //*/
 
 
+/*
 db.User.remove({})
 .then(_ => {
     db.User.collection.insert(users)
-    //*
     .then(seeded => {
         db.Post.remove({})
         .then(_=>{
@@ -41,9 +40,9 @@ db.User.remove({})
 
         })
     })
-    //*/
 })
 .catch(err => {
     console.log(err)
 })
+//*/
 

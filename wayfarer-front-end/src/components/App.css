@@ -19,7 +19,7 @@
 .wayfarer-heading {
   margin: 20px !important;
   font-size: 48px;
-  color: #333 !important;
+  color: #f0f0f0 !important;
 }
 
 .navbar-div {
@@ -48,6 +48,10 @@ img {
 .nav-item {
   font-size: 28px;
   margin: 20px auto;
+}
+.nav-item > a:hover, a:focus {
+  color: #fff !important;
+  text-transform: uppercase;
 }
 
 
@@ -148,8 +152,15 @@ img {
   box-sizing: border-box;
 }
 
-.new-post-h2 {
+.green-btn {
+  background-color: rgb(143, 188, 143);
+  color: #ffffff;
+}
 
+.green-btn:hover {
+  background-color: rgb(143, 188, 143);
+  color: #ffffff;
+  text-transform: uppercase;
 }
 
 .new-post-dropdown {
@@ -214,4 +225,49 @@ img {
 
 .post-body {
   margin-left: 10px;
+}
+
+.topics {
+  display: flex;
+  justify-content: space-around;
+}
+
+.topic-col {
+  margin: 10px;
+  padding: 10px;
+  background-color: rgba(143, 188, 143, 0.5);
+}
+
+.carousel-control {
+  opacity: 0.71;
+  color: darkseagreen !important;
+}
+
+.item {
+  background-color: rgba(143,188,143,0.1) !important;
+}
+
+
+@media only screen and (max-width: 750px) {
+
+  .wayfarer-heading {
+    margin: 10px !important;
+    font-size: 24px;
+    color: #f0f0f0 !important;
+  }
+
+  .topics {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+  }
+
+  .topic-col > p {
+    font-size: 14px;
+  }
+
+  .topic-col > h3 {
+    font-size: 20px;
+  }
+
 }

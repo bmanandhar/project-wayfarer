@@ -34,7 +34,9 @@ class LogIn extends Component {
       this.props.handleLogIn()
       this.props.close()
     })
-    .catch(err=>console.log(err));
+    .catch(err=>{
+      console.log(err.response)
+    });
     
   }
 
@@ -63,7 +65,7 @@ class LogIn extends Component {
 
   <FormGroup>
     <Col smOffset={left} sm={right}>
-      <Button type="submit" onClick={this.login}>
+      <Button className="green-btn" type="submit" onClick={this.login}>
         Sign in
       </Button>
     </Col>

@@ -34,7 +34,6 @@ class Header extends Component {
     }
 
     render() {
-      
         return(
     <header>
       <Navbar className="navbar" collapseOnSelect>
@@ -46,7 +45,7 @@ class Header extends Component {
         </Navbar.Header>
           
         <Navbar.Collapse>
-          <Nav pullRight>
+          <Nav className="nav-item-wrapper" pullRight>
             {
           this.props.isLoggedIn?
           <React.Fragment>
@@ -81,7 +80,7 @@ class Header extends Component {
           {this.state.option==="login"? 
           <LogIn close={this.closeModal} handleLogIn={this.props.handleLogIn}/> : 
           this.state.option==="signup"? 
-          <SignUp close={this.closeModal} handleLogIn={this.props.handleLogIn}/> : null}
+          <SignUp cities={this.props.cities} close={this.closeModal} handleLogIn={this.props.handleLogIn}/> : null}
 
         </Modal.Body>
 
