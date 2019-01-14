@@ -13,7 +13,6 @@ db.City.remove({})
     db.City.collection.insert(cities)
         .then(seededEntries => {
             console.log(seededEntries)
-            process.exit()
         })
 })
 .catch(err => {
@@ -46,4 +45,6 @@ db.User.remove({})
     console.log(err)
 })
 //*/
+
+console.log("Ctrl-C to exit...")
 

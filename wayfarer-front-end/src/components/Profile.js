@@ -173,7 +173,7 @@ export default class Profile extends Component {
         <Modal.Header>
             <Modal.Title>
             {`${this.state.postInfo.title} 
-                by ${this.state.postInfo.author} 
+                by ${this.state.usernameVal} 
                 on ${this.state.postInfo.date}`}
             </Modal.Title>
         </Modal.Header>

@@ -26,7 +26,7 @@ export default class Landing extends Component {
             <Carousel>
               {carouselContent}
             </Carousel>
-            <div class="topic-container">
+            <div className="topic-container">
                 <h2 style={{textAlign: "center"}}>Wayfarer is ...</h2>
                 <main className="topics">
                     <Well className='topic-col'>
