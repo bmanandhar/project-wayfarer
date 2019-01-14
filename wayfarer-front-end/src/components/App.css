@@ -207,22 +207,19 @@ img {
   margin-left: 10px;
 }
 
-h3 {
+h2 {
   text-align: center;
 }
 
 main {
   display: flex;
 }
-
-.left-col {
-  padding: 10px 25px 0 5px;
+div {
+  padding: 10px;
 }
 
-.middle-col {
-  padding: 10px 25px 0 5px;
-}
-
-.right-col {
-  padding: 10px 10px 0 20px;
+@media screen and (max-width: 600px) {
+  main {
+    flex-direction: column;
+  }
 }
