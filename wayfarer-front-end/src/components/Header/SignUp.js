@@ -31,15 +31,21 @@ export default class SignUp extends Component {
     if (this.state.username.length === 0 || this.state.city.length === 0 || this.state.email === 0 || this.state.password === 0 || this.state.confirmPassword === 0 || this.state.password !== this.state.confirmPassword) {
       return
     }
-    console.log(this.state)
-    // this.props.close()
-    Axios.post('http://localhost:8001/users/signup')
+    let dataObj = {
+      username: this.state.username,
+      city: this.state.city,
+      email: this.state.email,
+      password: this.state.password,
+    }
+    Axios.post('http://localhost:8001/users/signup',dataObj)
     .then(res=>{
       localStorage.token = res.data.token
+      this.props.close()
       this.props.handleLogIn()
     })
     .catch(err => {
       console.log(err)
+      console.log(err.response)
     })
   }
 

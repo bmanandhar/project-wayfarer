@@ -8,8 +8,7 @@ import About from './About.js';
 import CitiesList from './CitiesList';
 import CityWithPosts from './CityWithPosts';
 import Profile from './Profile.js'
-import Posts from './Posts';
-import ShowPost from './ShowPost';
+
 
 class App extends Component {
 
@@ -50,14 +49,9 @@ class App extends Component {
     let showUp= this.state.isLoggedIn ? 
       <div className='landing-page'>
         <div className='profile-div-2'>
-          <Profile />
-          <div>
-            <Posts />
-            <Posts />
-            <Posts />
-          </div>
+          <Profile />  
         </div>
-        <ShowPost />
+        
         {/* <CitiesList /> <CityWithPosts /> */}
       </div> : 
     <React.Fragment>

@@ -38,7 +38,7 @@ class LogIn extends Component {
   login = (e) => {
     e.preventDefault()
     if (this.state.email==="" || this.state.password==="") return;
-    console.log(this.state)
+    //console.log(this.state)
     
     axios.post(`${baseURL}/users/login`,
       {email: this.state.email,

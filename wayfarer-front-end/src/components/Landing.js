@@ -1,8 +1,6 @@
 import React, {Component} from "react";
-import { Modal, Button, Grid, Row, Col, Carousel } from "react-bootstrap"
+import {  Carousel } from "react-bootstrap"
 import Axios from "axios";
-
-const height= 480, width= 640
 
 export default class Landing extends Component {
 
@@ -39,7 +37,7 @@ export default class Landing extends Component {
         return(
             <Carousel.Item key={i}>
               <div>
-              <img className='carousel-img' src={`${city.image}`} />
+              <img className='carousel-img' src={`${city.image}`} alt="" />
               </div>
             </Carousel.Item>
         )
