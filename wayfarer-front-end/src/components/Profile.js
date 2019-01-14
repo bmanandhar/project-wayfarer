@@ -25,8 +25,12 @@ export default class Profile extends Component {
             })
         })
         .catch((err)=>{
-            this.props.forcedLogOut()
-            console.log(err)
+            console.log(err.response)
+            let status = err.response.data.error
+            if (status===401 || status===403) {
+                alert(`${err.response.data.message}, logging out...`)
+                this.props.forcedLogOut()
+            }
         })
     }
 
@@ -64,7 +68,13 @@ export default class Profile extends Component {
           {[e.target.name]: e.target.value},
           {headers: {"Authorization": `Bearer ${localStorage.token}`}})
         .then(res=>console.log(res.data))
-        .catch(err=>console.log(err))
+        .catch(err=>{
+            console.log(err.response)
+            let status = err.response.data.error
+            if (status===401 || status===403) {
+                this.props.forcedLogOut()
+            }
+        })
     }
 
     render = () => {

@@ -1,3 +1,4 @@
+const BAD_REQ = 400
 const UNAUTH = 401
 const FORBIDDEN = 403
 const NOTFOUND = 404
@@ -12,18 +13,24 @@ const mongoose = require('../db/connection')
 const passport = require('../config/passport')
 const config = require('../config/config')
 
-// verify token
+
+/* /////////////// HELPER FUNCTIONS /////////////// */
+
+// verfify token
 function verifyToken(token) {
     let decoded = {}
     jwt.verify(token,config.jwtSecret,function(err,verified) {
         if (err) {
-            decoded= {"error": err.message}
+            decoded= {"message": err.message}
         } else {
             decoded = verified
         }
     })
     return decoded
 }
+
+
+/* /////////////// ROUTES AND CONTROLLERS /////////////// */
 
 /**
  * GET ALL
@@ -46,7 +53,9 @@ router.get("/all", (req,res)=>{
         return res.json(obj)
     })
     .catch((err)=>{
-        return res.status(INTERNAL_ERR).json({"error": err})
+        return res.status(INTERNAL_ERR).json({
+            "error": INTERNAL_ERR, "message": "DB error"
+        })
     })
 })
 
@@ -58,7 +67,9 @@ router.get("/:id", (req,res)=>{
     db.Post.findById(req.params.id).populate("author")
     .then((post)=>{
         if (post===null) {
-            return res.status(NOTFOUND).json({"error": "post not found"})
+            return res.status(NOTFOUND).json({
+                "error": NOTFOUND, "message": "post not found"
+            })
         }
         let obj = {
             "id": post._id,
@@ -72,7 +83,9 @@ router.get("/:id", (req,res)=>{
         return res.json(obj)
     })
     .catch((err)=>{
-        return res.status(INTERNAL_ERR).json({"error": err})
+        return res.status(INTERNAL_ERR).json({
+            "error": INTERNAL_ERR, "message": "DB error"
+        })
     })
 })
 

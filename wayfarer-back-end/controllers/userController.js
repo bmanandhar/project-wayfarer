@@ -1,10 +1,12 @@
 const SALT_FACTOR= 10
+const BAD_REQ = 400
 const UNAUTH = 401
 const FORBIDDEN = 403
 const NOTFOUND = 404
 const INTERNAL_ERR = 500
 
 const EXPIRE= "12h"
+const defaultImg = "default_profile.jpg"
 
 const express = require('express')
 const router = express.Router()
@@ -17,6 +19,8 @@ const passport = require('../config/passport')
 const config = require('../config/config')
 
 
+/* /////////////// HELPER FUNCTIONS /////////////// */
+
 // add zero to month and/or day if 1 <= x <= 9
 function padZero(num) { return (num>=1 && num<=9) ? `0${num}`: `${num}` }
 
@@ -25,7 +29,7 @@ function verifyToken(token) {
     let decoded = {}
     jwt.verify(token,config.jwtSecret,function(err,verified) {
         if (err) {
-            decoded= {"error": err.message}
+            decoded= {"message": err.message}
         } else {
             decoded = verified
         }
@@ -34,57 +38,64 @@ function verifyToken(token) {
 }
 
 
+/* /////////////// ROUTES AND CONTROLLERS /////////////// */
+
 /** 
  * SIGNUP
  */
 router.post('/signup', (req, res) => {
-    if (req.body.email && req.body.password) {
-        let newUser= {};
-        bcrypt.hash(req.body.password,SALT_FACTOR,(err,hash)=>{
-            if (err) {
-                return res.status(UNAUTH).json({error: err})
-            } else {
-                
-                // create timestamp
-                let today = new Date();
-                let timestamp = `${today.getFullYear()}-${padZero(today.getMonth()+1)}-${padZero(today.getDate())}`
-                console.log(timestamp)
-                
-                // new user object
-                newUser = {
-                    email: req.body.email, 
-                    password: hash,
-                    joindate: timestamp,
-                    username: req.body.username,
-                    city: req.body.city,
-                    image: "default.jpg"
-                }
+    if (!(req.body.username && req.body.city && req.body.email && req.body.password)) {
+        return res.status(BAD_REQ).json({
+            "error": BAD_REQ, "message": "data cannot be empty"
+        })
+    }
+    bcrypt.hash(req.body.password,SALT_FACTOR,(err,hash)=>{
+        if (err) {
+            return res.status(INTERNAL_ERR).json({
+                "error": INTERNAL_ERR, "message": "bad password"
+            })
+        } 
+            
+        // create timestamp
+        let today = new Date();
+        let timestamp = `${today.getFullYear()}-${padZero(today.getMonth()+1)}-${padZero(today.getDate())}`
+        console.log(timestamp)
+        
+        // new user object
+        let newUser = {
+            "email": req.body.email, 
+            "password": hash,
+            "joindate": timestamp,
+            "username": req.body.username,
+            "city": req.body.city,
+            "image": defaultImg
+        }
 
-                // save to db
-                db.User.findOne({ email: req.body.email })
-                .then((user) => {
-                    if (!user) {
-                        db.User.create(newUser)
-                        .then(user => {
-                            if (user) {
-                                let payload = { id: user.id }
-                                let token = jwt.sign(payload,config.jwtSecret,{
-                                    //expiresIn:  EXPIRE
-                                })
-                                return res.json({ token })
-                            } else {
-                                return res.status(UNAUTH).json({error: "wrong token..."})
-                            }
-                        })
-                    } else {
-                        return res.status(UNAUTH).json({error: "user existed..."})
-                    }
+        // save to db
+        db.User.findOne({ email: req.body.email })
+        .then((user) => {
+            if (user) {
+                return res.status(FORBIDDEN).json({
+                    "error": FORBIDDEN, "message": "email exists"
                 })
             }
+            db.User.create(newUser)
+            .then(user => {
+                if (user) {
+                    let payload = { id: user.id }
+                    let token = jwt.sign(payload,config.jwtSecret,{
+                        expiresIn:  EXPIRE
+                    })
+                    return res.json({ token })
+                } else {
+                    return res.status(NOTFOUND).json({
+                        "error": NOTFOUND, "message": "bad token"
+                    })
+                }
+            })
         })
-    } else {
-        return res.status(UNAUTH).json({error: "abc"})
-    }
+
+    })
 })
 
 
@@ -92,31 +103,37 @@ router.post('/signup', (req, res) => {
  * LOGIN
  */
 router.post('/login',(req,res)=>{
-    if (req.body.email && req.body.password) {
-        db.User.findOne({ email: req.body.email })
-        .then(user => {
-            if (user) {
-                bcrypt.compare(req.body.password, user.password, (err,match)=>{
-                  if (err) {
-                    return res.status(INTERNAL_ERR).json({ error: err })
-                  }
-                  if (match) {
-                    let payload = { id: user.id }
-                    let token = jwt.sign(payload,config.jwtSecret,{
-                        expiresIn:  EXPIRE
-                    })
-                    return res.json({ token })
-                  } else {
-                    return res.status(UNAUTH).json({error: "incorrect user/password"})
-                  } 
-                })
-            } else {
-                return res.status(UNAUTH).json({error: "no user found..."})
-            }
+    if (!(req.body.email && req.body.password)) {
+        return res.status(BAD_REQ).json({
+            "error": BAD_REQ, "message": "data cannot be empty"
         })
-    } else {
-        return res.status(UNAUTH).json({error: "incorrect user/password"})
     }
+    db.User.findOne({ email: req.body.email })
+    .then(user => {
+        if (!user) {
+            return res.status(NOTFOUND).json({
+                "error": NOTFOUND, "message": "incorrect email"
+            })
+        }
+        bcrypt.compare(req.body.password, user.password, (err,match)=>{
+            if (err) {
+                return res.status(INTERNAL_ERR).json({
+                    "error": INTERNAL_ERR, "message": "bad password"
+                })
+            }
+            if (match) {
+                let payload = { id: user.id }
+                let token = jwt.sign(payload,config.jwtSecret,{
+                    expiresIn:  EXPIRE
+                })
+                return res.json({ token })
+            } else {
+                return res.status(UNAUTH).json({
+                    "error": UNAUTH, "message": "incorrect email/password"
+                })
+            } 
+        })
+    })
 })
 
 
@@ -125,56 +142,59 @@ router.post('/login',(req,res)=>{
  */
 router.get('/',(req,res)=>{
     console.log("header: ",req.headers.authorization!==undefined)
-    if (req.headers.authorization!==undefined) {
-
-        let token = req.headers.authorization.split(" ")[1]
-        //console.log(token)
-        //token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjM2FlMGQ5NzllMTdmMjEzOWU0OTAxYSIsImlhdCI6MTU0NzM2MjUyMX0.s8uu7aHMLBuvMVeYq1zonpZ1YnAjMZbUXYbQoXTYVHH"
-        let decoded = verifyToken(token)
-        
-        if (decoded.id===undefined) { 
-            console.log(decoded)
-            return res.status(UNAUTH).json(decoded) 
-        }
-        console.log(decoded.iat,decoded.exp)
-        
-        // find user by id
-        db.User.findById(decoded.id)
-        .then(user=>{
-
-            if (user) {
-                // save results to object
-                let obj = {
-                    "username": user.username,
-                    "email": user.email,
-                    "city": user.city,
-                    "joindate": user.joindate,
-                    "image": user.image,
-                }
-
-                // find posts associated with user_id 
-                db.Post.find({author: decoded.id})
-                .then(posts=>{
-                    //console.log(posts)
-                    let resPosts = []
-                    posts.map(post=>{
-                        resPosts.push({
-                            "title": post.title,
-                            "body": post.body,
-                            "author": obj.username,
-                            "date": post.date
-                        })
-                    })
-                    obj.posts = resPosts
-                    return res.json(obj)
-                })
-            } else {
-                return res.status(UNAUTH).json({error: "no user found"})
-            }
+    
+    if (req.headers.authorization===undefined) {
+        return res.status(FORBIDDEN).json({
+            "error": FORBIDDEN, "message": "forbidden"
         })
-    } else {
-        return res.status(FORBIDDEN).json({error: "forbidden"})
     }
+
+    let token = req.headers.authorization.split(" ")[1]
+    let decoded = verifyToken(token)
+    
+    if (decoded.id===undefined) { 
+        console.log(decoded)
+        decoded.error= UNAUTH
+        return res.status(UNAUTH).json(decoded) 
+    }
+    console.log(decoded.iat,decoded.exp)
+        
+    // find user by id
+    db.User.findById(decoded.id)
+    .then(user=>{
+
+        if (!user) {
+            return res.status(UNAUTH).json({
+                "error": UNAUTH, "message": "user not found"
+            })
+        }
+        // save results to object
+        let obj = {
+            "username": user.username,
+            "email": user.email,
+            "city": user.city,
+            "joindate": user.joindate,
+            "image": user.image,
+        }
+
+        // find posts associated with user_id 
+        db.Post.find({author: decoded.id})
+        .then(posts=>{
+            //console.log(posts)
+            let resPosts = []
+            posts.map(post=>{
+                resPosts.push({
+                    "title": post.title,
+                    "body": post.body,
+                    "author": obj.username,
+                    "date": post.date
+                })
+            })
+            obj.posts = resPosts
+            return res.json(obj)
+        })
+    })
+    
 })
 
 
@@ -182,37 +202,45 @@ router.get('/',(req,res)=>{
  * PATCH DATA
  */
 router.patch("/",(req,res)=> {
-    
     console.log("header: ",req.headers.authorization!==undefined)
-    if (req.headers.authorization!==undefined) {
-        
-        let token = req.headers.authorization.split(" ")[1]
-        let decoded = verifyToken(token)
-        
-        if (decoded.id===undefined) { return res.status(UNAUTH).json(decoded) }
-        console.log(decoded.iat,decoded.exp)
-        
-        //console.log(decoded.id)
-        //console.log(req.body)
-        
-        db.User.findOneAndUpdate(
-            {'_id': decoded.id},
-            {'$set': req.body },
-            {upsert: false},
-        ).then((user)=>{
-            if (user) {
-                return res.json({
-                    message: "updated",
-                    body: req.body,
-                })
-            } else {
-                return res.status(NOTFOUND).json({error: "no user found"})
-            }
+    
+    if (req.headers.authorization===undefined) {
+        return res.status(FORBIDDEN).json({
+            "error": FORBIDDEN, "message": "forbidden"
         })
-        .catch(err=>{return res.status(INTERNAL_ERR).json({error: err})})
-    } else {
-        return res.status(FORBIDDEN).json({error: "forbidden"})
     }
+    
+    let token = req.headers.authorization.split(" ")[1]
+    let decoded = verifyToken(token)
+        
+    if (decoded.id===undefined) { 
+        console.log(decoded)
+        decoded.error= UNAUTH
+        return res.status(UNAUTH).json(decoded) 
+    }
+    console.log(decoded.iat,decoded.exp)
+    
+    db.User.findOneAndUpdate(
+        {'_id': decoded.id},
+        {'$set': req.body },
+        {upsert: false},
+    ).then((user)=>{
+        if (!user) {
+            return res.status(UNAUTH).json({
+                "error": UNAUTH, "message": "user not found"
+            })
+        }
+        return res.json({
+            message: "updated",
+            body: req.body,
+        })
+    })
+    .catch(err=>{
+        return res.status(INTERNAL_ERR).json({
+            "error": INTERNAL_ERR, "message": "DB error" 
+        })
+    })
+    
 })
 
 

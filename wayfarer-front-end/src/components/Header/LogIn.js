@@ -31,11 +31,12 @@ class LogIn extends Component {
       password: this.state.password})
     .then(response=>{
       localStorage.token = response.data.token;
-      this.props.handleLogIn()
       this.props.close()
+      this.props.handleLogIn()
     })
     .catch(err=>{
       console.log(err.response)
+      console.log(err.response.data.message)
     });
     
   }

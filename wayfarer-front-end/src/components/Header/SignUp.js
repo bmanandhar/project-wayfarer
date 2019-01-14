@@ -70,7 +70,9 @@ export default class SignUp extends Component {
       this.props.handleLogIn()
       this.props.close()
     })
-    .catch(err=>console.log(err));
+    .catch(err=>{
+      console.log(err.response)
+    })
   
   }
 
