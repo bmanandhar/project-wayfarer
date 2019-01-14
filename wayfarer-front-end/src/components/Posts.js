@@ -15,7 +15,7 @@ class Posts extends Component {
         Axios.get('http://localhost:8001/posts/')
         .then(response => {
             this.setState({
-                title: response.data
+                title: response.data.title
             })
         })
     }
