@@ -98,6 +98,42 @@ router.get("/posts/all",(req,res)=>{
 /**
  * GET ALL
  */
+router.get("/posts/all",(req,res)=>{
+    db.Post.find({})
+    .then(posts => {
+        db.City.find({})
+        .then(cities => {
+            cities.map(c => {
+                let filteredCities = posts.filter(post => post.city === c.name)
+                c.filteredCities = filteredCities
+                console.log(filteredCities)
+            } )
+            return res.json(cities)
+            
+        })
+        
+    })
+    /*
+    .then(city=>{
+        if (!city) {
+            return res.status(NOTFOUND).json({
+                "error": NOTFOUND, "message": "city not found"
+            })
+        }
+        let cities = []
+        city.map(c=>{
+            cities.push({
+                name: c.name,
+                image: c.image,
+                description: c.description
+            })
+        })
+        return res.json({cities})
+    })
+    //*/
+})
+
+
 router.get("/all",(req,res)=>{
     db.City.find({})
     .then(city=>{
@@ -117,8 +153,6 @@ router.get("/all",(req,res)=>{
         return res.json({cities})
     })
 })
-
-
 /**
  * GET ONE 
  */

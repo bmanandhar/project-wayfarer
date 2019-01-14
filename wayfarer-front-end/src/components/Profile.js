@@ -59,18 +59,23 @@ export default class Profile extends Component {
     // stop edit username
     stopEdit = (e,option,value) => {
         //if (this.state[value]==="") return;
-        if (e.target.value==="") return
-        if (this.state[value]===e.target.value) {
+        let target = e.target
+        if (e.target.tagName==="BUTTON") {
+            target = e.target.parentNode.children[0].children[0].children[0]
+            console.log(target)
+        }
+        if (target.value==="") return
+        if (this.state[value]===target.value) {
             this.setState({ 
                 [option]: false,
             })
             return;
         }
-        this.axiosPatch(e)
+        this.axiosPatch(target)
         this.setState({ 
             [option]: false,
-            [value]: e.target.value
-         })
+            [value]: target.value
+        })
     }
 
     // update city on change
@@ -83,8 +88,8 @@ export default class Profile extends Component {
     // axios call to update
     axiosPatch = (e) => {
         axios.patch(`${baseURL}/users/profile`,
-          {[e.target.name]: e.target.value},
-          {headers: {"Authorization": `Bearer ${localStorage.token}`}})
+            {[e.name]: e.value},
+            {headers: {"Authorization": `Bearer ${localStorage.token}`}})
         .then(res=>console.log(res.data))
         .catch(err=>{
             console.log(err.response)
@@ -123,33 +128,43 @@ export default class Profile extends Component {
         
         return(
 
-  <React.Fragment>
-    <div className="Profile">
+<React.Fragment>
+    <div className="profile">
         <div className='profile-div'>
             <img className="profile-pic" src={`images/${this.state.userData.image}`} alt="" />
         </div>
-        {
-        !this.state.editUsername?
-            <h1 className='profile-name' onClick={()=>this.changeInputClick("editUsername")}> 
-            {this.state.usernameVal} 
-            </h1> :
-            <h1 className='profile-name'>
-                <input className="edit-profile-name" type="text" name="username" 
-                    defaultValue={this.state.usernameVal} 
-                    onChange={(e)=>this.handleInput(e,"usernameVal")} 
-                    onBlur={(e)=>this.stopEdit(e,"editUsername","usernameVal")} 
-                />
-            </h1>
-        }
+        <div className='edit-username-div'>
+            <div className='username'>
+            {
+            !this.state.editUsername?
+                <h1 className='profile-name'> 
+                {this.state.usernameVal} 
+                </h1> 
+                :   
+                <h1 className='profile-name'>
+                    <input className="edit-profile-name" type="text" name="username" 
+                        defaultValue={this.state.usernameVal} 
+                        onChange={(e)=>this.handleInput(e,"usernameVal")} />
+                </h1> 
+            }
+            </div>
+            {!this.state.editUsername?
+            <button className='edit-button'><img src='https://image.flaticon.com/icons/svg/61/61776.svg' className='edit-username-button' onClick={()=>this.changeInputClick("editUsername")}>
+                </img></button>
+            :
+                <button className='save-button' onClick={(e)=>this.stopEdit(e,"editUsername","usernameVal")}>Save</button>
+            }
+        </div>
+
         <p className='bio'>Joined: 
-          <span style={{margin: "10px"}}> {this.state.userData.joindate} </span>
+            <span style={{margin: "10px"}}> {this.state.userData.joindate} </span>
         </p>
         <p className='bio'> Email: 
-          <span style={{margin: "10px"}}> {this.state.userData.email} </span>
+            <span style={{margin: "10px"}}> {this.state.userData.email} </span>
         </p>
         <p className='bio'>
-          City:
-          <span style={{margin: "10px"}}>
+            City:
+            <span style={{margin: "10px"}}>
             <select onChange={(e)=>this.updateCity(e,"cityVal")} name="city">
             {
             this.props.cities.map((city,index)=>(
@@ -159,13 +174,13 @@ export default class Profile extends Component {
             ))
             }
             </select>
-          </span>
+            </span>
         </p>
         <p className='bio'>{false? bioTxt : ""}</p>
     </div>
 
     <div className="posts-list">
-        <h2>Your Posts: </h2>
+        {/* <h2>Your Posts: </h2> */}
         {postList.length>0 ? postList : <h4>No post</h4>}
     </div>
 
@@ -188,7 +203,7 @@ export default class Profile extends Component {
         </Modal.Footer>
     </Modal>
 
-  </React.Fragment>
+</React.Fragment>
 
         )
     }

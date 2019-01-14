@@ -5,7 +5,7 @@ const height= 480, width= 720
 
 export default class Landing extends Component {
 
- 
+
     render() {
 
         const para = [
