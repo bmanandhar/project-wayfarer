@@ -26,7 +26,7 @@ export default class Landing extends Component {
             <Carousel>
               {carouselContent}
             </Carousel>
-            <Jumbotron>
+            <div class="topic-container">
                 <h2 style={{textAlign: "center"}}>Wayfarer is ...</h2>
                 <main className="topics">
                     <Well className='topic-col'>
@@ -42,8 +42,9 @@ export default class Landing extends Component {
                         <p>{ para }</p>
                     </Well>
                 </main>
-            </Jumbotron>
+            </div>
           </React.Fragment>
         );
+      
     }
 }

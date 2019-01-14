@@ -65,7 +65,9 @@ class App extends Component {
           {
           this.state.isLoggedIn ?
             <div className="landing-page">
-              <Profile cities={this.state.cities} forcedLogOut={this.forcedLogOut}/>
+              <div className='profile-div-2'>
+                <Profile cities={this.state.cities} forcedLogOut={this.forcedLogOut}/>
+              </div> 
             </div> : <Redirect to="/" />
           }
           </Route>  
@@ -84,6 +86,7 @@ class App extends Component {
           </Route>    
         </Switch>
       </div>
+
     );
   }
 }

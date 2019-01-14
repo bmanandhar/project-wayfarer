@@ -75,8 +75,8 @@ router.post('/signup', (req, res) => {
         db.User.findOne({ email: req.body.email })
         .then((user) => {
             if (user) {
-                return res.status(FORBIDDEN).json({
-                    "error": FORBIDDEN, "message": "email exists"
+                return res.status(BAD_REQ).json({
+                    "error": BAD_REQ, "message": "email exists"
                 })
             }
             db.User.create(newUser)
@@ -140,7 +140,7 @@ router.post('/login',(req,res)=>{
 /** 
  * GET ONE
  */
-router.get('/',(req,res)=>{
+router.get('/profile',(req,res)=>{
     console.log("header: ",req.headers.authorization!==undefined)
     
     if (req.headers.authorization===undefined) {
@@ -187,7 +187,8 @@ router.get('/',(req,res)=>{
                     "title": post.title,
                     "body": post.body,
                     "author": obj.username,
-                    "date": post.date
+                    "date": post.date,
+                    "city": post.city
                 })
             })
             obj.posts = resPosts
@@ -201,7 +202,7 @@ router.get('/',(req,res)=>{
 /**
  * PATCH DATA
  */
-router.patch("/",(req,res)=> {
+router.patch("/profile",(req,res)=> {
     console.log("header: ",req.headers.authorization!==undefined)
     
     if (req.headers.authorization===undefined) {

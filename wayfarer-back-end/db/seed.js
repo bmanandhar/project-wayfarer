@@ -3,10 +3,11 @@ const mongoose = require('mongoose')
 const db = require('../models')
 const users = require('./users')
 const cities = require('./cities')
-const posts = require('./posts')
+const posts = require('./posts');
 
 
-/*
+
+//*
 db.City.remove({})
 .then(_ => {
     db.City.collection.insert(cities)
@@ -21,7 +22,7 @@ db.City.remove({})
 //*/
 
 
-/*
+//*
 db.User.remove({})
 .then(_ => {
     db.User.collection.insert(users)
