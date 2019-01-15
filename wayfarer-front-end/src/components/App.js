@@ -5,6 +5,7 @@ import './App.css';
 import Header from './Header/Header.js';
 import Landing from './Landing';
 import Logout from './Header/Logout.js';
+import About from './About';
 
 import CitiesList from './CitiesList';
 import CityWithPosts from './CityWithPosts';
@@ -80,7 +81,10 @@ class App extends Component {
           <Route path='/'>
           { 
           !this.state.isLoggedIn ? 
-            <Landing cities={this.state.cities} /> : 
+          <>
+            <Landing cities={this.state.cities} />
+            {/* <About />  */}
+          </>  : 
             <Redirect to="/profile" /> 
           }
           </Route>    
