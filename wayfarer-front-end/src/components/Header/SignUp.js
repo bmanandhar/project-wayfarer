@@ -8,6 +8,20 @@ right = 12-left;
 
 const baseURL= 'http://localhost:8001';
 
+const withErrorHandling = WrappedComponent => ({ showError, children}) => {
+  return(
+    <WrappedComponent>
+      { showError &&
+        <div className='different-passwords'>
+          <h1 className='different'>Passwords do not match</h1>
+        </div> }
+        { children }
+    </WrappedComponent>
+  );
+};
+
+const DivWithErrorHandling = withErrorHandling(({ children }) => <div>{ children }</div>)
+
 export default class SignUp extends Component {
 
   constructor() {
@@ -19,8 +33,16 @@ export default class SignUp extends Component {
       password: '',
       confirmPassword: '',
       cities: [],
+      showError: false
     }
   }
+
+  toggleError = (e) => {
+    e.preventDefault()
+    this.setState((prevState, props) => {
+      return { showError: !prevState.showError }
+    });
+  };
 
   componentDidMount = () =>{
     let cities = []
@@ -55,7 +77,11 @@ export default class SignUp extends Component {
     for (let item in this.state) {
       if (this.state[item]==="") return
     }
-    if (this.state.password!==this.state.confirmPassword) return
+    if (this.state.password!==this.state.confirmPassword) {
+      console.log('passwords do not match');
+      this.toggleError(e);
+
+    }
     //console.log(this.state)
     let dataObj = {
       username: this.state.username,
@@ -126,6 +152,9 @@ export default class SignUp extends Component {
   <FormGroup>
     <Col smOffset={left} sm={right}>
       <Button className="green-btn" type="submit" onClick={this.signup}> Sign up </Button>
+      <DivWithErrorHandling showError={ this.state.showError }>
+        
+      </DivWithErrorHandling>
     </Col>
   </FormGroup>
 </Form>

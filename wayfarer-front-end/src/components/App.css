@@ -58,6 +58,23 @@
   position: absolute;
 }
 
+.different-passwords {
+  background-color: #FAACB0;
+  width: 250px;
+  border-radius: 4px;
+  margin: 0 0 0px 130px;
+  bottom: 0px;
+  border: 1px solid red;
+  height: 34px;
+  position: absolute;
+}
+
+.different {
+  font-size: 20px;
+  text-align: center;
+  margin-top: 5px;
+}
+
 .incorrect {
   font-size: 20px;
   text-align: center;
