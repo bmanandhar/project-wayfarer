@@ -15,6 +15,8 @@ app.use(cors())
 app.use(parser.json())
 app.use(passport.initialize())
 
+app.use(express.static(__dirname + '/public'))
+
 
 app.use('/cities', cityController)
 app.use('/users', userController)

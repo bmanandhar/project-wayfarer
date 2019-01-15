@@ -17,7 +17,7 @@ class CitiesList extends Component {
         show: false,
         showPost: false,
         cities: [],
-        cityIndex: 1,
+        cityIndex: 0,
         postInfo: {},
     }
 
@@ -43,9 +43,9 @@ class CitiesList extends Component {
             postInfo: {}
         })
     }
-
+    
     componentDidMount = () => {
-        axios.get(`${baseURL}/cities/posts/all`)
+        axios.get(`${baseURL}/cities/all/posts`)
         .then(res=>{
             console.log(res.data)
             this.setState({cities: res.data})
@@ -74,12 +74,17 @@ class CitiesList extends Component {
                 nameLink.push(word.charAt(0).toLowerCase()+word.slice(1))
             })
             return(
-            <Link to={`/cities/${nameLink.join("-")}`} key={index}>
+            <Link to={`/cities/${nameLink.join("-")}`} key={index} onClick={()=>this.clickOnCity(index)}>
                 <button className="green-btn" key={index} onClick={()=>this.clickOnCity(index)}>
                     <Cities data={city}/>         
                 </button>
             </Link>)
         })
+
+        let citiesOpt = this.props.cities.map((city,i)=>{
+            return (<option value={city.name} key={i}>{city.name}</option>)
+        })
+        citiesOpt.splice(0,0,<option value={currentCity} disabled key="0">Select a City</option>)
         
         let currentCity = this.state.cities[this.state.cityIndex].name
 
@@ -96,7 +101,7 @@ class CitiesList extends Component {
           <Col sm={right}>
             {/* <div className="city-posts"> */}
                 <CityWithPosts data={this.state.cities[this.state.cityIndex]} 
-                    open={this.openFormModal} image={this.state.cities[this.state.cityIndex].image}
+                    open={this.openFormModal} 
                     openModal={this.openPostModal}/>
             {/* </div> */}
           </Col>
@@ -113,9 +118,10 @@ class CitiesList extends Component {
                         <Col componentClass={ControlLabel} sm={left}>City</Col>
                         <Col sm={right}>
                             <FormControl name="city" componentClass='select' defaultValue={currentCity}>
-                            <option value={currentCity} disabled key="0">
+                            {citiesOpt}
+                            {/* <option value={currentCity} disabled key="0">
                                 {currentCity}
-                            </option>
+                            </option> */}
                             </FormControl>
                         </Col>
                     </FormGroup>
@@ -158,7 +164,7 @@ class CitiesList extends Component {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <img className="post-modal-img" src={this.state.postInfo.image} alt=""/>
+                <img className="post-modal-img" src={baseURL+'/'+this.state.postInfo.image} alt=""/>
                 <p>
                     {this.state.postInfo.body}
                 </p>

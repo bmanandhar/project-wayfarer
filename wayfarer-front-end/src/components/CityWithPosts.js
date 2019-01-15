@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Posts from './Posts';
 
+const baseURL = 'http://localhost:8001'
+
 class CityWithPosts extends Component {
 
     
@@ -22,7 +24,7 @@ class CityWithPosts extends Component {
                     <div className='london-uk'>
                         <h1 className="city">{this.props.data.name}</h1>
                     </div>
-                    <img className="london-large-img" src={this.props.image} alt="" />
+                    <img className="london-large-img" src={`${baseURL}/${this.props.data.image}`} alt="" />
                 </div>
                 <div className="posts-and-button">
                     <h2 className='posts'>Posts</h2>

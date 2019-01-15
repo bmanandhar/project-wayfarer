@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
+import Axios from 'axios';
 
 import './App.css';
 import Header from './Header/Header.js';
 import Landing from './Landing';
+import CitiesList from './CitiesList';
+import Profile from './Profile';
 import Logout from './Header/Logout.js';
 
-import CitiesList from './CitiesList';
-
-import Profile from './Profile';
-
-import Axios from 'axios';
 
 const baseURL = "http://localhost:8001"
 
@@ -73,9 +71,9 @@ class App extends Component {
                   </div>
                 </div>)}} />
               <Route path="/cities"  
-                  render={()=>{ return <CitiesList />}} />
+                  render={()=>{ return <CitiesList cities={this.state.cities}/>}} />
               <Route exact path="/"  
-                  render={()=>{ return <CitiesList />}} />
+                  render={()=>{ return <CitiesList cities={this.state.cities}/>}} />
               <Redirect to="/profile" />
             </React.Fragment> 
           :

@@ -129,7 +129,7 @@ export default class Profile extends Component {
   <React.Fragment>
     <div className="Profile">
         <div className='profile-div'>
-            <img className="profile-pic" src={`images/${this.state.userData.image}`} alt="" />
+            <img className="profile-pic" src={`${baseURL}/${this.state.userData.image}`} alt="" />
         </div>
         {
         !this.state.editUsername?
@@ -181,7 +181,7 @@ export default class Profile extends Component {
             </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <img className="post-modal-img" src={this.state.postInfo.image} alt=""/>
+            <img className="post-modal-img" src={`${baseURL}/${this.state.postInfo.image}`} alt=""/>
             <p>
                 {this.state.postInfo.body}
             </p>

@@ -37,9 +37,9 @@ function verifyToken(token) {
 /**
  * GET ALL with POSTs
  */
-router.get("/posts/all",(req,res)=>{
+router.get("/all/posts",(req,res)=>{
     // find all posts (with author info)
-    db.Post.find().populate("author")
+    db.Post.find().sort({date: -1}).populate("author")
     .then(resPosts=> {
         // find all cities
         db.City.find()
@@ -60,7 +60,7 @@ router.get("/posts/all",(req,res)=>{
                         "id": p.id,
                         "title": p.title,
                         "body": p.body,
-                        "date": p.date,
+                        "date": p.date.replace("T"," at "),
                         "author": p.author.username,
                         "image": p.image
                     }

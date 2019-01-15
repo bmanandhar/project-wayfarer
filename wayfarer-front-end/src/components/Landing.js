@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import { Grid, Row, Col, Carousel, Jumbotron, Well } from "react-bootstrap"
 
 const height= 480, width= 720
+const baseURL= 'http://localhost:8001';
 
 export default class Landing extends Component {
 
@@ -17,7 +18,7 @@ export default class Landing extends Component {
 
         let carouselContent = this.props.cities.map((city,i)=>(
           <Carousel.Item key={i}>
-            <img src={city.image} width={width} height={height} alt="" />
+            <img src={baseURL+'/'+city.image} width={width} height={height} alt="" />
           </Carousel.Item>
         ))
       
