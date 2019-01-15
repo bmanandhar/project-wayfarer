@@ -178,7 +178,7 @@ router.get('/profile',(req,res)=>{
         }
 
         // find posts associated with user_id 
-        db.Post.find({author: decoded.id})
+        db.Post.find({author: decoded.id}).sort({date: -1})
         .then(posts=>{
             //console.log(posts)
             let resPosts = []
@@ -187,7 +187,7 @@ router.get('/profile',(req,res)=>{
                     "title": post.title,
                     "body": post.body,
                     "author": obj.username,
-                    "date": post.date,
+                    "date": post.date.replace("T"," at "),
                     "city": post.city
                 })
             })
