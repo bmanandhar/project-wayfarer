@@ -28,10 +28,12 @@
   margin: 20px 0 !important;
   font-size: 48px;
   color: #f0f0f0 !important;
+  text-decoration: none;
 }
 .wayfarer-heading:hover{
-  color: darkseagreen !important;
-  background-color: #ffffff !important;
+  color: black !important;
+  /* background-color: #ffffff !important; */
+  text-decoration: none;
 }
 
 .navbar-div {
@@ -56,21 +58,21 @@
   background-color: #FAACB0;
   width: 250px;
   border-radius: 4px;
-  margin: 0 0 0 250px;
+  margin: 20px 0 0 0px;
   border: 1px solid red;
   height: 34px;
-  position: absolute;
+  position: relative;
 }
 
 .different-passwords {
   background-color: #FAACB0;
   width: 250px;
   border-radius: 4px;
-  margin: 0 0 0px 110px;
+  margin: 20px 0 0px 0px;
   bottom: 0px;
   border: 1px solid red;
   height: 34px;
-  position: absolute;
+  position: relative;
 }
 
 .different {
@@ -124,13 +126,25 @@ img {
 
 .cities-list {
   background-color: darkseagreen;
-  /* width: 600px; */
   border: 1px black solid;
   margin: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 20%;
 }
 
 .city-header {
   margin-left: 50px;
+}
+/* 
+.col-sm-3 {
+  margin: 10px;
+} */
+
+.cities-and-posts {
+  display: flex;
+  flex-direction: row;
+
 }
 
 /* ////////////// Cities Component ////////////// */
@@ -147,8 +161,11 @@ img {
   border-radius: 20px;
   /* width: 500px; */
   margin: 10px 10px 10px 10px;
-  background-color: white;
-  
+  background-color: white; 
+}
+
+.city-list-div {
+  width: 100%;
 }
 
 /* ///////// City With Posts Component ///////// */
@@ -163,7 +180,9 @@ img {
 }
 
 .city {
-  font-size: 50px;
+  font-size: 90px;
+  border-bottom: 1px solid darkseagreen;
+  margin-top: 140px;
 }
 
 .country {
@@ -178,7 +197,7 @@ img {
 
 .city-with-posts-div {
   margin: 20px;
-  border: 1px solid black;
+  border: 10px solid darkseagreen;
 }
 
 .posts-and-button {
@@ -220,6 +239,7 @@ img {
 .green-btn {
   background-color: rgb(143, 188, 143);
   color: #ffffff;
+  width: 250px;
 }
 
 .green-btn:hover {

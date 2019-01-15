@@ -87,14 +87,14 @@ class LogIn extends Component {
       <FormControl name="password" type="password" placeholder="Password" onChange={this.handleInput}/>
     </Col>
   </FormGroup>
-      <DivWithErrorHandling showError={ this.state.showError }>
-        
-      </DivWithErrorHandling>
   <FormGroup>
     <Col smOffset={left} sm={right}>
       <Button className="green-btn" type="submit" onClick={this.login}>
         Sign in
       </Button>
+      <DivWithErrorHandling showError={ this.state.showError }>
+        
+        </DivWithErrorHandling>
     </Col>
 
   </FormGroup>
