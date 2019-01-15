@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Grid, Col, Row, Button, Form, FormGroup, FormControl, ControlLabel } from "react-bootstrap"
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import axios from "axios";
 
 import Cities from './Cities.js';
@@ -21,6 +21,11 @@ class CitiesList extends Component {
         cities: [],
         cityIndex: 0,
         postInfo: {},
+        cityInfo: {},
+        city: '',
+        title: '',
+        body: '',
+        image: '',
     }
 
     openFormModal = () => {
@@ -32,10 +37,10 @@ class CitiesList extends Component {
     }
 
     openPostModal = (index) => {
-        console.log(index)
+        //console.log(index)
         this.setState({
             showPost: true,
-            postInfo: this.state.cities[this.state.cityIndex].posts[index]
+            postInfo: this.state.cityInfo.posts[index]
         })
     }
 
@@ -45,15 +50,45 @@ class CitiesList extends Component {
             postInfo: {}
         })
     }
+
+    parseCityName = (name) => {
+        let cityName = []
+        name.split(" ").map(word=>{
+            return cityName.push(word.charAt(0).toLowerCase()+word.slice(1))
+        })
+        return cityName.join("-")
+    }
     
     componentDidMount = () => {
+        
         this._isMounted = true
-        axios.get(`${baseURL}/cities/all/posts`)
-        .then(res=>{
-            if (this._isMounted) {
-                console.log(res.data)
-                this.setState({cities: res.data})
-            }
+
+        /*
+        console.log(this.props.location.pathname)
+        let pathname= this.props.history.location.pathname
+        if (pathname==="/") {
+            this.props.history.push('/profile')
+        } else if (pathname.indexOf("/cities/")!==-1) {
+            this.props.history.push('/cities')
+        } else {
+            this.props.history.push('/cities')
+        }
+        //*/
+
+        axios.get(`${baseURL}/cities/all`)
+        .then(response=>{
+            axios.get(`${baseURL}/cities/${response.data.cities[0].id}/posts`)
+            .then(res=>{
+                if (this._isMounted) {
+                    this.setState({ 
+                        cityInfo: res.data.city,
+                        cityIndex: 0, 
+                        cities: this.props.cities
+                    })
+                }
+            })
+            .catch(err=>{console.log(err)})
+            
         })
         .catch(err=>{console.log(err)})
     }
@@ -63,26 +98,64 @@ class CitiesList extends Component {
     }
 
     clickOnCity = (index) => {
-        //console.log(index,this.state.cities[index])
-        this.setState({
-            cityIndex: index
+        //console.log(index,this.props.cities[index])
+        axios.get(`${baseURL}/cities/${this.props.cities[index].id}/posts`)
+        .then(res=>{
+            this.setState({ 
+                cityInfo: res.data.city,
+                cityIndex: index, 
+            })
         })
+        .catch(err=>{console.log(err)})
     }
 
+    handleInput = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+        
+    }
+
+    submitNewPost = (e) => {
+        e.preventDefault()
+        if (!(this.state.city && this.state.title && this.state.body)) {
+            alert("empty")
+            return
+        }
+        console.log(this.state.city,this.state.title,this.state.body,this.state.image? this.state.image : "empty")
+        /*
+        axios.post(`${baseURL}/users/posts/new`,
+          {
+            data: {
+              city: this.state.city,
+              title: this.state.title,
+              body: this.state.body
+            }
+          },
+          {headers: {"Authorization": `Bearer ${localStorage.token}`}})
+        .then(res=>console.log(res.data))
+        .catch(err=>{
+            console.log(err.response)
+            let status = err.response.data.error
+            //if (status===401 || status===403) { this.props.forcedLogOut() }
+        })
+        //*/
+    }
 
     render() {
 
-        if (this.state.cities.length<=0) {
+        if (this.props.cities===undefined) {
             return null
         }
-        let cityList = this.state.cities.map((city,index)=>{
+
+        let cityList = this.props.cities.map((city,index)=>{
             // get the pretty link
-            let nameLink = []
+            let prettyNameLink = []
             city.name.split(" ").map(word=>{
-                nameLink.push(word.charAt(0).toLowerCase()+word.slice(1))
+                prettyNameLink.push(word.charAt(0).toLowerCase()+word.slice(1))
             })
             return(
-            <Link to={`/cities/${nameLink.join("-")}`} key={index} onClick={()=>this.clickOnCity(index)}>
+            <Link to={`/cities/${prettyNameLink.join("-")}`} key={index} onClick={()=>this.clickOnCity(index)}>
                 <button className="green-btn" key={index} onClick={()=>this.clickOnCity(index)}>
                     <Cities data={city}/>         
                 </button>
@@ -90,11 +163,10 @@ class CitiesList extends Component {
         })
 
         let citiesOpt = this.props.cities.map((city,i)=>{
-            return (<option value={city.name} key={i+1}>{city.name}</option>)
+            return (<option value={city.id} key={i+1}>{city.name}</option>)
         })
-        citiesOpt.splice(0,0,<option value={currentCity} disabled key="0">Select a City</option>)
+        citiesOpt.splice(0,0,<option value="" disabled key="0">Select a City</option>)
         
-        let currentCity = this.state.cities[this.state.cityIndex].name
 
         return(
     <React.Fragment>
@@ -108,7 +180,7 @@ class CitiesList extends Component {
           </Col>
           <Col sm={right}>
             {/* <div className="city-posts"> */}
-                <CityWithPosts data={this.state.cities[this.state.cityIndex]} 
+                <CityWithPosts data={this.state.cityInfo} 
                     open={this.openFormModal} 
                     openModal={this.openPostModal}/>
             {/* </div> */}
@@ -125,7 +197,7 @@ class CitiesList extends Component {
                     <FormGroup controlId="city-drop-down">
                         <Col componentClass={ControlLabel} sm={left}>City</Col>
                         <Col sm={right}>
-                            <FormControl name="city" componentClass='select' defaultValue={currentCity}>
+                            <FormControl name="city" componentClass='select' defaultValue="" onChange={this.handleInput}>
                             {citiesOpt}
                             {/* <option value={currentCity} disabled key="0">
                                 {currentCity}
@@ -136,19 +208,19 @@ class CitiesList extends Component {
                     <FormGroup controlId="postTitle">
                         <Col componentClass={ControlLabel} sm={left}>Title</Col>
                         <Col sm={right}>
-                            <FormControl type='text'/>
+                            <FormControl name='title' type='text'onChange={this.handleInput} />
                         </Col>
                     </FormGroup>
                     <FormGroup>
                         <Col componentClass={ControlLabel}sm={left}>Post</Col>
                         <Col sm={right}>
-                            <FormControl componentClass='textarea' style={{resize: "none", height: "300px"}}/>
+                            <FormControl name='body' componentClass='textarea' style={{resize: "none", height: "300px"}} onChange={this.handleInput}/>
                         </Col>
                     </FormGroup>
                     <FormGroup>
                         <Col componentClass={ControlLabel}sm={left}>Image</Col>
                         <Col sm={right}>
-                            <FormControl type="file" />
+                            <FormControl name='image' type="file" onChange={this.handleInput} />
                         </Col>
                     </FormGroup>
                 </Form>
@@ -158,7 +230,7 @@ class CitiesList extends Component {
                     <Button onClick={this.closeFormModal}>Close</Button>
                 </Col>
                 <Col sm={right}>
-                    <Button className="green-btn">Submit</Button>
+                    <Button className="green-btn" onClick={this.submitNewPost}>Submit</Button>
                 </Col>
             </Modal.Footer>
         </Modal>  
@@ -182,11 +254,9 @@ class CitiesList extends Component {
             </Modal.Footer>
         </Modal>
 
-
-
     </React.Fragment> 
         )
     }
 }
 
-export default CitiesList;
+export default withRouter(CitiesList);

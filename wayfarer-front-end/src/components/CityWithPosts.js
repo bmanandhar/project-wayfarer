@@ -9,6 +9,7 @@ class CityWithPosts extends Component {
     render() {
 
         if (this.props.data===undefined) { return null }
+        if (this.props.data.posts===undefined) { return null }
 
         let posts = this.props.data.posts.map((post,i)=>{
             return (<Posts key={i} data={post} open={()=>this.props.openModal(i)}/>)

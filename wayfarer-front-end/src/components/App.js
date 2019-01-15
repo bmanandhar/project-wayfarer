@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 import Axios from 'axios';
 
 import './App.css';
@@ -17,6 +17,8 @@ var RouteComponent = (props) =>{
   if (props.isLoggedIn) {
     return(
       <React.Fragment>
+        <Route exact path="/"  
+            render={()=>{ return <CitiesList cities={props.cities}/>}} />
         <Route path="/profile"  
             render={()=>{ return (
             <div className="landing-page">
@@ -26,15 +28,17 @@ var RouteComponent = (props) =>{
             </div>)}} />
         <Route path="/cities"  
             render={()=>{ return <CitiesList cities={props.cities}/>}} />
-        <Route exact path="/"  
-            render={()=>{ return <CitiesList cities={props.cities}/>}} />
-        <Redirect to="/profile" />
+        {/* <Route path="/*"  
+            render={()=>{ return (
+            <CitiesList cities={props.cities}/>
+            )}}/> */}
+        {/* <Redirect to="/profile" /> */}
       </React.Fragment>
     )  
   } else {
     return (
       <React.Fragment>
-        <Route exact path="/*" 
+        <Route path="/" 
           render={()=>{ return (
           <>
             <Landing cities={props.cities} />
@@ -94,7 +98,7 @@ class App extends Component {
           isLoggedIn={this.state.isLoggedIn} 
           handleLogIn={this.loggedIn} handleLogOut={this.loggedOut} />
         <Switch>
-          <RouteComponent isLoggedIn={this.state.isLoggedIn} cities={this.state.cities} forcedLogOut={this.forcedLogOut}/>
+          <RouteComponent isLoggedIn={this.state.isLoggedIn} cities={this.state.cities} forcedLogOut={this.forcedLogOut} {...this.props}/>
         </Switch>
       </div>
 
@@ -102,4 +106,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withRouter(App);

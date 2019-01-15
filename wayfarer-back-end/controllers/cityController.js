@@ -90,6 +90,7 @@ router.get("/all",(req,res)=>{
         let cities = []
         city.map(c=>{
             cities.push({
+                id: c.id,
                 name: c.name,
                 image: c.image,
                 description: c.description
@@ -103,6 +104,42 @@ router.get("/all",(req,res)=>{
 /**
  * GET ONE with POST
  */
+router.get('/:id/posts', (req, res) => {
+    db.City.findById(req.params.id)
+    .then(c => {
+        if (!c) {
+            return res.status(NOTFOUND).json({
+                'error': NOTFOUND, 'message': 'city not found'
+            })
+        }
+        console.log(c)
+        db.Post.find({"city": c.name}).sort({"date": -1}).populate('author')
+        .then(posts=>{
+            let city = {
+                "id": c.id, "name": c.name, 
+                "description": c.description, 
+                "image": c.image
+            }
+            let cityPosts = []
+            posts.map(p => {
+                let post = {
+                    'id': p.id,
+                    'title': p.title,
+                    'body': p.body,
+                    'date': p.date.replace("T"," at "),
+                    'author': p.author.username,
+                    'city': p.city,
+                    "image": p.image
+                }
+                cityPosts.push(post);
+            })
+            city.posts = cityPosts
+            return res.json({city})
+        }) 
+    })
+})
+
+/*
 router.get('/:name/posts', (req, res) => {
 
     let searchName = []
@@ -130,9 +167,10 @@ router.get('/:name/posts', (req, res) => {
                     'id': p.id,
                     'title': p.title,
                     'body': p.body,
-                    'date': p.date,
+                    'date': p.date.replace("T"," at "),
                     'author': p.author.username,
-                    'city': p.city
+                    'city': p.city,
+                    "image": p.image
                 }
                 cityPosts.push(post);
             })
@@ -142,6 +180,7 @@ router.get('/:name/posts', (req, res) => {
         }) 
     })
 })
+//*/
 
 /**
  * GET ONE 

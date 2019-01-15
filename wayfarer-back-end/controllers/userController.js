@@ -6,7 +6,7 @@ const NOTFOUND = 404
 const INTERNAL_ERR = 500
 
 const EXPIRE= "12h"
-const defaultImg = "default_profile.jpg"
+const defaultImg = "images/default_profile.jpg"
 
 const express = require('express')
 const router = express.Router()
@@ -196,6 +196,55 @@ router.get('/profile',(req,res)=>{
         })
     })
     
+})
+
+
+/**
+ * CREATE NEW
+ */
+router.post("/posts/new", (req,res)=>{
+    console.log("header: ",req.headers.authorization!==undefined)
+    
+    if (req.headers.authorization===undefined) {
+        return res.status(FORBIDDEN).json({
+            "error": FORBIDDEN, "message": "forbidden"
+        })
+    }
+    
+
+    let token = req.headers.authorization.split(" ")[1]
+    let decoded = verifyToken(token)
+
+    console.log(decoded.iat,decoded.exp)
+    
+    let data = req.body.data
+    //console.log(data.city,data.title,data.body)
+    if (!(data.city && data.title && data.body)) {
+        return res.status(BAD_REQ).json({
+            "error": BAD_REQ, "message": "invalid form"
+        })
+    }
+    return res.status(INTERNAL_ERR).json({
+        "error": INTERNAL_ERR, "message": "DB error"
+    })
+    /*
+    // find user by id
+    db.User.findById(decoded.id)
+    .then(user=>{
+        if (!user) {
+            return res.status(UNAUTH).json({
+                "error": UNAUTH, "message": "user not found"
+            })
+        }
+        let newPost = {
+            title: data.city,
+            body: data.body,
+            city: data.city,
+            image: data.image!==undefined? data.image : "city1.jpeg"
+        }
+        console.log()
+    })
+    //*/
 })
 
 
