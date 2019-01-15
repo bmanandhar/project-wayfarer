@@ -13,6 +13,8 @@ right = 12-left;
 
 class CitiesList extends Component {
 
+    _isMounted = false
+
     state = {
         show: false,
         showPost: false,
@@ -45,17 +47,23 @@ class CitiesList extends Component {
     }
     
     componentDidMount = () => {
+        this._isMounted = true
         axios.get(`${baseURL}/cities/all/posts`)
         .then(res=>{
-            console.log(res.data)
-            this.setState({cities: res.data})
+            if (this._isMounted) {
+                console.log(res.data)
+                this.setState({cities: res.data})
+            }
         })
         .catch(err=>{console.log(err)})
     }
+  
+    componentWillUnmount = () => {
+        this._isMounted = false
+    }
 
     clickOnCity = (index) => {
-        console.log(index,this.state.cities[index])
-        
+        //console.log(index,this.state.cities[index])
         this.setState({
             cityIndex: index
         })
@@ -82,7 +90,7 @@ class CitiesList extends Component {
         })
 
         let citiesOpt = this.props.cities.map((city,i)=>{
-            return (<option value={city.name} key={i}>{city.name}</option>)
+            return (<option value={city.name} key={i+1}>{city.name}</option>)
         })
         citiesOpt.splice(0,0,<option value={currentCity} disabled key="0">Select a City</option>)
         
