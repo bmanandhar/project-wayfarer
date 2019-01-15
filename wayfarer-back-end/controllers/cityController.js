@@ -174,16 +174,25 @@ module.exports = router
 // create a new route called cities/:id/posts
 
 
-router.get('/:id/posts', (req, res) => {
-    db.City.findById(req.params.id)
-    .then(c => {
-        if (!c) {
+router.get('/:name/posts', (req, res) => {
+
+    let searchName = []
+    req.params.name.split("-").map(word=>{
+        searchName.push(word.charAt(0).toUpperCase()+word.slice(1))
+    })
+    searchName= searchName.join(" ")
+    console.log(searchName)
+    db.City.find({"name":searchName})
+    .then(cty => {
+        if (!cty) {
             return res.status(NOTFOUND).json({
                 'error': NOTFOUND, 'message': 'city not found'
             })
         }
+        let c = cty[0]
         db.Post.find({"city": c.name}).populate('author')
         .then(posts=>{
+            console.log(posts)
             let city = {
                 "id": c.id, "name": c.name, 
                 "description": c.description, 
@@ -198,12 +207,13 @@ router.get('/:id/posts', (req, res) => {
                     'body': p.body,
                     'date': p.date,
                     'author': p.author.username,
-                    'city': p.city
+                    'city': p.city,
+                    'image': p.image
                 }
                 cityPosts.push(post);
             })
         
-            city.posts = posts
+            city.posts = cityPosts
             return res.json({city})
         })
         
