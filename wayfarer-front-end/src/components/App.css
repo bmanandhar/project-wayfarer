@@ -29,6 +29,10 @@
   font-size: 48px;
   color: #f0f0f0 !important;
 }
+.wayfarer-heading:hover{
+  color: darkseagreen !important;
+  background-color: #ffffff !important;
+}
 
 .navbar-div {
   display: flex;
@@ -72,13 +76,22 @@ img {
   color: #777 !important;
 }
 
+.nav-item > span > a {
+  /* margin: 20px auto; */
+  padding: 15px;
+}
+.nav-item > span > a:hover {
+  padding: 15px;
+  color: darkseagreen !important;
+  background-color: #ffffff !important;
+}
 
 
 /* /////////// Cities List Component  ////////////*/
 
 .cities-list {
   background-color: darkseagreen;
-  width: 600px;
+  /* width: 600px; */
   border: 1px black solid;
   margin: 20px;
 }
@@ -99,7 +112,7 @@ img {
   flex-direction: row;
   /* border: 1px black solid; */
   border-radius: 20px;
-  width: 500px;
+  /* width: 500px; */
   margin: 10px 10px 10px 10px;
   background-color: white;
   
@@ -177,8 +190,8 @@ img {
 }
 
 .green-btn:hover {
-  background-color: rgb(143, 188, 143);
-  color: #ffffff;
+  color: rgb(143, 188, 143);
+  background-color: #ffffff;
   
 }
 

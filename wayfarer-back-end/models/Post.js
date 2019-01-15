@@ -17,6 +17,9 @@ const PostSchema = new mongoose.Schema({
     },
     city: {
         type: String,
+    },
+    image: {
+        type: String,
     }
 })
 

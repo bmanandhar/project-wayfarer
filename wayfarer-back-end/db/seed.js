@@ -32,6 +32,7 @@ db.User.remove({})
                 seeded.ops.forEach(user=>{
                     if (post.author===user.username) {
                         post.author = user._id
+                        console.log(post.image)
                         db.Post.create(post)
                         .then(newPost=>console.log(newPost)).catch(err=>console.log(err))
                     }

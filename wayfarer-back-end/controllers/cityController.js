@@ -61,7 +61,8 @@ router.get("/posts/all",(req,res)=>{
                         "title": p.title,
                         "body": p.body,
                         "date": p.date,
-                        "author": p.author.username
+                        "author": p.author.username,
+                        "image": p.image
                     }
                     filteredPosts.push(postObj)
                 })
@@ -72,26 +73,6 @@ router.get("/posts/all",(req,res)=>{
             return res.json(cities)
         })
     })
-    
-    /*
-    db.City.find({})
-    .then(city=>{
-        if (!city) {
-            return res.status(NOTFOUND).json({
-                "error": NOTFOUND, "message": "city not found"
-            })
-        }
-        let cities = []
-        city.map(c=>{
-            cities.push({
-                name: c.name,
-                image: c.image,
-                description: c.description
-            })
-        })
-        return res.json({cities})
-    })
-    //*/
 })
 
 
@@ -118,6 +99,49 @@ router.get("/all",(req,res)=>{
     })
 })
 
+
+/**
+ * GET ONE with POST
+ */
+router.get('/:name/posts', (req, res) => {
+
+    let searchName = []
+    req.params.name.split("-").map(word=>{
+        searchName.push(word.charAt(0).toUpperCase()+word.slice(1))
+    })
+    db.City.find({"name":searchName.join(" ")})
+    .then(cty => {
+        if (!cty) {
+            return res.status(NOTFOUND).json({
+                'error': NOTFOUND, 'message': 'city not found'
+            })
+        }
+        let c= cty[0]
+        db.Post.find({"city": c.name}).populate('author')
+        .then(posts=>{
+            let city = {
+                "id": c.id, "name": c.name, 
+                "description": c.description, 
+                "image": c.image
+            }
+            let cityPosts = []
+            posts.map(p => {
+                let post = {
+                    'id': p.id,
+                    'title': p.title,
+                    'body': p.body,
+                    'date': p.date,
+                    'author': p.author.username,
+                    'city': p.city
+                }
+                cityPosts.push(post);
+            })
+        
+            city.posts = cityPosts
+            return res.json({city})
+        }) 
+    })
+})
 
 /**
  * GET ONE 

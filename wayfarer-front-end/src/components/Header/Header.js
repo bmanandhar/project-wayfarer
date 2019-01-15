@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, NavItem } from "react-bootstrap";
-import { Modal, Button } from "react-bootstrap"
+import { Link, Redirect } from "react-router-dom"
+import { Navbar, Nav, NavItem, Modal, Button } from "react-bootstrap";
+
 
 import LogIn from './LogIn'
 import SignUp from './SignUp'
@@ -33,14 +34,24 @@ class Header extends Component {
         })
     }
 
+    clickLink = (e,path) => {
+      if (e.target.tagName==="A") {
+        e.preventDefault()
+      }
+      console.log(path)
+    }
+
     render() {
         return(
     <header>
       <Navbar className="navbar" collapseOnSelect>
-        <Navbar.Header>
+        <Navbar.Header >
+          <Link to={this.props.isLoggedIn?'/cities':'/'} onClick={(e)=>this.clickLink(e,"/cities")}>
           <h1 className="wayfarer-heading">
             WAYFARER
           </h1>
+          </Link>
+          
           <Navbar.Toggle />
         </Navbar.Header>
           
@@ -49,11 +60,15 @@ class Header extends Component {
             {
           this.props.isLoggedIn?
           <React.Fragment>
-            <NavItem className="nav-item" eventKey={1} href="/logout" onClick={this.props.handleLogOut}>
-              Log Out
+            <NavItem componentClass='span' className="nav-item" eventKey={1} href="/logout" onClick={this.props.handleLogOut}>
+              <Link to="/">
+                Log Out
+              </Link>
             </NavItem>
-            <NavItem className="nav-item" eventKey={2} href="/profile" onClick={(e)=>e.preventDefault()}>
-              Profile
+            <NavItem componentClass='span' className="nav-item" href="/profile" eventKey={2} onClick={(e)=>this.clickLink(e,"/profile")} >
+              <Link to="/profile">
+                Profile
+              </Link> 
             </NavItem>
           </React.Fragment>  :
           <>

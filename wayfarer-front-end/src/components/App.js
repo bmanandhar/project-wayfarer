@@ -6,13 +6,14 @@ import Header from './Header/Header.js';
 import Landing from './Landing';
 import Logout from './Header/Logout.js';
 
-//import CitiesList from './CitiesList';
-//import CityWithPosts from './CityWithPosts';
+import CitiesList from './CitiesList';
+
 import Profile from './Profile';
+
 import Axios from 'axios';
 
-
 const baseURL = "http://localhost:8001"
+
 
 class App extends Component {
 
@@ -55,35 +56,38 @@ class App extends Component {
   }
 
   render() {
+    
     return (
       <div className="App">
         <Header cities={this.state.cities}
           isLoggedIn={this.state.isLoggedIn} 
           handleLogIn={this.loggedIn} handleLogOut={this.loggedOut} />
         <Switch>
-          <Route path='/profile'>
           {
           this.state.isLoggedIn ?
-            <div className="landing-page">
-              <div className='profile-div-2'>
-                <Profile cities={this.state.cities} forcedLogOut={this.forcedLogOut}/>
-              </div> 
-            </div> : <Redirect to="/" />
-          }
-          </Route>  
-          <Route path='/logout' >
             <React.Fragment>
-              <Logout forcedLogOut={this.forcedLogOut} />
-              <Redirect to="/" />
-            </React.Fragment>
-          </Route>
-          <Route path='/'>
-          { 
-          !this.state.isLoggedIn ? 
-            <Landing cities={this.state.cities} /> : 
-            <Redirect to="/profile" /> 
+              <Route path="/profile"  
+                  render={()=>{ return (<div className="landing-page">
+                  <div className='profile-div-2'>
+                    <Profile cities={this.state.cities} forcedLogOut={this.forcedLogOut} /> 
+                  </div>
+                </div>)}} />
+              <Route path="/cities"  
+                  render={()=>{ return <CitiesList />}} />
+              <Route exact path="/"  
+                  render={()=>{ return <CitiesList />}} />
+              <Redirect to="/profile" />
+            </React.Fragment> 
+          :
+            <React.Fragment>
+              <Route exact path="/*" 
+                render={()=>{ return (
+                <>
+                  <Landing cities={this.state.cities} />
+                </>
+                )}} />
+            </React.Fragment> 
           }
-          </Route>    
         </Switch>
       </div>
 

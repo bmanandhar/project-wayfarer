@@ -9,6 +9,7 @@ const bioTxt = "Lorem Ipsum is simply dummy text of the printing and typesetting
 
 export default class Profile extends Component {
 
+
     state = {
         editUsername: false,
         editCity: false,
@@ -21,6 +22,7 @@ export default class Profile extends Component {
     }
 
     componentDidMount = () => {
+
         axios.get(`${baseURL}/users/profile`,{headers: {"Authorization": `Bearer ${localStorage.token}`}})
         .then(res=>{
 
@@ -29,12 +31,12 @@ export default class Profile extends Component {
                 let city = this.props.cities.filter(city=>city.name===post.city)[0]
                 return post.image = city.image
             })
-
             this.setState({
                 userData,
                 usernameVal: res.data.username,
                 cityVal: res.data.city
             })
+            
         })
         .catch((err)=>{
             console.log(err.response)
@@ -45,6 +47,7 @@ export default class Profile extends Component {
             }
         })
     }
+
 
     
     handleInput = (e,option) => {
@@ -120,7 +123,7 @@ export default class Profile extends Component {
                 postList.push(<Posts data={post} open={()=>this.open(i)} key={i} />)
             ))
         }
-        
+
         return(
 
   <React.Fragment>
