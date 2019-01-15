@@ -13,10 +13,7 @@ db.City.remove({})
     db.City.collection.insert(cities)
         .then(seededEntries => {
             console.log(seededEntries)
-<<<<<<< HEAD
-=======
             //process.exit()
->>>>>>> bijaya
         })
 })
 .catch(err => {
