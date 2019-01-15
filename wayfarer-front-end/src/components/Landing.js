@@ -39,23 +39,23 @@ export default class Landing extends Component {
             </Carousel>
             <div className="topic-container">
 
-                <Jumbotron>
-                    <h2 className="header">Wayfarer is ...</h2>
-                    <main className='topics'>
-                        <div>
-                            <h3 className="topic">Topic one</h3>
-                            <p className="topic-col">{ para[0] }</p>
-                        </div>
-                        <div>
-                            <h3 className="topic">Topic two</h3>
-                            <p className="topic-col">{ para[1] }</p>
-                        </div>
-                        <div>
-                            <h3 className="topic">Topic three</h3>
-                            <p className="topic-col">{ para[2] }</p>
-                        </div>
-                    </main>
-                </Jumbotron>
+            <Jumbotron>
+                <h2 className="header">Wayfarer is ...</h2>
+                <main className='topics'>
+                    <div className="topic-para">
+                        <h3 className="topic">Topic one</h3>
+                        <p className="topic-col">{ para[0] }</p>
+                    </div>
+                    <div className="topic-para">
+                        <h3 className="topic">Topic two</h3>
+                        <p className="topic-col">{ para[1] }</p>
+                    </div>
+                    <div className="topic-para">
+                        <h3 className="topic">Topic three</h3>
+                        <p className="topic-col">{ para[2] }</p>
+                    </div>
+                </main>
+            </Jumbotron>
             </div>
           </React.Fragment>
         ); 
