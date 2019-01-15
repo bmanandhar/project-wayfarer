@@ -52,7 +52,7 @@
   background-color: #FAACB0;
   width: 250px;
   border-radius: 4px;
-  margin: 0 0 0 300px;
+  margin: 0 0 0 250px;
   border: 1px solid red;
   height: 34px;
   position: absolute;
@@ -62,7 +62,7 @@
   background-color: #FAACB0;
   width: 250px;
   border-radius: 4px;
-  margin: 0 0 0px 130px;
+  margin: 0 0 0px 110px;
   bottom: 0px;
   border: 1px solid red;
   height: 34px;
@@ -292,10 +292,6 @@ img {
   margin: 10px;
   padding: 10px;
   background-color: rgba(143, 188, 143, 0.5);
-}
-
-div {
-  padding: 10px;
 }
 
 .carousel-control {
