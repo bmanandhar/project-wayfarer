@@ -6,8 +6,9 @@ import './App.css';
 import Header from './Header/Header.js';
 import Landing from './Landing';
 import CitiesList from './CitiesList';
+import CityWithPosts from './CityWithPosts';
 import Profile from './Profile';
-import Logout from './Header/Logout.js';
+
 
 
 const baseURL = "http://localhost:8001"

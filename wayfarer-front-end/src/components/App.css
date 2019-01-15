@@ -52,6 +52,39 @@
   margin: 20px;
 }
 
+.incorrect-login {
+  background-color: #FAACB0;
+  width: 250px;
+  border-radius: 4px;
+  margin: 0 0 0 250px;
+  border: 1px solid red;
+  height: 34px;
+  position: absolute;
+}
+
+.different-passwords {
+  background-color: #FAACB0;
+  width: 250px;
+  border-radius: 4px;
+  margin: 0 0 0px 110px;
+  bottom: 0px;
+  border: 1px solid red;
+  height: 34px;
+  position: absolute;
+}
+
+.different {
+  font-size: 20px;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.incorrect {
+  font-size: 20px;
+  text-align: center;
+  margin-top: 5px;
+}
+
 /* /////////// Carousel Component  ////////////*/
 img {
   margin: auto
@@ -251,7 +284,7 @@ img {
 .post-and-img {
   display: flex;
   flex-direction: row;
-  border: 1px solid black;
+  border: 1px solid white;
   margin: 5px;
 }
 
@@ -284,7 +317,7 @@ img {
 }
 
 
-h3 {
+.header, .topic {
   text-align: center;
 }
 
@@ -297,6 +330,13 @@ main {
 /* ////////////// Profile Component //////////// */
 
 
+.profile {
+  background-color: white;
+  margin: 20px 10px 20px 20px;
+  width: 35%;
+  border: 10px solid darkseagreen;
+}
+
 .profile-div {
   display: flex;
   flex-direction: row;
@@ -308,23 +348,71 @@ main {
 }
 
 .profile-name {
-  margin-left: 15px;
-  margin-bottom: 20px;
-  /* margin-top: 150px;
-  height: 75px; */
+  margin: 0px 0px 20px 20px;
+  border-bottom: 1px solid #777;
+  font-size: 50px;
+  width: 90%;
+  text-align: center;
 }
 
 .edit-profile-name{
-  width: 250px;
+  width: 90%;
 }
 
 .bio {
   margin-left: 20px;
+  font-size: 30px;
+}
+
+.chem {
+  border-bottom: 1px solid #777;
+  width: 80%;
 }
 
 .profile-div-2 {
   display: flex;
   flex-direction: row;
+}
+
+.posts-list {
+  width: 65%;
+  margin: 20px 20px 20px 10px;
+  background-color: darkseagreen;
+}
+
+.profile-div-2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.edit-username-button {
+  height: 35px;
+}
+
+.edit-username-button:hover {
+  background-color: white;
+  color: darkseagreen;
+}
+
+.username {
+  width: 80%;
+}
+
+.edit-username-div {
+  display: flex;
+
+}
+
+.edit-button {
+  color: transparent;
+  background-color: transparent;
+  border: none;
+}
+
+.save-button {
+  height: 61px;
+  background-color: darkseagreen;
 }
 
 /* ////////////// Show Post Component //////////// */
@@ -349,23 +437,26 @@ main {
     color: #f0f0f0 !important;
   }
 
+
   .nav-item {
     font-size: 16px;
     margin: 0;
   }
 
   .topics {
-    display: flex;
-    justify-content: space-around;
     flex-direction: column;
   }
 
-  .topic-col > p {
+
+  .topic-col {
     font-size: 14px;
   }
 
-  .topic-col > h3 {
-    font-size: 20px;
-  }
-
 }
+
+@media screen and (max-width: 600px) {
+  main {
+    flex-direction: column;
+  }
+}
+

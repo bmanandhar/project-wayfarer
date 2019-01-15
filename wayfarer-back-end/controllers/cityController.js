@@ -137,6 +137,7 @@ router.get('/:id/posts', (req, res) => {
             return res.json({city})
         }) 
     })
+    //*/
 })
 
 /*
@@ -182,6 +183,25 @@ router.get('/:name/posts', (req, res) => {
 })
 //*/
 
+router.get("/all",(req,res)=>{
+    db.City.find({})
+    .then(city=>{
+        if (!city) {
+            return res.status(NOTFOUND).json({
+                "error": NOTFOUND, "message": "city not found"
+            })
+        }
+        let cities = []
+        city.map(c=>{
+            cities.push({
+                name: c.name,
+                image: c.image,
+                description: c.description
+            })
+        })
+        return res.json({cities})
+    })
+})
 /**
  * GET ONE 
  */
@@ -199,3 +219,52 @@ router.get("/:id",(req,res)=>{
 
 
 module.exports = router
+
+// create a new route called cities/:id/posts
+
+
+router.get('/:name/posts', (req, res) => {
+
+    let searchName = []
+    req.params.name.split("-").map(word=>{
+        searchName.push(word.charAt(0).toUpperCase()+word.slice(1))
+    })
+    searchName= searchName.join(" ")
+    console.log(searchName)
+    db.City.find({"name":searchName})
+    .then(cty => {
+        if (!cty) {
+            return res.status(NOTFOUND).json({
+                'error': NOTFOUND, 'message': 'city not found'
+            })
+        }
+        let c = cty[0]
+        db.Post.find({"city": c.name}).populate('author')
+        .then(posts=>{
+            console.log(posts)
+            let city = {
+                "id": c.id, "name": c.name, 
+                "description": c.description, 
+                "image": c.image
+            }
+            let cityPosts = []
+
+            posts.map(p => {
+                let post = {
+                    'id': p.id,
+                    'title': p.title,
+                    'body': p.body,
+                    'date': p.date,
+                    'author': p.author.username,
+                    'city': p.city,
+                    'image': p.image
+                }
+                cityPosts.push(post);
+            })
+        
+            city.posts = cityPosts
+            return res.json({city})
+        })
+        
+    })
+})
