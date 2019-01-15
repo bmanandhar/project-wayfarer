@@ -246,7 +246,6 @@ img {
   margin-left: 10px;
 }
 
-<<<<<<< HEAD
 .topic-container {
   padding: 10px;
 }
@@ -262,6 +261,10 @@ img {
   background-color: rgba(143, 188, 143, 0.5);
 }
 
+div {
+  padding: 10px;
+}
+
 .carousel-control {
   opacity: 0.71;
   color: darkseagreen !important;
@@ -272,10 +275,7 @@ img {
 }
 
 
-h3 {
-=======
-h2 {
->>>>>>> bijaya
+.header, .topic {
   text-align: center;
 }
 
@@ -284,7 +284,6 @@ main {
   justify-content: space-around;
   padding: 20px;
 }
-<<<<<<< HEAD
 
 /* ////////////// Profile Component //////////// */
 
@@ -340,6 +339,7 @@ main {
     font-size: 24px;
     color: #f0f0f0 !important;
   }
+}
 
   .nav-item {
     font-size: 16px;
@@ -349,26 +349,16 @@ main {
   .topics {
     display: flex;
     justify-content: space-around;
-    flex-direction: column;
   }
 
-  .topic-col > p {
+
+  .topic-col {
     font-size: 14px;
   }
 
-  .topic-col > h3 {
-    font-size: 20px;
-  }
-
-}
-=======
-div {
-  padding: 10px;
-}
-
-@media screen and (max-width: 600px) {
-  main {
+@media screen and (max-width: 750px) {
+  .topics {
     flex-direction: column;
   }
 }
->>>>>>> bijaya
+
