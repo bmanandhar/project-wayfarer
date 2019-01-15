@@ -95,31 +95,6 @@ class App extends Component {
           handleLogIn={this.loggedIn} handleLogOut={this.loggedOut} />
         <Switch>
           <RouteComponent isLoggedIn={this.state.isLoggedIn} cities={this.state.cities} forcedLogOut={this.forcedLogOut}/>
-          {/* {
-          this.state.isLoggedIn ?
-            <React.Fragment>
-              <Route path="/profile"  
-                  render={()=>{ return (<div className="landing-page">
-                  <div className='profile-div-2'>
-                    <Profile cities={this.state.cities} forcedLogOut={this.forcedLogOut} /> 
-                  </div>
-                </div>)}} />
-              <Route path="/cities"  
-                  render={()=>{ return <CitiesList cities={this.state.cities}/>}} />
-              <Route exact path="/"  
-                  render={()=>{ return <CitiesList cities={this.state.cities}/>}} />
-              <Redirect to="/profile" />
-            </React.Fragment> 
-          :
-            <React.Fragment>
-              <Route exact path="/*" 
-                render={()=>{ return (
-                <>
-                  <Landing cities={this.state.cities} />
-                </>
-                )}} />
-            </React.Fragment> 
-          } */}
         </Switch>
       </div>
 
