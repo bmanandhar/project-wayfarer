@@ -48,6 +48,22 @@
   margin: 20px;
 }
 
+.incorrect-login {
+  background-color: #FAACB0;
+  width: 250px;
+  border-radius: 4px;
+  margin: 0 0 0 300px;
+  border: 1px solid red;
+  height: 34px;
+  position: absolute;
+}
+
+.incorrect {
+  font-size: 20px;
+  text-align: center;
+  margin-top: 5px;
+}
+
 /* /////////// Carousel Component  ////////////*/
 img {
   margin: auto
@@ -354,6 +370,7 @@ main {
 
 .edit-username-div {
   display: flex;
+
 }
 
 .edit-button {
