@@ -88,8 +88,6 @@ img {
   color: #777 !important;
 }
 
-
-
 /* /////////// Cities List Component  ////////////*/
 
 .cities-list {
@@ -388,19 +386,13 @@ main {
   height: 61px;
   background-color: darkseagreen;
 }
-
 /* ////////////// Show Post Component //////////// */
-
-
 
 .post-modal-img {
   width: 720px;
   height: 480px;
   margin: 5px auto;
 }
-
-
-
 /* ////////////// Media Query //////////// */
 
 @media only screen and (max-width: 750px) {
@@ -411,7 +403,6 @@ main {
     color: #f0f0f0 !important;
   }
 
-
   .nav-item {
     font-size: 16px;
     margin: 0;
@@ -420,7 +411,6 @@ main {
   .topics {
     flex-direction: column;
   }
-
 
   .topic-col {
     font-size: 14px;

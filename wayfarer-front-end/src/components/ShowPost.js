@@ -3,7 +3,6 @@ import './App.css';
 import { Modal, Col, Button, Form, FormGroup, FormControl, ControlLabel } from "react-bootstrap"
 import Posts from './Posts';
 
-
 class ShowPost extends Component {
 
     state = {
