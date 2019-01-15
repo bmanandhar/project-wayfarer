@@ -3,24 +3,54 @@ import { Col, Button, Form, FormGroup, FormControl, ControlLabel } from "react-b
 
 import axios from "axios";
 
-const left = 3, 
+const left = 4, 
 right = 12-left;
 
 const baseURL= 'http://localhost:8001';
 
-const withErrorHandling = WrappedComponent => ({ showError, children}) => {
+const emailDuplicateHandling = EmailDuplicateComponent => ({ duplicateError, children}) => {
   return(
-    <WrappedComponent>
-      { showError &&
+    <EmailDuplicateComponent>
+      { duplicateError && 
+      <div className='different-passwords'>
+        <h1 className='different'>Email already taken</h1>
+      </div> }
+    </EmailDuplicateComponent>
+  );
+};
+
+const passwordErrorHandling = PasswordComponent => ({ passwordError, children}) => {
+  return(
+    <PasswordComponent>
+      { passwordError &&
         <div className='different-passwords'>
           <h1 className='different'>Passwords do not match</h1>
         </div> }
         { children }
-    </WrappedComponent>
+    </PasswordComponent>
   );
 };
 
-const DivWithErrorHandling = withErrorHandling(({ children }) => <div>{ children }</div>)
+const fieldErrorHandling = FieldComponent => ({ fieldError, children}) => {
+  return(
+    <FieldComponent>
+      { fieldError &&
+        <div className='different-passwords'>
+          <h1 className='different'>Fill out all required fields</h1>
+        </div> }
+        { children }
+    </FieldComponent>
+  );
+};
+
+const DivFieldErrorHandling = fieldErrorHandling(({ children }) => 
+<div>{ children }</div>)
+
+const DivPasswordErrorHandling = passwordErrorHandling(({ children }) =>
+<div>{ children }</div>)
+
+const DivEmailDuplicateHandling = emailDuplicateHandling(({ children }) =>
+<div>{ children }</div>)
 
 export default class SignUp extends Component {
 
@@ -33,14 +63,30 @@ export default class SignUp extends Component {
       password: '',
       confirmPassword: '',
       cities: [],
-      showError: false
+      passwordError: false,
+      fieldError: false,
+      duplicateError: false
     }
   }
 
-  toggleError = (e) => {
+  toggleDifferentPasswords = (e) => {
     e.preventDefault()
     this.setState((prevState, props) => {
-      return { showError: !prevState.showError }
+      return { passwordError: !prevState.passwordError }
+    });
+  };
+
+  toggleFieldError = (e) => {
+    e.preventDefault()
+    this.setState((prevState, props) => {
+      return { fieldError: !prevState.fieldError }
+    })
+  }
+
+  toggleEmailDuplicateError = (e) => {
+    e.preventDefault()
+    this.setState((prevState, props) => {
+      return { duplicateError: !prevState.duplicateError }
     });
   };
 
@@ -75,13 +121,19 @@ export default class SignUp extends Component {
   signup = (e) => {
     e.preventDefault()
     for (let item in this.state) {
-      if (this.state[item]==="") return
+      if (this.state[item]==="") {
+        console.log('Please fill in all required fields')
+        this.toggleFieldError(e);
+        return;
+
+      }
     }
     if (this.state.password!==this.state.confirmPassword) {
       console.log('passwords do not match');
-      this.toggleError(e);
-
+      this.toggleDifferentPasswords(e);
+      return;
     }
+
     //console.log(this.state)
     let dataObj = {
       username: this.state.username,
@@ -97,7 +149,8 @@ export default class SignUp extends Component {
       this.props.close()
     })
     .catch(err=>{
-      console.log(err.response)
+      console.log(err.response.data.message)
+      this.toggleEmailDuplicateError(e);
     })
   
   }
@@ -116,34 +169,34 @@ export default class SignUp extends Component {
     return (
 
 <Form horizontal>
-  <FormGroup controlId="signupUsername">
-    <Col componentClass={ControlLabel} sm={left}> Username </Col>
-    <Col sm={right}>
-      <FormControl name="username" type="text" placeholder="Username" onChange={this.handleInput} />
-    </Col>
-  </FormGroup>
-  <FormGroup controlId="signupCity">
-    <Col componentClass={ControlLabel} sm={left}> City </Col>
+<FormGroup controlId="signupCity">
+    <Col componentClass={ControlLabel} sm={left}> City *</Col>
     <Col sm={right}>
       <FormControl name="city" componentClass="select" defaultValue="" onChange={this.handleInput}>
         {citiesOptions}
       </FormControl>
     </Col>
   </FormGroup>
-  <FormGroup controlId="signupEmail">
-    <Col componentClass={ControlLabel} sm={left}> Email </Col>
+<FormGroup controlId="signupEmail">
+    <Col componentClass={ControlLabel} sm={left}> Email *</Col>
     <Col sm={right}>
       <FormControl name="email" type="email" placeholder="Email" onChange={this.handleInput} />
     </Col>
   </FormGroup>
+  <FormGroup controlId="signupUsername">
+    <Col componentClass={ControlLabel} sm={left}> Username *</Col>
+    <Col sm={right}>
+      <FormControl name="username" type="text" placeholder="Username" onChange={this.handleInput} />
+    </Col>
+  </FormGroup>
   <FormGroup controlId="signupPassword">
-    <Col componentClass={ControlLabel} sm={left}> Password </Col>
+    <Col componentClass={ControlLabel} sm={left}> Password *</Col>
     <Col sm={right}>
       <FormControl name="password" type="password" placeholder="Password" onChange={this.handleInput} />
     </Col>
   </FormGroup>
   <FormGroup controlId="signupPasswordConfirm">
-    <Col componentClass={ControlLabel} sm={left}> Confirm Password </Col>
+    <Col componentClass={ControlLabel} sm={left}> Confirm Password *</Col>
     <Col sm={right}>
       <FormControl name="confirmPassword" type="password" placeholder="Confirm Password" onChange={this.handleInput} />
     </Col>
@@ -152,9 +205,12 @@ export default class SignUp extends Component {
   <FormGroup>
     <Col smOffset={left} sm={right}>
       <Button className="green-btn" type="submit" onClick={this.signup}> Sign up </Button>
-      <DivWithErrorHandling showError={ this.state.showError }>
-        
-      </DivWithErrorHandling>
+      <DivPasswordErrorHandling passwordError={ this.state.passwordError }>
+      </DivPasswordErrorHandling>
+      <DivFieldErrorHandling fieldError = { this.state.fieldError }>
+      </DivFieldErrorHandling>
+      <DivEmailDuplicateHandling duplicateError = { this.state.duplicateError }>
+      </DivEmailDuplicateHandling>
     </Col>
   </FormGroup>
 </Form>
