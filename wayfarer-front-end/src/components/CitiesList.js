@@ -127,7 +127,7 @@ class CitiesList extends Component {
             alert("empty")
             return
         }
-        console.log(this.state.city,this.state.title,this.state.body)
+        //console.log(this.state.city,this.state.title,this.state.body)
         //*
         // get file input
         let file = document.getElementById("img_file")
@@ -168,7 +168,7 @@ class CitiesList extends Component {
             this.closeFormModal()
         })
         .catch(err=>{
-            console.log(err.response)
+            //console.log(err.response)
             let status = err.response.data.error
             //if (status===401 || status===403) { this.props.forcedLogOut() }
         })

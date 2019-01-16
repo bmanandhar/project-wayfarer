@@ -22,4 +22,6 @@ app.use('/cities', cityController)
 app.use('/users', userController)
 app.use('/posts', postController)
 
+app.use(express.static(__dirname+'/public'))
+
 app.listen(PORTNUM, () => console.log(`Listening on port ${PORTNUM}`))

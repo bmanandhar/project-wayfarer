@@ -30,7 +30,7 @@ export default class Profile extends Component {
 
         axios.get(`${baseURL}/users/profile`,{headers: {"Authorization": `Bearer ${localStorage.token}`}})
         .then(res=>{
-            console.log(res.data)
+            //console.log(res.data)
             let userData = res.data
             this.setState({
                 userData,
@@ -39,7 +39,7 @@ export default class Profile extends Component {
             })
         })
         .catch((err)=>{
-            console.log(err.response)
+            //console.log(err.response)
             let status = err.response.data.error
             if (status===401 || status===403) {
                 alert(`${err.response.data.message}, logging out...`)
@@ -57,8 +57,6 @@ export default class Profile extends Component {
                 document.getElementById("save_edit_btn").disabled= false
             }
         }
-        //console.log(e.target.name)
-        //console.log(e.target.value)
         this.setState({
             [e.target.name]: e.target.value
         })   
@@ -66,7 +64,7 @@ export default class Profile extends Component {
 
     // change to input tag when click on username
     changeInputClick = (option) => {
-        console.log(option)
+        //console.log(option)
         this.setState({[option]: true})
     }
 
@@ -76,7 +74,7 @@ export default class Profile extends Component {
         let target = e.target
         if (e.target.tagName==="BUTTON") {
             target = e.target.parentNode.children[0].children[0].children[0]
-            console.log(target)
+            //console.log(target)
         }
         if (target.value==="") return
         if (this.state[value]===target.value) {
@@ -193,8 +191,8 @@ export default class Profile extends Component {
         let newCity= !this.state.editCity? this.state.postInfo.city : this.state.editCity
         let newTitle= !this.state.editTitle? this.state.postInfo.title : this.state.editTitle
         let newBody= !this.state.editBody? this.state.postInfo.body : this.state.editBody
-        console.log(this.state.editCity)
-        console.log(newCity)
+        //console.log(this.state.editCity)
+        //console.log(newCity)
 
         if (!( newCity && newTitle && newBody)) {
             alert("empty edit")
@@ -255,63 +253,83 @@ export default class Profile extends Component {
                     openEditModal={()=>this.openEditModal(i)}/>)
             ))
         }
-        console.log(postList.length)
         return(
 
 <React.Fragment>
-    <div className="profile">
-        <div className='profile-div'>
-            <img className="profile-pic" src={`${baseURL}/${this.state.userData.image}`} alt="" />
-        </div>
-        <div className='edit-username-div'>
-            <div className='username'>
-            {
-            !this.state.editUsername?
-                <h1 className='profile-name'> 
-                {this.state.usernameVal} 
-                </h1> 
-                :   
-                <h1 className='profile-name'>
-                    <input className="edit-profile-name" type="text" name="username" 
-                        defaultValue={this.state.usernameVal} 
-                        onChange={(e)=>this.handleInput(e,false)} />
-                </h1> 
-            }
+    <div className='profile-div-3'>
+        <div className="profile">
+            <div className='profile-div'>
+                <img className="profile-pic" src={`${baseURL}/${this.state.userData.image}`} alt="" />
             </div>
-            {!this.state.editUsername?
-            <button className='edit-button' onClick={()=>this.changeInputClick("editUsername")}>
-              <img src='images/edit_button.svg' className='edit-username-button' alt="" />
-            </button>
-            :
-                <button className='save-button' onClick={(e)=>this.stopEdit(e,"editUsername","usernameVal")}>Save</button>
-            }
+            <div className='edit-username-div'>
+                <div className='username'>
+                {
+                !this.state.editUsername?
+                    <h1 className='profile-name'> 
+                    {this.state.usernameVal} 
+                    </h1> 
+                    :   
+                    <h1 className='profile-name'>
+                        <input className="edit-profile-name" type="text" name="usernameVal" 
+                            defaultValue={this.state.usernameVal} 
+                            onChange={(e)=>this.handleInput(e,false)} />
+                    </h1> 
+                }
+                </div>
+                {!this.state.editUsername?
+                <button className='edit-button' onClick={()=>this.changeInputClick("editUsername")}>
+                    <img src='https://image.flaticon.com/icons/svg/61/61776.svg' className='edit-username-button' />
+                </button>
+                :
+                    <button className='save-button' onClick={(e)=>this.stopEdit(e,"editUsername","usernameVal")}>Save</button>
+                }
+            </div>
+
+            <p className='bio chem'>Joined: 
+                <span style={{margin: "10px"}}> {this.state.userData.joindate} </span>
+            </p>
+            <p className='bio chem'> Email: 
+                <span style={{margin: "10px"}}> {this.state.userData.email} </span>
+            </p>
+            <p className='bio'>
+                City:
+                <span style={{margin: "10px"}}>
+                <select onChange={(e)=>this.updateCity(e,"cityVal")} name="city">
+                {
+                this.props.cities.map((city,index)=>(
+                city.name!==this.state.cityVal ? 
+                    <option key={index+1} value={city.name}>{city.name} </option> :
+                    <option key={index+1} value={city.name} selected>{city.name} </option>
+                ))
+                }
+                </select>
+                </span>
+            </p>
         </div>
 
-        <p className='bio chem'>Joined: 
-            <span style={{margin: "10px"}}> {this.state.userData.joindate} </span>
-        </p>
-        <p className='bio chem'> Email: 
-            <span style={{margin: "10px"}}> {this.state.userData.email} </span>
-        </p>
-        <p className='bio'>
-            City:
-            <span style={{padding: "10px"}}>
-            <select style={{fontSize: "20px"}} onChange={(e)=>this.updateCity(e,"cityVal")} name="editCityOpt">
-            {
-            this.props.cities.map((city,index)=>(
-            city.name!==this.state.cityVal ? 
-                <option key={index+1} value={city.name}>{city.name} </option> :
-                <option key={index+1} value={city.name} selected>{city.name} </option>
-            ))
-            }
-            </select>
-            </span>
-        </p>
-    </div>
+        <div className="posts-list">
+            {/* <h2>Your Posts: </h2> */}
+            {postList.length>0 ? postList : <h4>No Posts</h4>}
+        </div>
 
-    <div className="posts-list">
-        {/* <h2>Your Posts: </h2> */}
-        {postList.length>0 ? postList : <h4>No post</h4>}
+        <Modal bsSize="large" className="post-modal" show={this.state.showPostModal} onHide = {this.close} >
+            <Modal.Header>
+                <Modal.Title>
+                {`${this.state.postInfo.title} 
+                    by ${this.state.usernameVal} 
+                    on ${this.state.postInfo.date}`}
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <img className="post-modal-img" src={`${baseURL}/${this.state.postInfo.image}`} alt=""/>
+                <p>
+                    {this.state.postInfo.body}
+                </p>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button className="green-btn" onClick={this.close}>Close</Button>
+            </Modal.Footer>
+        </Modal>
     </div>
 
     <Modal bsSize="large" className="post-modal" show={this.state.showPostModal} onHide = {this.close} >
@@ -405,4 +423,3 @@ export default class Profile extends Component {
         )
     }
 }
-

@@ -3,6 +3,7 @@
 .cities-list-with-posts {
   display: flex;
   flex-direction: row; 
+
 }
 
 .landing-page {
@@ -28,10 +29,12 @@
   margin: 20px 0 !important;
   font-size: 48px;
   color: #f0f0f0 !important;
+  text-decoration: none;
 }
 .wayfarer-heading:hover{
-  color: darkseagreen !important;
-  background-color: #ffffff !important;
+  color: black !important;
+  /* background-color: #ffffff !important; */
+  text-decoration: none;
 }
 
 .navbar-div {
@@ -56,21 +59,21 @@
   background-color: #FAACB0;
   width: 250px;
   border-radius: 4px;
-  margin: 0 0 0 250px;
+  margin: 20px 0 0 0px;
   border: 1px solid red;
   height: 34px;
-  position: absolute;
+  position: relative;
 }
 
 .different-passwords {
   background-color: #FAACB0;
   width: 250px;
   border-radius: 4px;
-  margin: 0 0 0px 110px;
+  margin: 20px 0 0px 0px;
   bottom: 0px;
   border: 1px solid red;
   height: 34px;
-  position: absolute;
+  position: relative;
 }
 
 .different {
@@ -126,13 +129,24 @@ img {
 
 .cities-list {
   background-color: darkseagreen;
-  /* width: 600px; */
-  border: 1px black solid;
-  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  margin: 20px 10px 20px 20px;
+  width: 30%;
 }
 
 .city-header {
   margin-left: 50px;
+}
+/* 
+.col-sm-3 {
+  margin: 10px;
+} */
+
+.cities-and-posts {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 /* ////////////// Cities Component ////////////// */
@@ -149,8 +163,11 @@ img {
   border-radius: 20px;
   /* width: 500px; */
   margin: 10px 10px 10px 10px;
-  background-color: white;
-  
+  background-color: white; 
+}
+
+.city-list-div {
+  /* width: 100%; */
 }
 
 /* ///////// City With Posts Component ///////// */
@@ -165,7 +182,9 @@ img {
 }
 
 .city {
-  font-size: 50px;
+  font-size: 90px;
+  border-bottom: 1px solid darkseagreen;
+  margin-top: 140px;
 }
 
 .country {
@@ -179,8 +198,9 @@ img {
 }
 
 .city-with-posts-div {
-  margin: 20px;
-  border: 1px solid black;
+  margin: 20px 20px 20px 10px;
+  border: 10px solid darkseagreen;
+  /* width: 75%; */
 }
 
 .posts-and-button {
@@ -222,6 +242,7 @@ img {
 .green-btn {
   background-color: rgb(143, 188, 143);
   color: #ffffff;
+  width: 250px;
 }
 
 .green-btn:hover {
@@ -314,6 +335,11 @@ img {
   background-color: rgba(143, 188, 143, 0.5);
 }
 
+
+.topic-para {
+  padding: 10px;
+}
+
 .carousel-control {
   opacity: 0.71;
   color: darkseagreen !important;
@@ -334,13 +360,27 @@ main {
   padding: 20px;
 }
 
+.edit-btn {
+  float: right;
+  margin: 5px 10px 5px 5px;
+  background-color: transparent;
+  border: 2px solid #777;
+}
+
+.edit-btn:hover {
+  background-color: white;
+}
+
+
+
+
 /* ////////////// Profile Component //////////// */
 
 
 .profile {
   background-color: white;
   margin: 20px 10px 20px 20px;
-  width: 35%;
+  width: 500px;
   border: 10px solid darkseagreen;
 }
 
@@ -358,7 +398,7 @@ main {
   margin: 0px 0px 20px 20px;
   border-bottom: 1px solid #777;
   font-size: 50px;
-  width: 90%;
+  /* width: 90%; */
   text-align: center;
 }
 
@@ -390,6 +430,7 @@ main {
 .profile-div-2 {
   display: flex;
   flex-direction: row;
+  width: 100%;
 }
 
 .posts-list {
@@ -405,7 +446,7 @@ main {
 }
 
 .edit-username-button {
-  height: 35px;
+  height: 25px;
 }
 
 .edit-username-button:hover {
@@ -419,13 +460,14 @@ main {
 
 .edit-username-div {
   display: flex;
-
+  flex-direction: column;
 }
 
 .edit-button {
   color: transparent;
   background-color: transparent;
   border: none;
+  height: 25px;
 }
 
 .save-button {
@@ -433,19 +475,99 @@ main {
   background-color: darkseagreen;
 }
 
+.profile-div-3 {
+  display: flex;
+  flex-direction: row;
+}
+
 /* ////////////// Show Post Component //////////// */
-
-
 
 .post-modal-img {
   width: 720px;
   height: 480px;
   margin: 5px auto;
 }
-
-
-
 /* ////////////// Media Query //////////// */
+
+@media screen and (max-width: 1095px) {
+  .cities-and-posts {
+    flex-direction: column;
+  }
+  .city-list-div {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+
+  }
+
+  .scroll-div {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+  }
+  .cities-list {
+    margin: 10px 10px 10px 10px;
+    width: 100%;
+  }
+
+  .city-with-posts-div {
+  margin: 10px 10px 10px 10px;
+  }
+
+  .profile {
+    width: 90%;
+    margin: 10px 5%;
+  }
+
+  .profile-div-3 {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .posts-list {
+    width: 90%;
+    margin: 10px 5%;
+  }
+
+  .edit-username-div {
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .london-large-img {
+    width: 95%;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: -1;
+    display: block;
+  }
+  .city {
+    text-align: center;
+    border: none;
+    color: white;
+  }
+  
+  .london-uk {
+    width: 100%;
+  }
+  .city-with-posts-div {
+    margin: 0;
+  }
+
+  .profile {
+    background-color: white;
+    border: 10px solid darkseagreen;
+  }
+
+  /* .profile-div-3 {
+    display: flex;
+    flex-direction: column;
+  } */
+
+}
 
 @media only screen and (max-width: 750px) {
 
@@ -454,7 +576,6 @@ main {
     font-size: 24px;
     color: #f0f0f0 !important;
   }
-
 
   .nav-item {
     font-size: 16px;
@@ -465,16 +586,72 @@ main {
     flex-direction: column;
   }
 
-
   .topic-col {
     font-size: 14px;
   }
+}
 
+@media screen and (max-width: 700px) {
+  .post-img {
+    height: 100px;
+  }
+  .city {
+    font-size: 70px;
+    border-bottom: 1px solid darkseagreen;
+    margin-top: 140px;
+  }
 }
 
 @media screen and (max-width: 600px) {
   main {
     flex-direction: column;
   }
+  .post-and-img {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid white;
+    margin: 5px;
+  }
+  .post-img {
+    width: auto;
+    max-width: 266.7px;
+    height: auto;
+    max-height: 150px;
+  }
+  .city {
+    font-size: 50px;
+    border-bottom: 1px solid darkseagreen;
+    margin-top: 140px;
+  }
 }
 
+
+
+@media screen and (max-width: 900px) {
+  .london-large-img {
+    width: 95%;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: -1;
+    display: block;
+  }
+  .city {
+    text-align: center;
+    border: none;
+    color: white;
+  }
+  
+  .london-uk {
+    width: 100%;
+  }
+  .city-with-posts-div {
+    margin: 0;
+  }
+
+  .profile {
+    background-color: white;
+    border: 10px solid darkseagreen;
+  }
+
+}

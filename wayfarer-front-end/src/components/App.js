@@ -8,10 +8,7 @@ import Landing from './Landing';
 import CitiesList from './CitiesList';
 import Profile from './Profile';
 
-
-
 const baseURL = "http://localhost:8001"
-
 
 var RouteComponent = (props) =>{
   if (props.isLoggedIn) {

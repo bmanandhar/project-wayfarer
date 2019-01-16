@@ -8,10 +8,22 @@ const baseURL= 'http://localhost:8001';
 
 const validEmailRegex= /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
 
-const withErrorHandling = WrappedComponent => ({ showError, children }) => {
+const fieldErrorHandling = FieldComponent => ({ fieldError, children }) => {
+  return (
+    <FieldComponent>
+      { fieldError &&
+      <div className='incorrect-login'>
+        <h1 className='incorrect'>Fill in required fields.</h1>
+      </div> }
+      { children }
+    </FieldComponent>
+  );
+};
+
+const withErrorHandling = WrappedComponent => ({ incorrectError, children }) => {
   return (
     <WrappedComponent>
-      { showError &&
+      { incorrectError &&
       <div className='incorrect-login'>
         <h1 className='incorrect'>Incorrect login details</h1>
       </div> }
@@ -22,6 +34,7 @@ const withErrorHandling = WrappedComponent => ({ showError, children }) => {
 
 const DivWithErrorHandling = withErrorHandling(({ children }) => <div>{ children }</div>)
 
+const DivWithFieldHandling = fieldErrorHandling(({ children }) => <div>{ children }</div>)
 
 class LogIn extends Component {
 
@@ -30,14 +43,22 @@ class LogIn extends Component {
     this.state = {
       email: '',
       password: '',
-      showError: false
+      incorrectError: false,
+      fieldError: false,
     }
   }
 
   toggleError = (e) => {
     //e.preventDefault()
     this.setState((prevState, props) => {
-      return { showError: !prevState.showError }
+      return { incorrectError: !prevState.incorrectError }
+    })
+  };
+
+  toggleFieldError = (e) => {
+    e.preventDefault()
+    this.setState((prevState, props) => {
+      return { fieldError: !prevState.fieldError }
     })
   };
   
@@ -67,15 +88,13 @@ class LogIn extends Component {
     })
     .catch(err=>{
       console.log(err.response)
-      console.log(err.response.data.message)
       this.toggleError(e)
     });
-    
   }
 
   render () {
     return (
-
+      
 <Form horizontal>
   <FormGroup controlId="loginEmail">
     <Col componentClass={ControlLabel} sm={left}>
@@ -94,21 +113,23 @@ class LogIn extends Component {
       <FormControl name="password" type="password" placeholder="Password" onChange={this.handleInput}/>
     </Col>
   </FormGroup>
-      <DivWithErrorHandling showError={ this.state.showError } />
-        
-      
+              
   <FormGroup>
     <Col smOffset={left} sm={right}>
       <Button className="green-btn" type="submit" onClick={this.login}>
         Sign in
       </Button>
+      <DivWithErrorHandling incorrectError={ this.state.incorrectError } >
+      </DivWithErrorHandling>
+      <DivWithFieldHandling fieldError={ this.state.fieldError }>
+      </DivWithFieldHandling>
     </Col>
 
-  </FormGroup>
-</Form>
+        </FormGroup>
+      </Form> 
       
     )
   }
 }
 
-export default LogIn
+export default LogIn;

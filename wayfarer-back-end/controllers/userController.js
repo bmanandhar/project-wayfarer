@@ -64,7 +64,7 @@ function createTimeStamp(timeRequired) {
     let today = new Date();
     let timestamp = `${today.getFullYear()}-${padZero(today.getMonth()+1)}-${padZero(today.getDate())}`
     if (timeRequired) {
-        console.log(today.getHours(),today.getMinutes())
+        //console.log(today.getHours(),today.getMinutes())
         timestamp = `${timestamp}T${padZero(today.getHours())}:${padZero(today.getMinutes())}:${padZero(today.getSeconds())}`
     }
     return timestamp;
@@ -172,7 +172,6 @@ router.post('/login',(req,res)=>{
  * GET ONE
  */
 router.get('/profile',(req,res)=>{
-    console.log("header: ",req.headers.authorization!==undefined)
     
     if (req.headers.authorization===undefined) {
         return res.status(FORBIDDEN).json({
@@ -184,11 +183,9 @@ router.get('/profile',(req,res)=>{
     let decoded = verifyToken(token)
     
     if (decoded.id===undefined) { 
-        console.log(decoded)
         decoded.error= UNAUTH
         return res.status(UNAUTH).json(decoded) 
     }
-    console.log(decoded.iat,decoded.exp)
         
     // find user by id
     db.User.findById(decoded.id)
@@ -236,8 +233,7 @@ router.get('/profile',(req,res)=>{
  * EDIT POST
  */
 router.put("/posts/:id", upload.any(), (req,res)=>{
-    console.log("header: ",req.headers.authorization!==undefined)
-
+    
     if (req.headers.authorization===undefined) {
         return res.status(FORBIDDEN).json({"error": FORBIDDEN, "message": "forbidden"})
     }
@@ -276,13 +272,9 @@ router.put("/posts/:id", upload.any(), (req,res)=>{
             city: data.city,
             image: image_path,
         }
-        console.log("abc")
-        console.log(editPostObj.city)
-        console.log("deg")
-        //return res.status(INTERNAL_ERR).json({"error": INTERNAL_ERR, "message": "cannot save post" })
+        
         db.Post.findByIdAndUpdate(post_id,editPostObj,{"new": true})
         .then(resPost=>{
-            console.log(resPost.city)
             return res.json({
                 id: resPost._id,
                 title: resPost.title,
@@ -294,7 +286,6 @@ router.put("/posts/:id", upload.any(), (req,res)=>{
             })
         })
         .catch(err=>{
-            console.log(err)
             return res.status(INTERNAL_ERR).json({
                 "error": INTERNAL_ERR, "message": "cannot save post"
             })
@@ -306,7 +297,6 @@ router.put("/posts/:id", upload.any(), (req,res)=>{
  * DELETE POST
  */
 router.delete("/posts/:id", (req,res)=>{
-    console.log("header: ",req.headers.authorization!==undefined)
     
     if (req.headers.authorization===undefined) {
         return res.status(FORBIDDEN).json({
@@ -317,7 +307,6 @@ router.delete("/posts/:id", (req,res)=>{
     let token = req.headers.authorization.split(" ")[1]
     let decoded = verifyToken(token)
 
-    console.log(decoded.iat,decoded.exp)
     
     let post_id = req.params.id
 
@@ -355,12 +344,8 @@ router.post("/posts/new", upload.any(), (req,res)=>{
             "error": FORBIDDEN, "message": "forbidden"
         })
     }
-    
     let token = req.headers.authorization.split(" ")[1]
     let decoded = verifyToken(token)
-
-    console.log(decoded.iat,decoded.exp)
-    
     
     if (req.files.size>=maxFileSize) {
         return res.status(BAD_REQ).json({
@@ -421,7 +406,6 @@ router.post("/posts/new", upload.any(), (req,res)=>{
  * PATCH DATA
  */
 router.patch("/profile",(req,res)=> {
-    console.log("header: ",req.headers.authorization!==undefined)
     
     if (req.headers.authorization===undefined) {
         return res.status(FORBIDDEN).json({
@@ -433,11 +417,9 @@ router.patch("/profile",(req,res)=> {
     let decoded = verifyToken(token)
         
     if (decoded.id===undefined) { 
-        console.log(decoded)
         decoded.error= UNAUTH
         return res.status(UNAUTH).json(decoded) 
     }
-    console.log(decoded.iat,decoded.exp)
     
     db.User.findOneAndUpdate(
         {'_id': decoded.id},

@@ -4,7 +4,6 @@ import Posts from './Posts';
 const baseURL = 'http://localhost:8001'
 
 class CityWithPosts extends Component {
-
     
     render() {
 
@@ -14,12 +13,9 @@ class CityWithPosts extends Component {
         let posts = this.props.data.posts.map((post,i)=>{
             return (<Posts key={i} data={post} open={()=>this.props.openModal(i)}/>)
         })
-
-        return(
-            
+        return(     
             <div className="city-with-posts-div">
-                <div className="static-modal">
-                
+                <div className="static-modal"> 
                 </div>
                 <div className="city-country-img">
                     <div className='london-uk'>
@@ -34,9 +30,7 @@ class CityWithPosts extends Component {
                 <div className="posts-div">
                     {posts}
                 </div>
-                
             </div>
-
         )
     }
 }

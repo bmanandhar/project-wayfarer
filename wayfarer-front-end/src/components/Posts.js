@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 const baseURL = "http://localhost:8001"
 
 class Posts extends Component {
-
     render() {
         return(
             <div>

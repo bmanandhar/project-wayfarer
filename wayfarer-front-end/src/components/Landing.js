@@ -10,14 +10,13 @@ const para = `Lorem Ipsum has been the industry's standard dummy text ever since
     remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
     sheets containing Lorem Ipsum passages.`
 
-export default class Landing extends Component {
+class Landing extends Component {
     render() {
         let carouselContent = this.props.cities.map((city,i)=>(
-          <Carousel.Item key={i}>
-            <img src={baseURL+'/'+city.image} width={width} height={height} alt="" />
-          </Carousel.Item>
+            <Carousel.Item key={i}>
+                <img src={baseURL+'/'+city.image} width={width} height={height} alt="" />
+            </Carousel.Item>
         ))
-      
         return(
           <React.Fragment>
             <Carousel>
@@ -48,3 +47,4 @@ export default class Landing extends Component {
       
     }
 }
+export default Landing;

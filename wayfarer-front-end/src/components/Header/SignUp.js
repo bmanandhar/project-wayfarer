@@ -52,7 +52,7 @@ const DivPasswordErrorHandling = passwordErrorHandling(({ children }) =>
 const DivEmailDuplicateHandling = emailDuplicateHandling(({ children }) =>
 <div>{ children }</div>)
 
-export default class SignUp extends Component {
+class SignUp extends Component {
 
   constructor() {
     super()
@@ -218,3 +218,5 @@ export default class SignUp extends Component {
     )
   }
 }
+
+export default SignUp;
