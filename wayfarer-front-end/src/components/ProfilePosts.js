@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 
 const baseURL = "http://localhost:8001"
 
-class Posts extends Component {
+class ProfilePosts extends Component {
+
+
     render() {
         return(
             <div>
@@ -15,6 +17,12 @@ class Posts extends Component {
                         <p className="post-body">
                             {this.props.data.body}
                         </p>
+                        <button onClick={this.props.openDeleteModal} className='edit-btn'>
+                            DELETE
+                        </button>
+                        <button onClick={this.props.openEditModal} className='edit-btn'>
+                            EDIT
+                        </button>
                     </div>
                 </div>
             </div>
@@ -22,7 +30,7 @@ class Posts extends Component {
     }
 }
 
-export default Posts
+export default ProfilePosts
 
 
 

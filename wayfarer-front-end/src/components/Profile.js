@@ -1,46 +1,45 @@
-import React, { Component } from "react";
-import { Modal, Button } from "react-bootstrap"
-import Posts from './Posts';
+import React, {Component} from "react";
+import { Modal, Button, Col, Form, FormGroup, FormControl, ControlLabel  } from "react-bootstrap"
+import ProfilePosts from './ProfilePosts';
 import axios from "axios";
 
 const baseURL= 'http://localhost:8001';
+const maxFileSize = 5*1024*1024;
 
-const bioTxt = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis."
+const left = 2, 
+right = 12-left;
 
 
-class Profile extends Component {
-
+export default class Profile extends Component {
 
     state = {
         editUsername: false,
-        editCity: false,
+        editCityOpt: false,
         usernameVal: '',
         cityVal: '',
         userData: {},
         cities: [],
         showPostModal: false,
+        editPostModal: false,
+        deletePostModal: false,
         postInfo: {},
+        editCity: '', editTitle: '', editBody: '',
     }
 
     componentDidMount = () => {
 
         axios.get(`${baseURL}/users/profile`,{headers: {"Authorization": `Bearer ${localStorage.token}`}})
         .then(res=>{
-
+            //console.log(res.data)
             let userData = res.data
-            userData.posts.map((post)=>{
-                let city = this.props.cities.filter(city=>city.name===post.city)[0]
-                return post.image = city.image
-            })
             this.setState({
                 userData,
                 usernameVal: res.data.username,
                 cityVal: res.data.city
             })
-            
         })
         .catch((err)=>{
-            console.log(err.response)
+            //console.log(err.response)
             let status = err.response.data.error
             if (status===401 || status===403) {
                 alert(`${err.response.data.message}, logging out...`)
@@ -49,14 +48,23 @@ class Profile extends Component {
         })
     }
 
-
-    
-    handleInput = (e,option) => {
-        //this.setState({ [option]: e.target.value })
+    handleInput = (e,condition) => {
+        if (condition) {
+            if (!e.target.value) {
+                document.getElementById("save_edit_btn").disabled= true
+                return
+            } else {
+                document.getElementById("save_edit_btn").disabled= false
+            }
+        }
+        this.setState({
+            [e.target.name]: e.target.value
+        })   
     }
 
     // change to input tag when click on username
     changeInputClick = (option) => {
+        //console.log(option)
         this.setState({[option]: true})
     }
 
@@ -66,13 +74,11 @@ class Profile extends Component {
         let target = e.target
         if (e.target.tagName==="BUTTON") {
             target = e.target.parentNode.children[0].children[0].children[0]
-            console.log(target)
+            //console.log(target)
         }
         if (target.value==="") return
         if (this.state[value]===target.value) {
-            this.setState({ 
-                [option]: false,
-            })
+            this.setState({ [option]: false })
             return;
         }
         this.axiosPatch(target)
@@ -86,7 +92,13 @@ class Profile extends Component {
     updateCity = (e,value) => {
         if (this.state[value]==="") return;
         this.axiosPatch(e)
-        this.handleInput(e,value)
+        this.handleInput(e,false)
+    }
+
+    editCityOption = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
     }
 
     // axios call to update
@@ -104,6 +116,20 @@ class Profile extends Component {
         })
     }
 
+    closeModal = (option) => {
+        this.setState({
+            [option]: false,
+            postInfo: {},
+        })
+    }
+
+    openModal = (option,index) => {
+        this.setState({
+            [option]: true,
+            postInfo: this.state.userData.posts[index]
+        })
+    }
+
     // open post modal
     open = (index) => {
         this.setState({
@@ -112,24 +138,121 @@ class Profile extends Component {
         })
     }
 
-    // close post modal
-    close = () => {
+    // open delete-warning modal
+    openDeleteModal = (index) => {
         this.setState({
-            showPostModal: false,
-            postInfo: {}
+            deletePostModal: true,
+            postInfo: this.state.userData.posts[index]
         })
     }
 
+    // open edit modal
+    openEditModal = (index) => {
+        this.openModal("editPostModal",index)
+    }
+    
+    // close post modal
+    close = () => {
+        this.closeModal("showPostModal")
+    }
+    
+    // close delete-warning modal
+    closeDeleteModal = () => {
+        this.closeModal("deletePostModal")
+    }
+
+    // close edit modal
+    closeEdit = () => {
+        this.closeModal("editPostModal")
+    }
+
+    confirmDelete = (e) => {
+        let post_id = this.state.postInfo.id
+        axios.delete(`${baseURL}/users/posts/${post_id}`,
+            {headers: {"Authorization": `Bearer ${localStorage.token}`}})
+        .then(res=>{
+            // remove post to the profile postList
+            let newPostArr= this.state.userData.posts.filter(post=>res.data.post._id!==post.id)
+            // update current city object state
+            this.setState(prevState=>({
+                userData: {...prevState.userData, posts: newPostArr}
+            }))
+            // close delete post modal
+            this.closeDeleteModal()
+        })
+        .catch(err=>{
+            console.log(err.response)
+        })
+    }
+
+    editPost = (e) => {
+        e.preventDefault()
+
+        let newCity= !this.state.editCity? this.state.postInfo.city : this.state.editCity
+        let newTitle= !this.state.editTitle? this.state.postInfo.title : this.state.editTitle
+        let newBody= !this.state.editBody? this.state.postInfo.body : this.state.editBody
+        //console.log(this.state.editCity)
+        //console.log(newCity)
+
+        if (!( newCity && newTitle && newBody)) {
+            alert("empty edit")
+            return
+        } else {
+        }
+        
+        //*
+        let file = document.getElementById("edit_img_file")
+        let image= this.state.postInfo.image
+        // check if empty and file size
+        if (file.files.length!==0) {
+            if (file.files[0].size>=maxFileSize) { return }
+            image= file.files[0]
+        }
+        // append data to FormData
+        let formData = new FormData()
+        formData.append('city',newCity)
+        formData.append('title',newTitle)
+        formData.append('body',newBody)
+        formData.append('image',image)
+        // make axios call to create new post
+        axios.put(`${baseURL}/users/posts/${this.state.postInfo.id}`,formData,
+          {headers: {
+              "Authorization": `Bearer ${localStorage.token}`,
+              'Content-Type': 'multipart/form-data'
+            }
+        })
+        .then(res=>{
+            let newPostArr= []
+            this.state.userData.posts.map(cityPost=>{
+                if (cityPost.id===res.data.id) { return newPostArr.push(res.data) } 
+                return newPostArr.push(cityPost)
+            })
+            // update post list 
+            this.setState(prevState=>({
+                userData: {...prevState.userData,posts: newPostArr}
+            }))
+            // close edit post modal
+            this.closeEdit()
+        })
+        .catch(err=>{
+            console.log(err.response)
+            let status = err.response.data.error
+            //if (status===401 || status===403) { this.props.forcedLogOut() }
+        })
+        //*/
+    }
 
     render = () => {
 
         let postList = []
         if (this.state.userData.posts!==undefined) {
             this.state.userData.posts.map((post,i)=>(
-                postList.push(<Posts data={post} open={()=>this.open(i)} key={i} />)
+                postList.push(
+                <ProfilePosts key={i} data={post} open={()=>this.open(i)} 
+                    openDeleteModal={()=>this.openDeleteModal(i)} 
+                    openEditModal={()=>this.openEditModal(i)}/>)
             ))
         }
-
         return(
 
 <React.Fragment>
@@ -147,15 +270,16 @@ class Profile extends Component {
                     </h1> 
                     :   
                     <h1 className='profile-name'>
-                        <input className="edit-profile-name" type="text" name="username" 
+                        <input className="edit-profile-name" type="text" name="usernameVal" 
                             defaultValue={this.state.usernameVal} 
-                            onChange={(e)=>this.handleInput(e,"usernameVal")} />
+                            onChange={(e)=>this.handleInput(e,false)} />
                     </h1> 
                 }
                 </div>
                 {!this.state.editUsername?
-                <button className='edit-button'><img src='https://image.flaticon.com/icons/svg/61/61776.svg' className='edit-username-button' onClick={()=>this.changeInputClick("editUsername")}>
-                    </img></button>
+                <button className='edit-button' onClick={()=>this.changeInputClick("editUsername")}>
+                    <img src='https://image.flaticon.com/icons/svg/61/61776.svg' className='edit-username-button' />
+                </button>
                 :
                     <button className='save-button' onClick={(e)=>this.stopEdit(e,"editUsername","usernameVal")}>Save</button>
                 }
@@ -181,7 +305,6 @@ class Profile extends Component {
                 </select>
                 </span>
             </p>
-            <p>{false? bioTxt : ""}</p>
         </div>
 
         <div className="posts-list">
@@ -209,10 +332,94 @@ class Profile extends Component {
         </Modal>
     </div>
 
+    <Modal bsSize="large" className="post-modal" show={this.state.showPostModal} onHide = {this.close} >
+        <Modal.Header closeButton className="modal-header">
+            <h2>{this.state.postInfo.title}</h2>
+            <h3>in {this.state.postInfo.city} by {this.state.usernameVal} </h3>
+            <h4>{this.state.postInfo.date} </h4>
+        </Modal.Header>
+        <Modal.Body>
+            <img className="post-modal-img" src={`${baseURL}/${this.state.postInfo.image}`} alt=""/>
+            <p>
+                {this.state.postInfo.body}
+            </p>
+        </Modal.Body>
+        <Modal.Footer>
+            <Button className="green-btn" onClick={this.close}>Close</Button>
+        </Modal.Footer>
+    </Modal>
+
+
+    <Modal bsSize="large" className="post-modal" show={this.state.editPostModal} onHide = {this.closeEdit} >
+        <Modal.Header closeButton className="modal-header">
+            <Modal.Title>Edit post</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <Form horizontal>
+                <FormGroup controlId="city-drop-down">
+                    <Col componentClass={ControlLabel} sm={left}>City</Col>
+                    <Col sm={right}>
+                        <FormControl name="editCity" componentClass='select' defaultValue={this.state.postInfo.city} 
+                        onChange={this.editCityOption}>
+                        {
+                        this.props.cities.map((city,index)=>(
+                            city.name===this.state.postInfo.city?
+                            <option key={index+1} value={city.name}>{city.name+" (selected)"} </option> :
+                            <option key={index+1} value={city.name}>{city.name}</option>
+                        ))
+                        }
+                        </FormControl>
+                    </Col>
+                </FormGroup>
+                <FormGroup controlId="postTitle">
+                    <Col componentClass={ControlLabel} sm={left}>Title</Col>
+                    <Col sm={right}>
+                        <FormControl name='editTitle' defaultValue={this.state.postInfo.title} 
+                        placeholder="Title goes here" type='text' 
+                        onChange={(e)=>this.handleInput(e,true)} />
+                    </Col>
+                </FormGroup>
+                <FormGroup>
+                    <Col componentClass={ControlLabel}sm={left}>Post</Col>
+                    <Col sm={right}>
+                        <FormControl name='editBody' defaultValue={this.state.postInfo.body} 
+                        placeholder="Content goes here" componentClass='textarea' 
+                        style={{resize: "none", height: "300px"}} 
+                        onChange={(e)=>this.handleInput(e,true)}/>
+                    </Col>
+                </FormGroup>
+                <FormGroup>
+                    <Col componentClass={ControlLabel}sm={left}>Image</Col>
+                    <Col sm={right}>
+                        <FormControl id="edit_img_file" name='image' type="file" accept="image/*" />
+                        <Button onClick={()=>document.getElementById('edit_img_file').value=""}>Reset image </Button>
+                    </Col>
+                </FormGroup>
+            </Form>
+        </Modal.Body>
+        <Modal.Footer>
+            <Button onClick={this.closeEdit}>Close</Button>
+            <Button id="save_edit_btn" className="green-btn" onClick={this.editPost}>Save</Button>
+        </Modal.Footer>
+    </Modal>  
+
+    <Modal className="delete-warning" show={this.state.deletePostModal} onHide = {this.closeDeleteModal} >
+        <Modal.Header>
+            <Modal.Title>Action: Deleting Post!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <h3>Are you sure you want to delete 
+                <span> {this.state.postInfo.title} </span>?
+            </h3>
+        </Modal.Body>
+        <Modal.Footer>
+            <Button onClick={this.closeDeleteModal}> Cancel </Button>
+            <Button bsStyle="danger" onClick={this.confirmDelete}>DELETE </Button> 
+        </Modal.Footer>
+    </Modal>
+
 </React.Fragment>
 
         )
     }
 }
-
-export default Profile;

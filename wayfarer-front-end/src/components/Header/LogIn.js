@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Col, Button, Form, FormGroup, FormControl, ControlLabel, Tooltip } from "react-bootstrap"
+
+import { Col, Button, Form, FormGroup, FormControl, ControlLabel } from "react-bootstrap"
 
 const left = 3, right = 12-left;
 const baseURL= 'http://localhost:8001';
 
-
+const validEmailRegex= /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
 
 const fieldErrorHandling = FieldComponent => ({ fieldError, children }) => {
   return (
@@ -33,8 +34,6 @@ const withErrorHandling = WrappedComponent => ({ incorrectError, children }) => 
 
 const DivWithErrorHandling = withErrorHandling(({ children }) => <div>{ children }</div>)
 
-
-
 const DivWithFieldHandling = fieldErrorHandling(({ children }) => <div>{ children }</div>)
 
 class LogIn extends Component {
@@ -50,7 +49,7 @@ class LogIn extends Component {
   }
 
   toggleError = (e) => {
-    e.preventDefault()
+    //e.preventDefault()
     this.setState((prevState, props) => {
       return { incorrectError: !prevState.incorrectError }
     })
@@ -71,11 +70,13 @@ class LogIn extends Component {
 
   login = (e) => {
     e.preventDefault()
-    if (!(this.state.email && this.state.password)) {
-      console.log('please fill out all required fields');
-      this.toggleFieldError(e);
-      return;
-    };
+    
+    if (!validEmailRegex.test(this.state.email)) {
+      this.toggleError(e)
+      return
+    }
+
+    if (this.state.email==="" || this.state.password==="") return;
     
     axios.post(`${baseURL}/users/login`,
       {email: this.state.email,
@@ -102,7 +103,6 @@ class LogIn extends Component {
     <Col sm={right}>
       <FormControl name="email" type="email" placeholder="Email" onChange={this.handleInput}/>
     </Col>
-    {/* <Tooltip></Tooltip> */}
   </FormGroup>
 
   <FormGroup controlId="loginPassword">
@@ -113,12 +113,13 @@ class LogIn extends Component {
       <FormControl name="password" type="password" placeholder="Password" onChange={this.handleInput}/>
     </Col>
   </FormGroup>
+              
   <FormGroup>
     <Col smOffset={left} sm={right}>
       <Button className="green-btn" type="submit" onClick={this.login}>
         Sign in
       </Button>
-      <DivWithErrorHandling incorrectError={ this.state.incorrectError }>
+      <DivWithErrorHandling incorrectError={ this.state.incorrectError } >
       </DivWithErrorHandling>
       <DivWithFieldHandling fieldError={ this.state.fieldError }>
       </DivWithFieldHandling>

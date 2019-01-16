@@ -6,7 +6,6 @@ import './App.css';
 import Header from './Header/Header.js';
 import Landing from './Landing';
 import CitiesList from './CitiesList';
-import CityWithPosts from './CityWithPosts';
 import Profile from './Profile';
 
 const baseURL = "http://localhost:8001"
@@ -15,8 +14,13 @@ var RouteComponent = (props) =>{
   if (props.isLoggedIn) {
     return(
       <React.Fragment>
+        <Route path="/cities/:city" 
+            render={()=>{ return <CitiesList cities={props.cities}/>}} />
+        {/* <Route path="/cities" 
+            render={()=>{ return <CitiesList cities={props.cities}/>}} /> */}
         <Route exact path="/"  
             render={()=>{ return <CitiesList cities={props.cities}/>}} />
+        <Route path="/logout" render={()=>{ return null}} />
         <Route path="/profile"  
             render={()=>{ return (
             <div className="landing-page">
@@ -24,24 +28,13 @@ var RouteComponent = (props) =>{
                 <Profile cities={props.cities} forcedLogOut={props.forcedLogOut} /> 
               </div>
             </div>)}} />
-        <Route path="/cities"  
-            render={()=>{ return <CitiesList cities={props.cities}/>}} />
-        {/* <Route path="/*"  
-            render={()=>{ return (
-            <CitiesList cities={props.cities}/>
-            )}}/> */}
-        {/* <Redirect to="/profile" /> */}
       </React.Fragment>
     )  
   } else {
     return (
       <React.Fragment>
         <Route path="/" 
-          render={()=>{ return (
-          <>
-            <Landing cities={props.cities} />
-          </>
-          )}} />
+          render={()=>{ return (<Landing cities={props.cities} />)}} />
       </React.Fragment>
     )
   }
@@ -78,9 +71,9 @@ class App extends Component {
     this.setState({ isLoggedIn: true })
   }
 
-  loggedOut = (e) => {
-    e.preventDefault()
+  loggedOut = () => {
     this.forcedLogOut()
+    this.props.history.push("/")
   }
 
   forcedLogOut = () => {

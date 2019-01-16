@@ -112,14 +112,16 @@ img {
   color: #777 !important;
 }
 
-.nav-item > span > a {
+.logout-btn, .nav-item > span > a {
   /* margin: 20px auto; */
   padding: 15px;
+  color: rgb(70, 70, 220);
 }
-.nav-item > span > a:hover {
+.logout-btn:hover, .nav-item > span > a:hover {
   padding: 15px;
   color: darkseagreen !important;
   background-color: #ffffff !important;
+  text-decoration: underline;
 }
 
 
@@ -294,6 +296,7 @@ img {
 
 .post-img {
   height: 150px;
+  width: 300px;
   margin: 10px;
 }
 
@@ -301,6 +304,10 @@ img {
 .title {
   margin: 10px 0 0 10px;
   width: 300px;
+}
+.title:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .post-and-img {
@@ -398,6 +405,17 @@ main {
 
 .edit-profile-name{
   width: 90%;
+}
+
+.edit-btn {
+  float: right;
+  margin: 5px 10px 5px 5px;
+  background-color: rgb(170, 185, 170);
+  border: 2px solid #777;
+}
+
+.edit-btn:hover {
+  background-color: white;
 }
 
 .bio {
