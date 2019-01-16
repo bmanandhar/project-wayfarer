@@ -5,7 +5,8 @@ import axios from "axios";
 
 const baseURL= 'http://localhost:8001';
 
-const bioTxt = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
+const bioTxt = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis."
+
 
 class Profile extends Component {
 
@@ -132,79 +133,81 @@ class Profile extends Component {
         return(
 
 <React.Fragment>
-    <div className="profile">
-        <div className='profile-div'>
-            <img className="profile-pic" src={`${baseURL}/${this.state.userData.image}`} alt="" />
-        </div>
-        <div className='edit-username-div'>
-            <div className='username'>
-            {
-            !this.state.editUsername?
-                <h1 className='profile-name'> 
-                {this.state.usernameVal} 
-                </h1> 
-                :   
-                <h1 className='profile-name'>
-                    <input className="edit-profile-name" type="text" name="username" 
-                        defaultValue={this.state.usernameVal} 
-                        onChange={(e)=>this.handleInput(e,"usernameVal")} />
-                </h1> 
-            }
+    <div className='profile-div-3'>
+        <div className="profile">
+            <div className='profile-div'>
+                <img className="profile-pic" src={`${baseURL}/${this.state.userData.image}`} alt="" />
             </div>
-            {!this.state.editUsername?
-            <button className='edit-button'><img src='https://image.flaticon.com/icons/svg/61/61776.svg' className='edit-username-button' onClick={()=>this.changeInputClick("editUsername")}>
-                </img></button>
-            :
-                <button className='save-button' onClick={(e)=>this.stopEdit(e,"editUsername","usernameVal")}>Save</button>
-            }
+            <div className='edit-username-div'>
+                <div className='username'>
+                {
+                !this.state.editUsername?
+                    <h1 className='profile-name'> 
+                    {this.state.usernameVal} 
+                    </h1> 
+                    :   
+                    <h1 className='profile-name'>
+                        <input className="edit-profile-name" type="text" name="username" 
+                            defaultValue={this.state.usernameVal} 
+                            onChange={(e)=>this.handleInput(e,"usernameVal")} />
+                    </h1> 
+                }
+                </div>
+                {!this.state.editUsername?
+                <button className='edit-button'><img src='https://image.flaticon.com/icons/svg/61/61776.svg' className='edit-username-button' onClick={()=>this.changeInputClick("editUsername")}>
+                    </img></button>
+                :
+                    <button className='save-button' onClick={(e)=>this.stopEdit(e,"editUsername","usernameVal")}>Save</button>
+                }
+            </div>
+
+            <p className='bio chem'>Joined: 
+                <span style={{margin: "10px"}}> {this.state.userData.joindate} </span>
+            </p>
+            <p className='bio chem'> Email: 
+                <span style={{margin: "10px"}}> {this.state.userData.email} </span>
+            </p>
+            <p className='bio'>
+                City:
+                <span style={{margin: "10px"}}>
+                <select onChange={(e)=>this.updateCity(e,"cityVal")} name="city">
+                {
+                this.props.cities.map((city,index)=>(
+                city.name!==this.state.cityVal ? 
+                    <option key={index+1} value={city.name}>{city.name} </option> :
+                    <option key={index+1} value={city.name} selected>{city.name} </option>
+                ))
+                }
+                </select>
+                </span>
+            </p>
+            <p>{false? bioTxt : ""}</p>
         </div>
 
-        <p className='bio chem'>Joined: 
-            <span style={{margin: "10px"}}> {this.state.userData.joindate} </span>
-        </p>
-        <p className='bio chem'> Email: 
-            <span style={{margin: "10px"}}> {this.state.userData.email} </span>
-        </p>
-        <p className='bio'>
-            City:
-            <span style={{margin: "10px"}}>
-            <select onChange={(e)=>this.updateCity(e,"cityVal")} name="city">
-            {
-            this.props.cities.map((city,index)=>(
-            city.name!==this.state.cityVal ? 
-                <option key={index+1} value={city.name}>{city.name} </option> :
-                <option key={index+1} value={city.name} selected>{city.name} </option>
-            ))
-            }
-            </select>
-            </span>
-        </p>
-        <p>{false? bioTxt : ""}</p>
-    </div>
+        <div className="posts-list">
+            {/* <h2>Your Posts: </h2> */}
+            {postList.length>0 ? postList : <h4>No Posts</h4>}
+        </div>
 
-    <div className="posts-list">
-        {/* <h2>Your Posts: </h2> */}
-        {postList.length>0 ? postList : <h4>No post</h4>}
+        <Modal bsSize="large" className="post-modal" show={this.state.showPostModal} onHide = {this.close} >
+            <Modal.Header>
+                <Modal.Title>
+                {`${this.state.postInfo.title} 
+                    by ${this.state.usernameVal} 
+                    on ${this.state.postInfo.date}`}
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <img className="post-modal-img" src={`${baseURL}/${this.state.postInfo.image}`} alt=""/>
+                <p>
+                    {this.state.postInfo.body}
+                </p>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button className="green-btn" onClick={this.close}>Close</Button>
+            </Modal.Footer>
+        </Modal>
     </div>
-
-    <Modal bsSize="large" className="post-modal" show={this.state.showPostModal} onHide = {this.close} >
-        <Modal.Header>
-            <Modal.Title>
-            {`${this.state.postInfo.title} 
-                by ${this.state.usernameVal} 
-                on ${this.state.postInfo.date}`}
-            </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-            <img className="post-modal-img" src={`${baseURL}/${this.state.postInfo.image}`} alt=""/>
-            <p>
-                {this.state.postInfo.body}
-            </p>
-        </Modal.Body>
-        <Modal.Footer>
-            <Button className="green-btn" onClick={this.close}>Close</Button>
-        </Modal.Footer>
-    </Modal>
 
 </React.Fragment>
 

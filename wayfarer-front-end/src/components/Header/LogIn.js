@@ -5,10 +5,24 @@ import { Col, Button, Form, FormGroup, FormControl, ControlLabel, Tooltip } from
 const left = 3, right = 12-left;
 const baseURL= 'http://localhost:8001';
 
-const withErrorHandling = WrappedComponent => ({ showError, children }) => {
+
+
+const fieldErrorHandling = FieldComponent => ({ fieldError, children }) => {
+  return (
+    <FieldComponent>
+      { fieldError &&
+      <div className='incorrect-login'>
+        <h1 className='incorrect'>Fill in required fields.</h1>
+      </div> }
+      { children }
+    </FieldComponent>
+  );
+};
+
+const withErrorHandling = WrappedComponent => ({ incorrectError, children }) => {
   return (
     <WrappedComponent>
-      { showError &&
+      { incorrectError &&
       <div className='incorrect-login'>
         <h1 className='incorrect'>Incorrect login details</h1>
       </div> }
@@ -18,6 +32,12 @@ const withErrorHandling = WrappedComponent => ({ showError, children }) => {
 };
 
 const DivWithErrorHandling = withErrorHandling(({ children }) => <div>{ children }</div>)
+<<<<<<< HEAD
+=======
+
+const DivWithFieldHandling = fieldErrorHandling(({ children }) => <div>{ children }</div>)
+
+>>>>>>> harry
 class LogIn extends Component {
 
   constructor(props) {
@@ -25,14 +45,22 @@ class LogIn extends Component {
     this.state = {
       email: '',
       password: '',
-      showError: false
+      incorrectError: false,
+      fieldError: false,
     }
   }
 
   toggleError = (e) => {
     e.preventDefault()
     this.setState((prevState, props) => {
-      return { showError: !prevState.showError }
+      return { incorrectError: !prevState.incorrectError }
+    })
+  };
+
+  toggleFieldError = (e) => {
+    e.preventDefault()
+    this.setState((prevState, props) => {
+      return { fieldError: !prevState.fieldError }
     })
   };
   
@@ -44,7 +72,11 @@ class LogIn extends Component {
 
   login = (e) => {
     e.preventDefault()
-    if (this.state.email==="" || this.state.password==="") return;
+    if (!(this.state.email && this.state.password)) {
+      console.log('please fill out all required fields');
+      this.toggleFieldError(e);
+      return;
+    };
     
     axios.post(`${baseURL}/users/login`,
       {email: this.state.email,
@@ -73,6 +105,7 @@ class LogIn extends Component {
           {/* <Tooltip></Tooltip> */}
         </FormGroup>
 
+<<<<<<< HEAD
         <FormGroup controlId="loginPassword">
           <Col componentClass={ControlLabel} sm={left}>
             Password
@@ -89,6 +122,37 @@ class LogIn extends Component {
               Sign in
             </Button>
           </Col>
+=======
+<Form horizontal>
+  <FormGroup controlId="loginEmail">
+    <Col componentClass={ControlLabel} sm={left}>
+      Email
+    </Col>
+    <Col sm={right}>
+      <FormControl name="email" type="email" placeholder="Email" onChange={this.handleInput}/>
+    </Col>
+    {/* <Tooltip></Tooltip> */}
+  </FormGroup>
+
+  <FormGroup controlId="loginPassword">
+    <Col componentClass={ControlLabel} sm={left}>
+      Password
+    </Col>
+    <Col sm={right}>
+      <FormControl name="password" type="password" placeholder="Password" onChange={this.handleInput}/>
+    </Col>
+  </FormGroup>
+  <FormGroup>
+    <Col smOffset={left} sm={right}>
+      <Button className="green-btn" type="submit" onClick={this.login}>
+        Sign in
+      </Button>
+      <DivWithErrorHandling incorrectError={ this.state.incorrectError }>
+      </DivWithErrorHandling>
+      <DivWithFieldHandling fieldError={ this.state.fieldError }>
+      </DivWithFieldHandling>
+    </Col>
+>>>>>>> harry
 
         </FormGroup>
       </Form>   
