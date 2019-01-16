@@ -7,7 +7,7 @@ import Cities from './Cities.js';
 import CityWithPosts from './CityWithPosts';
 
 const baseURL= 'http://localhost:8001';
-const maxFileSize = 10*1024*1024;
+const maxFileSize = 5*1024*1024;
 
 const left = 2, 
 right = 12-left;
@@ -127,11 +127,8 @@ class CitiesList extends Component {
             alert("empty")
             return
         }
-        console.log(this.state.city,this.state.title,this.state.body,this.state.image? this.state.image : "empty")
+        console.log(this.state.city,this.state.title,this.state.body)
         //*
-        console.log("undefined",this.state.image===undefined)
-        console.log("null",this.state.image===null)
-        console.log("empty str",this.state.image==="")
         // get file input
         let file = document.getElementById("img_file")
         let image= ""
@@ -261,12 +258,8 @@ class CitiesList extends Component {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Col sm={left}>
-                    <Button onClick={this.closeFormModal}>Close</Button>
-                </Col>
-                <Col sm={right}>
-                    <Button className="green-btn" onClick={this.submitNewPost}>Submit</Button>
-                </Col>
+                <Button onClick={this.closeFormModal}>Close</Button>
+                <Button className="green-btn" onClick={this.submitNewPost}>Submit</Button>
             </Modal.Footer>
         </Modal>  
 

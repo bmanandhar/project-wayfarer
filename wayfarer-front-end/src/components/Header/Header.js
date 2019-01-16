@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { Navbar, Nav, NavItem, Modal, Button } from "react-bootstrap";
 
 import LogIn from './LogIn'

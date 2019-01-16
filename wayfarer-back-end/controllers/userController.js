@@ -19,9 +19,7 @@ const multer = require('multer')
 let multerStorage = multer.diskStorage({
     destination: 'public/uploads/',
     filename: ( req, file, cb )=> {
-        let now = new Date()
-        let timestampStr= now.getFullYear()+"_"+(now.getMonth()+1)+"_"+now.getDate()
-        cb( null, "post_"+timestampStr+"_"+file.originalname);
+        cb( null, "post_"+createTimeStamp(false)+"_"+file.originalname);
     }
 })
 const upload = multer({
@@ -37,8 +35,8 @@ const config = require('../config/config')
 
 /* /////////////// HELPER FUNCTIONS /////////////// */
 
-// add zero to month and/or day if 1 <= x <= 9
-function padZero(num) { return (num>=1 && num<=9) ? `0${num}`: `${num}` }
+// add zero to month and/or day if 0 <= x <= 9
+function padZero(num) { return (num>=0 && num<=9) ? `0${num}`: `${num}` }
 
 // verfify token
 function verifyToken(token) {
@@ -235,6 +233,76 @@ router.get('/profile',(req,res)=>{
 
 
 /**
+ * EDIT POST
+ */
+router.put("/posts/:id", upload.any(), (req,res)=>{
+    console.log("header: ",req.headers.authorization!==undefined)
+
+    if (req.headers.authorization===undefined) {
+        return res.status(FORBIDDEN).json({"error": FORBIDDEN, "message": "forbidden"})
+    }
+    
+    let token = req.headers.authorization.split(" ")[1]
+    let decoded = verifyToken(token)
+    console.log(decoded.iat,decoded.exp)
+    
+    let post_id = req.params.id
+
+    let data = req.body
+    if (!(data.city && data.title && data.body)) {
+        return res.status(BAD_REQ).json({
+            "error": BAD_REQ, "message": "invalid form"
+        })
+    }
+
+    db.Post.findById(post_id).populate('author')
+    .then(post=>{
+        if (!post) {
+            return res.status(NOTFOUND).json({
+                "error": NOTFOUND, "message": "no post found"
+            })
+        }
+        if (post.author.id.toString()!==decoded.id) {
+            return res.status(UNAUTH).json({
+                "error": UNAUTH, "message": "invalid operation"
+            })
+        }
+
+        let image_path = data.image
+        if (req.files.length>0) { image_path= req.files[0].path.replace("public/","") }
+        let editPostObj = {
+            title: data.title,
+            body: data.body,
+            city: data.city,
+            image: image_path,
+        }
+        console.log("abc")
+        console.log(editPostObj.city)
+        console.log("deg")
+        //return res.status(INTERNAL_ERR).json({"error": INTERNAL_ERR, "message": "cannot save post" })
+        db.Post.findByIdAndUpdate(post_id,editPostObj,{"new": true})
+        .then(resPost=>{
+            console.log(resPost.city)
+            return res.json({
+                id: resPost._id,
+                title: resPost.title,
+                body: resPost.body,
+                city: resPost.city,
+                image: resPost.image,
+                date: resPost.date.replace("T"," at "),
+                author: post.author.username
+            })
+        })
+        .catch(err=>{
+            console.log(err)
+            return res.status(INTERNAL_ERR).json({
+                "error": INTERNAL_ERR, "message": "cannot save post"
+            })
+        })
+    })
+})
+
+/**
  * DELETE POST
  */
 router.delete("/posts/:id", (req,res)=>{
@@ -253,7 +321,6 @@ router.delete("/posts/:id", (req,res)=>{
     
     let post_id = req.params.id
 
-    console.log(post_id)
     db.Post.findById(post_id)
     .then(post=>{
         if (!post) {
@@ -266,18 +333,13 @@ router.delete("/posts/:id", (req,res)=>{
                 "error": UNAUTH, "message": "invalid operation"
             })
         }
-        console.log(post)
-        //*
         db.Post.findByIdAndRemove(post_id)
         .then(deletedPost=>{
             if (!deletedPost) {
-                return res.status(NOTFOUND).json({
-                    "error": NOTFOUND, "message": "no post found"
-                })
+                return res.status(NOTFOUND).json({"error": NOTFOUND, "message": "no post found"})
             }
             return res.json({"post": deletedPost})
         })
-        //*/
     })
 })
 
@@ -306,12 +368,7 @@ router.post("/posts/new", upload.any(), (req,res)=>{
         })
     }
 
-    console.log(req.body)
-    console.log(req.files)
-
-
     let data = req.body
-    //console.log(data.city,data.title,data.body)
     if (!(data.city && data.title && data.body)) {
         return res.status(BAD_REQ).json({
             "error": BAD_REQ, "message": "invalid form"

@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 
-import { Col, Button, Form, FormGroup, FormControl, ControlLabel, Tooltip } from "react-bootstrap"
+import { Col, Button, Form, FormGroup, FormControl, ControlLabel } from "react-bootstrap"
 
 const left = 3, right = 12-left;
 const baseURL= 'http://localhost:8001';
+
+const validEmailRegex= /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
 
 const withErrorHandling = WrappedComponent => ({ showError, children }) => {
   return (
@@ -33,7 +35,7 @@ class LogIn extends Component {
   }
 
   toggleError = (e) => {
-    e.preventDefault()
+    //e.preventDefault()
     this.setState((prevState, props) => {
       return { showError: !prevState.showError }
     })
@@ -47,6 +49,12 @@ class LogIn extends Component {
 
   login = (e) => {
     e.preventDefault()
+    
+    if (!validEmailRegex.test(this.state.email)) {
+      this.toggleError(e)
+      return
+    }
+
     if (this.state.email==="" || this.state.password==="") return;
     
     axios.post(`${baseURL}/users/login`,
@@ -76,7 +84,6 @@ class LogIn extends Component {
     <Col sm={right}>
       <FormControl name="email" type="email" placeholder="Email" onChange={this.handleInput}/>
     </Col>
-    {/* <Tooltip></Tooltip> */}
   </FormGroup>
 
   <FormGroup controlId="loginPassword">
