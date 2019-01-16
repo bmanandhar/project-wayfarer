@@ -10,3 +10,4 @@ npm install jsonwebtoken
 npm install jwt-simple
 npm install mongoose
 npm install bcrypt
+npm install multer

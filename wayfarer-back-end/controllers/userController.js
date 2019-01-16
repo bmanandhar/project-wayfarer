@@ -7,14 +7,30 @@ const INTERNAL_ERR = 500
 
 const EXPIRE= "12h"
 const defaultImg = "images/default_profile.jpg"
+const maxFileSize = 10*1024*1024
+
+const mongoose = require('../db/connection')
 
 const express = require('express')
 const router = express.Router()
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
-const db = require('../models');
+const multer = require('multer')
+let multerStorage = multer.diskStorage({
+    destination: 'public/uploads/',
+    filename: ( req, file, cb )=> {
+        let now = new Date()
+        let timestampStr= now.getFullYear()+"_"+(now.getMonth()+1)+"_"+now.getDate()
+        cb( null, "post_"+timestampStr+"_"+file.originalname);
+    }
+})
+const upload = multer({
+    storage: multerStorage,
+    limits: { fileSize: maxFileSize }
+})
 
-const mongoose = require('../db/connection')
+const db = require('../models')
+
 const passport = require('../config/passport')
 const config = require('../config/config')
 
@@ -219,7 +235,7 @@ router.get('/profile',(req,res)=>{
 
 
 /**
- * CREATE NEW
+ * DELETE POST
  */
 router.delete("/posts/:id", (req,res)=>{
     console.log("header: ",req.headers.authorization!==undefined)
@@ -262,18 +278,14 @@ router.delete("/posts/:id", (req,res)=>{
             return res.json({"post": deletedPost})
         })
         //*/
-        
-
     })
 })
 
 
-
-
 /**
- * CREATE NEW
+ * CREATE NEW POST
  */
-router.post("/posts/new", (req,res)=>{
+router.post("/posts/new", upload.any(), (req,res)=>{
     console.log("header: ",req.headers.authorization!==undefined)
     
     if (req.headers.authorization===undefined) {
@@ -282,13 +294,23 @@ router.post("/posts/new", (req,res)=>{
         })
     }
     
-
     let token = req.headers.authorization.split(" ")[1]
     let decoded = verifyToken(token)
 
     console.log(decoded.iat,decoded.exp)
     
-    let data = req.body.data
+    
+    if (req.files.size>=maxFileSize) {
+        return res.status(BAD_REQ).json({
+            "error": BAD_REQ, "message": "image max size 10MB"
+        })
+    }
+
+    console.log(req.body)
+    console.log(req.files)
+
+
+    let data = req.body
     //console.log(data.city,data.title,data.body)
     if (!(data.city && data.title && data.body)) {
         return res.status(BAD_REQ).json({
@@ -296,7 +318,6 @@ router.post("/posts/new", (req,res)=>{
         })
     }
     
-    //*
     // find user by id
     db.User.findById(decoded.id)
     .then(user=>{
@@ -307,19 +328,19 @@ router.post("/posts/new", (req,res)=>{
         }
         
         let timestamp = createTimeStamp(true)
-        console.log(timestamp)
-        
+        let image_path = `images/${parseCityNameLower(data.city)}2.jpeg`
+        if (req.files.length>0) { image_path= req.files[0].path.replace("public/","") }
         let newPost = {
             title: data.title,
             body: data.body,
             city: data.city,
-            image: data.image!==""? data.image : `images/${parseCityNameLower(data.city)}2.jpeg`,
+            image: image_path,
             author: decoded.id,
             date: timestamp
         }
+        
         db.Post.create(newPost)
         .then(post=>{
-            console.log()
             return res.json({
                 id: post._id,
                 title: post.title,
@@ -337,9 +358,7 @@ router.post("/posts/new", (req,res)=>{
             })
         })
     })
-    //*/
 })
-
 
 /**
  * PATCH DATA

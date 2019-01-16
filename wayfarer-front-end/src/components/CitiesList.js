@@ -7,9 +7,11 @@ import Cities from './Cities.js';
 import CityWithPosts from './CityWithPosts';
 
 const baseURL= 'http://localhost:8001';
+const maxFileSize = 10*1024*1024;
 
 const left = 2, 
 right = 12-left;
+
 
 class CitiesList extends Component {
 
@@ -22,10 +24,7 @@ class CitiesList extends Component {
         cityIndex: 0,
         postInfo: {},
         cityInfo: {},
-        city: '',
-        title: '',
-        body: '',
-        image: '',
+        city: '', title: '', body: '',
     }
 
     openFormModal = () => {
@@ -51,7 +50,7 @@ class CitiesList extends Component {
         })
     }
 
-    parseCityName = (name) => {
+    parseCityNameLower = (name) => {
         let cityName = []
         name.split(" ").map(word=>{
             return cityName.push(word.charAt(0).toLowerCase()+word.slice(1))
@@ -63,22 +62,28 @@ class CitiesList extends Component {
         
         this._isMounted = true
 
-        /*
-        console.log(this.props.location.pathname)
         let pathname= this.props.history.location.pathname
-        if (pathname==="/") {
-            this.props.history.push('/profile')
-        } else if (pathname.indexOf("/cities/")!==-1) {
-            this.props.history.push('/cities')
-        } else {
-            this.props.history.push('/cities')
-        }
-        //*/
-
+        
         axios.get(`${baseURL}/cities/all`)
         .then(response=>{
-            axios.get(`${baseURL}/cities/${response.data.cities[0].id}/posts`)
+    
+            pathname= pathname.replace("/cities/","")
+            console.log(pathname)
+
+            let defaultCity = response.data.cities[0]
+            let filteredCity = response.data.cities.filter(city=>{
+                return (this.parseCityNameLower(city.name)===pathname)
+            })
+            if (filteredCity.length>0) {
+                defaultCity= filteredCity[0]
+            }
+            console.log(this.parseCityNameLower(defaultCity.name))
+
+            this.props.history.push('/cities/'+this.parseCityNameLower(defaultCity.name))
+
+            axios.get(`${baseURL}/cities/${defaultCity.id}/posts`)
             .then(res=>{
+
                 if (this._isMounted) {
                     this.setState({ 
                         cityInfo: res.data.city,
@@ -127,17 +132,27 @@ class CitiesList extends Component {
         console.log("undefined",this.state.image===undefined)
         console.log("null",this.state.image===null)
         console.log("empty str",this.state.image==="")
-        let dataObj = {
-            data: {
-              city: this.state.city,
-              title: this.state.title,
-              body: this.state.body,
-              image: this.state.image
-            }
+        // get file input
+        let file = document.getElementById("img_file")
+        let image= ""
+        // check if empty and file size
+        if (file.files.length!==0) {
+            if (file.files[0].size>=maxFileSize) { return }
+            image= file.files[0]
         }
+        // append data to FormData
+        let formData = new FormData()
+        formData.append('city',this.state.city)
+        formData.append('title',this.state.title)
+        formData.append('body',this.state.body)
+        formData.append('image',image)
         // make axios call to create new post
-        axios.post(`${baseURL}/users/posts/new`,dataObj,
-          {headers: {"Authorization": `Bearer ${localStorage.token}`}})
+        axios.post(`${baseURL}/users/posts/new`,formData,
+          {headers: {
+              "Authorization": `Bearer ${localStorage.token}`,
+              'Content-Type': 'multipart/form-data'
+            }
+        })
         .then(res=>{
             console.log(res.data)
             // check if current city is the new post city
@@ -169,15 +184,13 @@ class CitiesList extends Component {
             return null
         }
 
+        //let abc = onClick={()=>this.clickOnCity(index)}
+
         let cityList = this.props.cities.map((city,index)=>{
             // get the pretty link
-            let prettyNameLink = []
-            city.name.split(" ").map(word=>{
-                prettyNameLink.push(word.charAt(0).toLowerCase()+word.slice(1))
-            })
             return(
-            <Link to={`/cities/${prettyNameLink.join("-")}`} key={index} onClick={()=>this.clickOnCity(index)}>
-                <button className="green-btn" key={index} onClick={()=>this.clickOnCity(index)}>
+            <Link to={`/cities/${this.parseCityNameLower(city.name)}`} key={index} onClick={()=>this.clickOnCity(index)}>
+                <button className="green-btn" key={index} >
                     <Cities data={city}/>         
                 </button>
             </Link>)
@@ -210,7 +223,7 @@ class CitiesList extends Component {
     </Grid> 
 
         <Modal bsSize="large" show={this.state.show} onHide={this.closeFormModal}>
-            <Modal.Header>
+            <Modal.Header closeButton className="modal-header">
                 <Modal.Title>Create a new post</Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -241,7 +254,8 @@ class CitiesList extends Component {
                     <FormGroup>
                         <Col componentClass={ControlLabel}sm={left}>Image</Col>
                         <Col sm={right}>
-                            <FormControl name='image' type="file" onChange={this.handleInput} disabled/>
+                            <FormControl id="img_file" name='image' type="file" accept="image/*" />
+                            <Button onClick={()=>document.getElementById('img_file').value=""}>Reset image </Button>
                         </Col>
                     </FormGroup>
                 </Form>
@@ -257,12 +271,10 @@ class CitiesList extends Component {
         </Modal>  
 
         <Modal bsSize="large" className="post-modal" show={this.state.showPost} onHide = {this.closePostModal} >
-            <Modal.Header>
-                <Modal.Title>
-                {`${this.state.postInfo.title} 
-                by ${this.state.postInfo.author} 
-                on ${this.state.postInfo.date}`}
-                </Modal.Title>
+            <Modal.Header closeButton className="modal-header">
+                <h2>{this.state.postInfo.title}</h2>
+                <h3>in {this.state.postInfo.city} by {this.state.postInfo.author} </h3>
+                <h4>{this.state.postInfo.date} </h4>
             </Modal.Header>
             <Modal.Body>
                 <img className="post-modal-img" src={baseURL+'/'+this.state.postInfo.image} alt=""/>

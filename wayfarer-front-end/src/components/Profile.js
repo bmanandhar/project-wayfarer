@@ -232,12 +232,10 @@ export default class Profile extends Component {
     </div>
 
     <Modal bsSize="large" className="post-modal" show={this.state.showPostModal} onHide = {this.close} >
-        <Modal.Header>
-            <Modal.Title>
-            {`${this.state.postInfo.title} 
-                by ${this.state.usernameVal} 
-                on ${this.state.postInfo.date}`}
-            </Modal.Title>
+        <Modal.Header closeButton className="modal-header">
+            <h2>{this.state.postInfo.title}</h2>
+            <h3>in {this.state.postInfo.city} by {this.state.usernameVal} </h3>
+            <h4>{this.state.postInfo.date} </h4>
         </Modal.Header>
         <Modal.Body>
             <img className="post-modal-img" src={`${baseURL}/${this.state.postInfo.image}`} alt=""/>
