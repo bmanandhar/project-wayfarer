@@ -30,6 +30,13 @@ function verifyToken(token) {
     return decoded
 }
 
+function parseCityNameUpper(name) {
+    let searchName = []
+    name.split("-").map(word=>{
+        searchName.push(word.charAt(0).toUpperCase()+word.slice(1))
+    })
+    return searchName.join(" ")
+}
 
 /* /////////////// ROUTES AND CONTROLLERS /////////////// */
 
@@ -143,11 +150,7 @@ router.get('/:id/posts', (req, res) => {
 /*
 router.get('/:name/posts', (req, res) => {
 
-    let searchName = []
-    req.params.name.split("-").map(word=>{
-        searchName.push(word.charAt(0).toUpperCase()+word.slice(1))
-    })
-    db.City.find({"name":searchName.join(" ")})
+    db.City.find({"name": parseCityName(req.params.name)})
     .then(cty => {
         if (!cty) {
             return res.status(NOTFOUND).json({

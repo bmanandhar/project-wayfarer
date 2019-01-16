@@ -37,6 +37,25 @@ function verifyToken(token) {
     return decoded
 }
 
+// parse city name from space separated to dash-separated and lowercase
+function parseCityNameLower(name) {
+    let searchName = []
+    name.split(" ").map(word=>{
+        searchName.push(word.charAt(0).toLowerCase()+word.slice(1))
+    })
+    return searchName.join("-")
+}
+
+function createTimeStamp(timeRequired) {
+    let today = new Date();
+    let timestamp = `${today.getFullYear()}-${padZero(today.getMonth()+1)}-${padZero(today.getDate())}`
+    if (timeRequired) {
+        console.log(today.getHours(),today.getMinutes())
+        timestamp = `${timestamp}T${padZero(today.getHours())}:${padZero(today.getMinutes())}:${padZero(today.getSeconds())}`
+    }
+    return timestamp;
+}
+
 
 /* /////////////// ROUTES AND CONTROLLERS /////////////// */
 
@@ -57,9 +76,7 @@ router.post('/signup', (req, res) => {
         } 
             
         // create timestamp
-        let today = new Date();
-        let timestamp = `${today.getFullYear()}-${padZero(today.getMonth()+1)}-${padZero(today.getDate())}`
-        console.log(timestamp)
+        let timestamp = createTimeStamp(false)
         
         // new user object
         let newUser = {
@@ -184,11 +201,13 @@ router.get('/profile',(req,res)=>{
             let resPosts = []
             posts.map(post=>{
                 resPosts.push({
+                    "id": post._id,
                     "title": post.title,
                     "body": post.body,
                     "author": obj.username,
                     "date": post.date.replace("T"," at "),
-                    "city": post.city
+                    "city": post.city,
+                    "image": post.image
                 })
             })
             obj.posts = resPosts
@@ -197,6 +216,58 @@ router.get('/profile',(req,res)=>{
     })
     
 })
+
+
+/**
+ * CREATE NEW
+ */
+router.delete("/posts/:id", (req,res)=>{
+    console.log("header: ",req.headers.authorization!==undefined)
+    
+    if (req.headers.authorization===undefined) {
+        return res.status(FORBIDDEN).json({
+            "error": FORBIDDEN, "message": "forbidden"
+        })
+    }
+    
+    let token = req.headers.authorization.split(" ")[1]
+    let decoded = verifyToken(token)
+
+    console.log(decoded.iat,decoded.exp)
+    
+    let post_id = req.params.id
+
+    console.log(post_id)
+    db.Post.findById(post_id)
+    .then(post=>{
+        if (!post) {
+            return res.status(NOTFOUND).json({
+                "error": NOTFOUND, "message": "no post found"
+            })
+        }
+        if (post.author.toString()!==decoded.id) {
+            return res.status(UNAUTH).json({
+                "error": UNAUTH, "message": "invalid operation"
+            })
+        }
+        console.log(post)
+        //*
+        db.Post.findByIdAndRemove(post_id)
+        .then(deletedPost=>{
+            if (!deletedPost) {
+                return res.status(NOTFOUND).json({
+                    "error": NOTFOUND, "message": "no post found"
+                })
+            }
+            return res.json({"post": deletedPost})
+        })
+        //*/
+        
+
+    })
+})
+
+
 
 
 /**
@@ -224,10 +295,8 @@ router.post("/posts/new", (req,res)=>{
             "error": BAD_REQ, "message": "invalid form"
         })
     }
-    return res.status(INTERNAL_ERR).json({
-        "error": INTERNAL_ERR, "message": "DB error"
-    })
-    /*
+    
+    //*
     // find user by id
     db.User.findById(decoded.id)
     .then(user=>{
@@ -236,13 +305,37 @@ router.post("/posts/new", (req,res)=>{
                 "error": UNAUTH, "message": "user not found"
             })
         }
+        
+        let timestamp = createTimeStamp(true)
+        console.log(timestamp)
+        
         let newPost = {
-            title: data.city,
+            title: data.title,
             body: data.body,
             city: data.city,
-            image: data.image!==undefined? data.image : "city1.jpeg"
+            image: data.image!==""? data.image : `images/${parseCityNameLower(data.city)}2.jpeg`,
+            author: decoded.id,
+            date: timestamp
         }
-        console.log()
+        db.Post.create(newPost)
+        .then(post=>{
+            console.log()
+            return res.json({
+                id: post._id,
+                title: post.title,
+                body: post.body,
+                city: post.city,
+                image: post.image,
+                date: post.date.replace("T"," at "),
+                author: user.username
+            })
+        })
+        .catch(err=>{
+            console.log(err)
+            return res.status(INTERNAL_ERR).json({
+                "error": INTERNAL_ERR, "message": "cannot save post"
+            })
+        })
     })
     //*/
 })

@@ -1,11 +1,9 @@
 import React, {Component} from "react";
 import { Modal, Button } from "react-bootstrap"
-import Posts from './Posts';
+import ProfilePosts from './ProfilePosts';
 import axios from "axios";
 
 const baseURL= 'http://localhost:8001';
-
-const bioTxt = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
 
 export default class Profile extends Component {
 
@@ -18,6 +16,7 @@ export default class Profile extends Component {
         userData: {},
         cities: [],
         showPostModal: false,
+        deletePostModal: false,
         postInfo: {},
     }
 
@@ -25,18 +24,13 @@ export default class Profile extends Component {
 
         axios.get(`${baseURL}/users/profile`,{headers: {"Authorization": `Bearer ${localStorage.token}`}})
         .then(res=>{
-
+            console.log(res.data)
             let userData = res.data
-            userData.posts.map((post)=>{
-                let city = this.props.cities.filter(city=>city.name===post.city)[0]
-                return post.image = city.image
-            })
             this.setState({
                 userData,
                 usernameVal: res.data.username,
                 cityVal: res.data.city
             })
-            
         })
         .catch((err)=>{
             console.log(err.response)
@@ -48,14 +42,13 @@ export default class Profile extends Component {
         })
     }
 
-
-    
     handleInput = (e,option) => {
         //this.setState({ [option]: e.target.value })
     }
 
     // change to input tag when click on username
     changeInputClick = (option) => {
+        console.log(option)
         this.setState({[option]: true})
     }
 
@@ -69,9 +62,7 @@ export default class Profile extends Component {
         }
         if (target.value==="") return
         if (this.state[value]===target.value) {
-            this.setState({ 
-                [option]: false,
-            })
+            this.setState({ [option]: false })
             return;
         }
         this.axiosPatch(target)
@@ -103,6 +94,20 @@ export default class Profile extends Component {
         })
     }
 
+    closeModal = (option) => {
+        this.setState({
+            [option]: false,
+            postInfo: {},
+        })
+    }
+
+    openModal = (option,index) => {
+        this.setState({
+            [option]: true,
+            postInfo: this.state.userData.posts[index]
+        })
+    }
+
     // open post modal
     open = (index) => {
         this.setState({
@@ -111,24 +116,63 @@ export default class Profile extends Component {
         })
     }
 
+    // open delete-warning modal
+    openDeleteModal = (index) => {
+        this.setState({
+            deletePostModal: true,
+            postInfo: this.state.userData.posts[index]
+        })
+    }
+    
     // close post modal
     close = () => {
-        this.setState({
-            showPostModal: false,
-            postInfo: {}
+        this.closeModal("showPostModal")
+    }
+    
+    // close delete-warning modal
+    closeDeleteModal = () => {
+        this.closeModal("deletePostModal")
+    }
+
+    confirmDelete = (e) => {
+        console.log(this.state.userData.posts.length)
+        let post_id = this.state.postInfo.id
+        console.log(post_id)
+        axios.delete(`${baseURL}/users/posts/${post_id}`,
+            {headers: {"Authorization": `Bearer ${localStorage.token}`}})
+        .then(res=>{
+            console.log(res.data)
+            // remove post to the profile postList
+            let newPostArr= this.state.userData.posts.filter(post=>res.data.post._id!==post.id)
+            console.log(newPostArr.filter(p=>p.id===res.data.post._id))
+            console.log(newPostArr)
+            // update current city object state
+            this.setState(prevState=>({
+                userData: {...prevState.userData, posts: newPostArr}
+            }))
+            // close delete post modal
+            this.closeDeleteModal()
+        })
+        .catch(err=>{
+            console.log(err.response)
         })
     }
 
+    editPost = (e) => {
+        e.preventDefault()
+    }
 
     render = () => {
 
         let postList = []
         if (this.state.userData.posts!==undefined) {
             this.state.userData.posts.map((post,i)=>(
-                postList.push(<Posts data={post} open={()=>this.open(i)} key={i} />)
+                postList.push(
+                <ProfilePosts key={i} data={post} open={()=>this.open(i)} 
+                    openDeleteModal={()=>this.openDeleteModal(i)} />)
             ))
         }
-
+        console.log(postList.length)
         return(
 
 <React.Fragment>
@@ -152,8 +196,9 @@ export default class Profile extends Component {
             }
             </div>
             {!this.state.editUsername?
-            <button className='edit-button'><img src='https://image.flaticon.com/icons/svg/61/61776.svg' className='edit-username-button' onClick={()=>this.changeInputClick("editUsername")}>
-                </img></button>
+            <button className='edit-button' onClick={()=>this.changeInputClick("editUsername")}>
+              <img src='images/edit_button.svg' className='edit-username-button' />
+            </button>
             :
                 <button className='save-button' onClick={(e)=>this.stopEdit(e,"editUsername","usernameVal")}>Save</button>
             }
@@ -167,8 +212,8 @@ export default class Profile extends Component {
         </p>
         <p className='bio'>
             City:
-            <span style={{margin: "10px"}}>
-            <select onChange={(e)=>this.updateCity(e,"cityVal")} name="city">
+            <span style={{padding: "10px"}}>
+            <select style={{fontSize: "20px"}} onChange={(e)=>this.updateCity(e,"cityVal")} name="city">
             {
             this.props.cities.map((city,index)=>(
             city.name!==this.state.cityVal ? 
@@ -179,7 +224,6 @@ export default class Profile extends Component {
             </select>
             </span>
         </p>
-        <p>{false? bioTxt : ""}</p>
     </div>
 
     <div className="posts-list">
@@ -203,6 +247,21 @@ export default class Profile extends Component {
         </Modal.Body>
         <Modal.Footer>
             <Button className="green-btn" onClick={this.close}>Close</Button>
+        </Modal.Footer>
+    </Modal>
+
+
+    <Modal className="delete-warning" show={this.state.deletePostModal} onHide = {this.closeDeleteModal} >
+        <Modal.Header>
+            <Modal.Title>Action: Deleting Post!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            Are you sure you want to delete 
+            <span> {this.state.postInfo.title}</span> ?
+        </Modal.Body>
+        <Modal.Footer>
+            <Button onClick={this.closeDeleteModal}> Cancel </Button>
+            <Button bsStyle="danger" onClick={this.confirmDelete}>DELETE </Button> 
         </Modal.Footer>
     </Modal>
 

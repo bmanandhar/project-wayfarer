@@ -359,6 +359,17 @@ main {
   width: 90%;
 }
 
+.edit-btn {
+  float: right;
+  margin: 5px 10px 5px 5px;
+  background-color: transparent;
+  border: 2px solid #777;
+}
+
+.edit-btn:hover {
+  background-color: white;
+}
+
 .bio {
   margin-left: 20px;
   font-size: 30px;
