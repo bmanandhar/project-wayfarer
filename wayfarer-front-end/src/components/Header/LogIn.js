@@ -32,12 +32,11 @@ const withErrorHandling = WrappedComponent => ({ incorrectError, children }) => 
 };
 
 const DivWithErrorHandling = withErrorHandling(({ children }) => <div>{ children }</div>)
-<<<<<<< HEAD
-=======
+
+
 
 const DivWithFieldHandling = fieldErrorHandling(({ children }) => <div>{ children }</div>)
 
->>>>>>> harry
 class LogIn extends Component {
 
   constructor(props) {
@@ -94,35 +93,7 @@ class LogIn extends Component {
 
   render () {
     return (
-      <Form horizontal>
-        <FormGroup controlId="loginEmail">
-          <Col componentClass={ControlLabel} sm={left}>
-            Email
-          </Col>
-          <Col sm={right}>
-            <FormControl name="email" type="email" placeholder="Email" onChange={this.handleInput}/>
-          </Col>
-          {/* <Tooltip></Tooltip> */}
-        </FormGroup>
-
-<<<<<<< HEAD
-        <FormGroup controlId="loginPassword">
-          <Col componentClass={ControlLabel} sm={left}>
-            Password
-          </Col>
-          <Col sm={right}>
-            <FormControl name="password" type="password" placeholder="Password" onChange={this.handleInput}/>
-          </Col>
-        </FormGroup>
-            <DivWithErrorHandling showError={ this.state.showError }>
-            </DivWithErrorHandling>
-        <FormGroup>
-          <Col smOffset={left} sm={right}>
-            <Button className="green-btn" type="submit" onClick={this.login}>
-              Sign in
-            </Button>
-          </Col>
-=======
+      
 <Form horizontal>
   <FormGroup controlId="loginEmail">
     <Col componentClass={ControlLabel} sm={left}>
@@ -152,10 +123,10 @@ class LogIn extends Component {
       <DivWithFieldHandling fieldError={ this.state.fieldError }>
       </DivWithFieldHandling>
     </Col>
->>>>>>> harry
 
         </FormGroup>
-      </Form>   
+      </Form> 
+      
     )
   }
 }
