@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import { Modal, Button } from "react-bootstrap"
 import Posts from './Posts';
 import axios from "axios";
@@ -7,7 +7,7 @@ const baseURL= 'http://localhost:8001';
 
 const bioTxt = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
 
-export default class Profile extends Component {
+class Profile extends Component {
 
 
     state = {
@@ -212,3 +212,4 @@ export default class Profile extends Component {
     }
 }
 
+export default Profile;

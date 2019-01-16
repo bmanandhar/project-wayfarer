@@ -109,6 +109,7 @@ img {
   color: #777 !important;
 }
 
+<<<<<<< HEAD
 .nav-item > span > a {
   /* margin: 20px auto; */
   padding: 15px;
@@ -120,6 +121,8 @@ img {
 }
 
 
+=======
+>>>>>>> bijaya
 /* /////////// Cities List Component  ////////////*/
 
 .cities-list {
@@ -308,6 +311,9 @@ img {
 }
 
 
+.topic-para {
+  padding: 10px;
+}
 
 .carousel-control {
   opacity: 0.71;
@@ -416,19 +422,13 @@ main {
   height: 61px;
   background-color: darkseagreen;
 }
-
 /* ////////////// Show Post Component //////////// */
-
-
 
 .post-modal-img {
   width: 720px;
   height: 480px;
   margin: 5px auto;
 }
-
-
-
 /* ////////////// Media Query //////////// */
 
 @media only screen and (max-width: 750px) {
@@ -439,7 +439,6 @@ main {
     color: #f0f0f0 !important;
   }
 
-
   .nav-item {
     font-size: 16px;
     margin: 0;
@@ -448,7 +447,6 @@ main {
   .topics {
     flex-direction: column;
   }
-
 
   .topic-col {
     font-size: 14px;

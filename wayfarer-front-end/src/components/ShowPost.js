@@ -3,9 +3,7 @@ import './App.css';
 import { Modal, Col, Button, Form, FormGroup, FormControl, ControlLabel } from "react-bootstrap"
 import Posts from './Posts';
 
-
 class ShowPost extends Component {
-
     state = {
         show: false
     }
@@ -27,7 +25,7 @@ class ShowPost extends Component {
             <div>
                 <button onClick={this.open}>Click Me</button>
                 <div>
-                    <Modal show={this.state.show} onHide = {this.close} >
+                    <Modal show={this.state.show} onHide = {this.close}>
                         <Modal.Header>
                             <Modal.Title>Post by John Doe</Modal.Title>
                         </Modal.Header>
