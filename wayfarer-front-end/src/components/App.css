@@ -112,7 +112,6 @@ img {
   color: #777 !important;
 }
 
-<<<<<<< HEAD
 .nav-item > span > a {
   /* margin: 20px auto; */
   padding: 15px;
@@ -124,8 +123,6 @@ img {
 }
 
 
-=======
->>>>>>> bijaya
 /* /////////// Cities List Component  ////////////*/
 
 .cities-list {
@@ -459,15 +456,12 @@ main {
   height: 61px;
   background-color: darkseagreen;
 }
-<<<<<<< HEAD
-=======
 
 .profile-div-3 {
   display: flex;
   flex-direction: row;
 }
 
->>>>>>> harry
 /* ////////////// Show Post Component //////////// */
 
 .post-modal-img {
