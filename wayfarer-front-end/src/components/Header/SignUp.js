@@ -6,7 +6,7 @@ import axios from "axios";
 const left = 4, 
 right = 12-left;
 
-const baseURL= 'http://localhost:8001';
+const baseURL= 'https://react-wayfarer.herokuapp.com';
 
 const emailDuplicateHandling = EmailDuplicateComponent => ({ duplicateError, children}) => {
   return(

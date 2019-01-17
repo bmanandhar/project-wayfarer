@@ -3,7 +3,7 @@ import { Modal, Button, Col, Form, FormGroup, FormControl, ControlLabel  } from 
 import ProfilePosts from './ProfilePosts';
 import axios from "axios";
 
-const baseURL= 'http://localhost:8001';
+const baseURL= 'https://react-wayfarer.herokuapp.com';
 const maxFileSize = 5*1024*1024;
 
 const left = 2, 

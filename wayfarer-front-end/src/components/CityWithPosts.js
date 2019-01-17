@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Posts from './Posts';
 
-const baseURL = 'http://localhost:8001'
+const baseURL = 'https://react-wayfarer.herokuapp.com'
 
 class CityWithPosts extends Component {
     
