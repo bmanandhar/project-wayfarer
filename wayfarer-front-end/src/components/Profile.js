@@ -270,7 +270,7 @@ export default class Profile extends Component {
                 </div>
                 {!this.state.editUsername?
                 <button className='edit-button' onClick={()=>this.changeInputClick("editUsername")}>
-                    <img src='https://image.flaticon.com/icons/svg/61/61776.svg' className='edit-username-button' />
+                    <img src='images/edit_button.svg' className='edit-username-button' />
                 </button>
                 :
                     <button className='save-button' onClick={(e)=>this.stopEdit(e,"editUsername","usernameVal")}>Save</button>
