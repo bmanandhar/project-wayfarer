@@ -24,4 +24,4 @@ app.use('/posts', postController)
 
 app.use(express.static(__dirname+'/public'))
 
-app.listen(PORTNUM, () => console.log(`Listening on port ${PORTNUM}`))
+app.listen(process.env.PORT || PORTNUM, () => console.log(`Listening on port ${PORTNUM}`))
