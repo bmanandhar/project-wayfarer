@@ -91,7 +91,7 @@ export default class Profile extends Component {
     // update city on change
     updateCity = (e,value) => {
         if (this.state[value]==="") return;
-        this.axiosPatch(e)
+        this.axiosPatch(e.target)
         this.handleInput(e,false)
     }
 
@@ -270,7 +270,7 @@ export default class Profile extends Component {
                     </h1> 
                     :   
                     <h1 className='profile-name'>
-                        <input className="edit-profile-name" type="text" name="usernameVal" 
+                        <input className="edit-profile-name" type="text" name="username" 
                             defaultValue={this.state.usernameVal} 
                             onChange={(e)=>this.handleInput(e,false)} />
                     </h1> 

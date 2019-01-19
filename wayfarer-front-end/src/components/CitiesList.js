@@ -201,23 +201,17 @@ class CitiesList extends Component {
 
         return(
     <React.Fragment>
-      <Grid>
-        <Row>
-          <Col sm={3}>
-            {/* <div className="cities-list"> */}
-                <h1 className="city-header">Cities</h1>
-                {cityList}
-            {/* </div> */}
-          </Col>
-          <Col sm={9}>
-            {/* <div className="city-posts"> */}
+        <div className='cities-and-posts'>
+            <div className="cities-list">
+                <div className='city-list-div'>{cityList}</div>
+            </div>
+          
+            <div className="city-posts">
                 <CityWithPosts data={this.state.cityInfo} 
                     open={this.openFormModal} 
                     openModal={this.openPostModal}/>
-            {/* </div> */}
-          </Col>
-      </Row>
-    </Grid> 
+            </div>
+        </div>
 
         <Modal bsSize="large" show={this.state.show} onHide={this.closeFormModal}>
             <Modal.Header closeButton className="modal-header">
