@@ -6,7 +6,7 @@ import axios from "axios";
 import Cities from './Cities.js';
 import CityWithPosts from './CityWithPosts';
 
-const baseURL= 'http://localhost:8001';
+const baseURL= 'https://react-wayfarer.herokuapp.com';
 const maxFileSize = 5*1024*1024;
 
 const left = 2, 
@@ -68,7 +68,7 @@ class CitiesList extends Component {
         .then(response=>{
     
             pathname= pathname.replace("/cities/","")
-            console.log(pathname)
+            //console.log(pathname)
 
             let defaultCity = response.data.cities[0]
             let filteredCity = response.data.cities.filter(city=>{
@@ -77,7 +77,7 @@ class CitiesList extends Component {
             if (filteredCity.length>0) {
                 defaultCity= filteredCity[0]
             }
-            console.log(this.parseCityNameLower(defaultCity.name))
+            //console.log(this.parseCityNameLower(defaultCity.name))
 
             this.props.history.push('/cities/'+this.parseCityNameLower(defaultCity.name))
 
@@ -201,23 +201,17 @@ class CitiesList extends Component {
 
         return(
     <React.Fragment>
-      <Grid>
-        <Row>
-          <Col sm={3}>
-            {/* <div className="cities-list"> */}
-                <h1 className="city-header">Cities</h1>
-                {cityList}
-            {/* </div> */}
-          </Col>
-          <Col sm={9}>
-            {/* <div className="city-posts"> */}
+        <div className='cities-and-posts'>
+            <div className="cities-list">
+                <div className='city-list-div'>{cityList}</div>
+            </div>
+          
+            <div className="city-posts">
                 <CityWithPosts data={this.state.cityInfo} 
                     open={this.openFormModal} 
                     openModal={this.openPostModal}/>
-            {/* </div> */}
-          </Col>
-      </Row>
-    </Grid> 
+            </div>
+        </div>
 
         <Modal bsSize="large" show={this.state.show} onHide={this.closeFormModal}>
             <Modal.Header closeButton className="modal-header">

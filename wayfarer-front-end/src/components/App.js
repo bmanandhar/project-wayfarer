@@ -8,7 +8,7 @@ import Landing from './Landing';
 import CitiesList from './CitiesList';
 import Profile from './Profile';
 
-const baseURL = "http://localhost:8001"
+const baseURL = "https://react-wayfarer.herokuapp.com"
 
 var RouteComponent = (props) =>{
   if (props.isLoggedIn) {
