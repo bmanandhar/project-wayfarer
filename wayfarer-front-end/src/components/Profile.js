@@ -30,7 +30,6 @@ export default class Profile extends Component {
 
         axios.get(`${baseURL}/users/profile`,{headers: {"Authorization": `Bearer ${localStorage.token}`}})
         .then(res=>{
-            //console.log(res.data)
             let userData = res.data
             this.setState({
                 userData,
@@ -39,7 +38,6 @@ export default class Profile extends Component {
             })
         })
         .catch((err)=>{
-            //console.log(err.response)
             let status = err.response.data.error
             if (status===401 || status===403) {
                 alert(`${err.response.data.message}, logging out...`)
@@ -64,19 +62,18 @@ export default class Profile extends Component {
 
     // change to input tag when click on username
     changeInputClick = (option) => {
-        //console.log(option)
         this.setState({[option]: true})
     }
 
     // stop edit username
     stopEdit = (e,option,value) => {
-        //if (this.state[value]==="") return;
         let target = e.target
         if (e.target.tagName==="BUTTON") {
             target = e.target.parentNode.children[0].children[0].children[0]
-            //console.log(target)
         }
+        
         if (/\\s/g.test(target.value)) return
+        
         if (this.state[value]===target.value) {
             this.setState({ [option]: false })
             return;
@@ -108,7 +105,6 @@ export default class Profile extends Component {
             {headers: {"Authorization": `Bearer ${localStorage.token}`}})
         .then(res=>console.log(res.data))
         .catch(err=>{
-            console.log(err.response)
             let status = err.response.data.error
             if (status===401 || status===403) {
                 this.props.forcedLogOut()
@@ -191,16 +187,13 @@ export default class Profile extends Component {
         let newCity= !this.state.editCity? this.state.postInfo.city : this.state.editCity
         let newTitle= !this.state.editTitle? this.state.postInfo.title : this.state.editTitle
         let newBody= !this.state.editBody? this.state.postInfo.body : this.state.editBody
-        //console.log(this.state.editCity)
-        //console.log(newCity)
-
+        
         if (!( newCity && newTitle && newBody)) {
             alert("empty edit")
             return
         } else {
         }
         
-        //*
         let file = document.getElementById("edit_img_file")
         let image= this.state.postInfo.image
         // check if empty and file size
@@ -239,7 +232,6 @@ export default class Profile extends Component {
             let status = err.response.data.error
             //if (status===401 || status===403) { this.props.forcedLogOut() }
         })
-        //*/
     }
 
     render = () => {
@@ -272,7 +264,7 @@ export default class Profile extends Component {
                     <h1 className='profile-name'>
                         <input className="edit-profile-name" type="text" name="username" 
                             defaultValue={this.state.usernameVal} 
-                            onChange={(e)=>this.handleInput(e,false)} />
+                             />
                     </h1> 
                 }
                 </div>
@@ -308,7 +300,6 @@ export default class Profile extends Component {
         </div>
 
         <div className="posts-list">
-            {/* <h2>Your Posts: </h2> */}
             {postList.length>0 ? postList : <h4>No Posts</h4>}
         </div>
 
