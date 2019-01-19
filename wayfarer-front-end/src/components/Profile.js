@@ -3,7 +3,7 @@ import { Modal, Button, Col, Form, FormGroup, FormControl, ControlLabel  } from 
 import ProfilePosts from './ProfilePosts';
 import axios from "axios";
 
-const baseURL= 'http://localhost:8001';
+const baseURL= 'https://react-wayfarer.herokuapp.com';
 const maxFileSize = 5*1024*1024;
 
 const left = 2, 
@@ -76,7 +76,7 @@ export default class Profile extends Component {
             target = e.target.parentNode.children[0].children[0].children[0]
             //console.log(target)
         }
-        if (target.value==="") return
+        if (/\\s/g.test(target.value)) return
         if (this.state[value]===target.value) {
             this.setState({ [option]: false })
             return;
@@ -278,7 +278,7 @@ export default class Profile extends Component {
                 </div>
                 {!this.state.editUsername?
                 <button className='edit-button' onClick={()=>this.changeInputClick("editUsername")}>
-                    <img src='https://image.flaticon.com/icons/svg/61/61776.svg' className='edit-username-button' />
+                    <img src='images/edit_button.svg' className='edit-username-button' />
                 </button>
                 :
                     <button className='save-button' onClick={(e)=>this.stopEdit(e,"editUsername","usernameVal")}>Save</button>

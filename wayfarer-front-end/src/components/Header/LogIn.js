@@ -4,7 +4,7 @@ import axios from 'axios'
 import { Col, Button, Form, FormGroup, FormControl, ControlLabel } from "react-bootstrap"
 
 const left = 3, right = 12-left;
-const baseURL= 'http://localhost:8001';
+const baseURL= 'https://react-wayfarer.herokuapp.com';
 
 const validEmailRegex= /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-const baseURL = "http://localhost:8001"
+const baseURL = "https://react-wayfarer.herokuapp.com"
 
 class Posts extends Component {
     render() {
