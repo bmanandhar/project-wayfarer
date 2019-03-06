@@ -4,7 +4,7 @@
 
 This was our third project at General Assembly San Francisco, a full time web development course. It was completed by Harry, Bijaya and Clarence during week 10. 
 
-Heroku Link: https://github.com/bmanandhar/project-wayfarer
+Heroku Link: https://react-wayfarer-front.herokuapp.com
 
 ## Brief
 
