@@ -26,7 +26,33 @@ Registered users can:
 
 ## Build Process
 
-Wireframes, ERD and progress can be found on our Trello board https://trello.com/b/EQ8e1eNg/project-wayfarer
+__Wireframes__
+
+
+![learnify-wireframes](https://user-images.githubusercontent.com/42447565/55081139-36221d80-5097-11e9-9f45-a70b03790637.png)
+
+
+__Models__
+
+
+![learnify-models1](https://user-images.githubusercontent.com/42447565/55081104-286c9800-5097-11e9-8146-af9eb1201580.png)
+
+
+![learnify-models2](https://user-images.githubusercontent.com/42447565/55081121-2f93a600-5097-11e9-81da-158a54e9e035.png)
+
+
+## Code Snippets
+
+__Django Authorisation__
+
+![Django-authorization](https://user-images.githubusercontent.com/42447565/55081081-1b4fa900-5097-11e9-9513-fef234bd3e26.png)
+
+
+__Using Stripe as our payment system__
+
+![stripe-code](https://user-images.githubusercontent.com/42447565/55081160-3e7a5880-5097-11e9-882b-02339840fb1b.png)
+
+
 
 ## Lessons Learned
 
