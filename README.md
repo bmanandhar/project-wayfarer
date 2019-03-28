@@ -40,6 +40,8 @@ __Wireframes__
 ![Screenshot 2019-03-28 at 09 33 00](https://user-images.githubusercontent.com/42447565/55146522-a59e1880-513c-11e9-960a-15ae7fc6599d.png)
 
 
+The coloured lines drawn over the wireframes were our interpretation of different components. 
+
 
 ## Lessons Learned
 
