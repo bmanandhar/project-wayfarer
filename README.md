@@ -1,5 +1,9 @@
 # Wayfarer
 
+
+![wayfarer](https://user-images.githubusercontent.com/42447565/55149211-aeddb400-5141-11e9-934a-862f4a7606c6.jpeg)
+
+
 ## GA Project 3
 
 This was our third project at General Assembly San Francisco, a full time web development course. It was completed by Harry, Bijaya and Clarence during week 10. 
