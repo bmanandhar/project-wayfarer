@@ -34,6 +34,12 @@ __Wireframes__
 ![wayfarer-wireframes-2](https://user-images.githubusercontent.com/42447565/55082087-ee9c9100-5098-11e9-92fa-0e3919e152c5.png)
 
 
+![Screenshot 2019-03-28 at 09 32 51](https://user-images.githubusercontent.com/42447565/55146493-9919c000-513c-11e9-9d96-1bb376f4c2b3.png)
+
+
+![Screenshot 2019-03-28 at 09 33 00](https://user-images.githubusercontent.com/42447565/55146522-a59e1880-513c-11e9-960a-15ae7fc6599d.png)
+
+
 
 ## Lessons Learned
 
