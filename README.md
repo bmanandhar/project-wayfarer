@@ -43,6 +43,22 @@ __Wireframes__
 The coloured lines drawn over the wireframes were our interpretation of different components. 
 
 
+## Code Snippets
+
+
+__Here's Harry's 'incorrect login details' code__ 
+
+
+![Screenshot 2019-03-28 at 09 58 38](https://user-images.githubusercontent.com/42447565/55148695-9c16af80-5140-11e9-8285-6e6e6b647ff5.png)
+
+
+![Screenshot 2019-03-28 at 09 58 00](https://user-images.githubusercontent.com/42447565/55148684-9620ce80-5140-11e9-8fcb-535c4ffce0c8.png)
+
+
+![Screenshot 2019-03-28 at 09 57 37](https://user-images.githubusercontent.com/42447565/55148554-55c15080-5140-11e9-990b-bdaf904dc574.png)
+
+
+
 ## Lessons Learned
 
 Working in a group can be a challenge, particularly in terms of merging and resolving conflicts with git. Much of our week was consumed by resolving conflicts, something that could have been avoided with better preparation and communication. This is something we wish to improve on in future group projects. 
